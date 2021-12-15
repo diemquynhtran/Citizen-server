@@ -1,0 +1,18 @@
+{
+    "type": "mysql",
+    "host": "<your_host>",
+    "port": "<your_port>",
+    "username": "<your_username>",
+    "password": "<your_password>",
+    "database": "<your_database_name>",
+    "synchronize": true,
+    "logging": false,
+    "entities": ["src/entities/**/*.ts"],
+    "migrations": ["src/migration/**/*.ts"],
+    "subscribers": ["src/subscriber/**/*.ts"],
+    "cli": {
+      "entitiesDir": "src/entities",
+      "migrationsDir": "src/migration",
+      "subscribersDir": "src/subscriber"
+    }
+  }

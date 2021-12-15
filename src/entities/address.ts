@@ -1,39 +1,26 @@
 import { UUID } from "bson";
 import { Expose } from "class-transformer";
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from "typeorm";
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from "typeorm";
 import { District } from "./district";
 import { Province } from "./province";
+import { User } from "./user";
 import { Village } from "./village";
 import { Ward } from "./ward";
-enum Role {
-  A1,
-  A2,
-  A3,
-  B1,
-  B2,
-}
+
 @Entity()
-export class User {
+export class Address {
   @Expose()
   @PrimaryGeneratedColumn()
   id: UUID;
-  @Column()
-  role: Role;
-  @Expose()
-  @Column()
-  username: string;
-  @Expose()
-  @Column()
-  password: string;
-  @Expose()
-  @Column({ nullable: false })
-  displayName: string;
-  @Column({ nullable: true })
-  phoneNumber: string;
-  @Column({ nullable: true })
-  startTime: Date;
-  @Column({ nullable: true })
-  endTime: Date;
+  @Column({ default: "" })
+  detail: string;
   @ManyToOne(() => Ward)
   ward: Ward;
   @ManyToOne(() => District)
@@ -42,4 +29,9 @@ export class User {
   province: Province;
   @ManyToOne(() => Village)
   village: Village;
+  @OneToOne(() => User, { onDelete: "CASCADE" })
+  @JoinColumn()
+  admin: User;
+
+  // trỏ tới 1 đỉa chỉ : phường , huyện, tỉnh
 }

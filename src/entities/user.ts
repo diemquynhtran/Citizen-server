@@ -1,9 +1,10 @@
 import { Expose } from "class-transformer";
-import { Entity, Column, ManyToOne, Generated, PrimaryColumn } from "typeorm";
+import { Entity, Column, ManyToOne, Generated, PrimaryColumn, BeforeInsert } from "typeorm";
 import { District } from "./district";
 import { Province } from "./province";
 import { Village } from "./village";
 import { Ward } from "./ward";
+import * as bcrypt from "bcrypt";
 export enum Role {
   A1,
   A2,
@@ -24,6 +25,17 @@ export class User {
   @Expose()
   @Column()
   password: string;
+  @BeforeInsert()
+  async hashPassword(): Promise<void> {
+    try {
+        this.password = await bcrypt.hash(this.password, 10);
+    }
+    catch (e) {
+      console.log(e);
+      
+    }
+  }
+  
   @Expose()
   @Column({ nullable: false })
   displayName: string;
@@ -41,4 +53,5 @@ export class User {
   province: Province;
   @ManyToOne(() => Village)
   village: Village;
+  
 }

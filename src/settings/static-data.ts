@@ -6,8 +6,9 @@ export const staticData = {
       role: Role.A1,
       phoneNumber: "012345678",
       username: "admin",
-      password: "quynhlon",
+      password: "123",
       displayName: "Admin",
     },
+
   ],
 };

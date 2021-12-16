@@ -13,7 +13,6 @@ export enum Role {
 }
 @Entity()
 export class User {
-  @Expose()
   @PrimaryColumn({ type: "uuid" })
   @Generated("uuid")
   id: string;

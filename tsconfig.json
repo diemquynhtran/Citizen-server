@@ -14,13 +14,13 @@
      "strictBindCallApply": true,
      "strictPropertyInitialization": false,
      "noImplicitThis": true,
-     "alwaysStrict": true,
+    //  "alwaysStrict": true,
      "resolveJsonModule": true,
  
      /* Additional Checks */
-     "noUnusedLocals": true,
-     "noUnusedParameters": true,
-     "noImplicitReturns": true,
+    //  "noUnusedLocals": true,
+    //  "noUnusedParameters": true,
+    //  "noImplicitReturns": true,
      "noFallthroughCasesInSwitch": true,
  
      /* Module Resolution Options */

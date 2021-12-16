@@ -1,5 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
+import { getRepository } from "typeorm";
+import { User } from "../entities/user";
 export const JWTmiddlewares = async (
   req: Request,
   res: Response,
@@ -22,7 +24,15 @@ export const JWTmiddlewares = async (
           res.status(401);
           return res.send("Bạn chưa đăng nhập");
         }
-        res.locals.userId = verifiedJwt.user.id || null;
+        var userRepo = getRepository(User);
+
+        const user = await userRepo.findOne({
+          where: {
+            id: verifiedJwt.user.id,
+          },
+          relations: ["ward", "village", "province", "district"],
+        });
+        res.locals.user = user || null;
         next();
       }
       return;

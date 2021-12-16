@@ -1,11 +1,10 @@
-import { UUID } from "bson";
 import { Expose } from "class-transformer";
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from "typeorm";
+import { Entity, Column, ManyToOne, Generated, PrimaryColumn } from "typeorm";
 import { District } from "./district";
 import { Province } from "./province";
 import { Village } from "./village";
 import { Ward } from "./ward";
-enum Role {
+export enum Role {
   A1,
   A2,
   A3,
@@ -15,12 +14,13 @@ enum Role {
 @Entity()
 export class User {
   @Expose()
-  @PrimaryGeneratedColumn()
-  id: UUID;
+  @PrimaryColumn({ type: "uuid" })
+  @Generated("uuid")
+  id: string;
   @Column()
   role: Role;
   @Expose()
-  @Column()
+  @Column({ unique: true })
   username: string;
   @Expose()
   @Column()

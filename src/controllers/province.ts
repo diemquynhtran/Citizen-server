@@ -4,6 +4,7 @@ import { getRepository } from "typeorm";
 import { ProvinceTitle } from "../dto/province";
 import { Province } from "../entities/province";
 export const provinceController = {
+  //[GET] province/
   getProvinces: async (req: Request, res: Response) => {
     const body = req.body;
     const provinceRepo = getRepository(Province);

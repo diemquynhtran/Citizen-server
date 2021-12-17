@@ -7,7 +7,7 @@ export const JWTmiddlewares = async (
   res: Response,
   next: NextFunction
 ): Promise<any> => {
-  let token: string = req.headers["x-access-token"]?.toString() || "";
+  let token: string =req.headers["x-access-token"]?.toString()||req.headers.token?.toString()|| "";
   if (!token) {
     res.status(401);
     return res.send("Bạn chưa đăng nhập");
@@ -28,11 +28,12 @@ export const JWTmiddlewares = async (
 
         const user = await userRepo.findOne({
           where: {
-            id: verifiedJwt.user.id,
+            username: verifiedJwt.username,
           },
           relations: ["ward", "village", "province", "district"],
         });
         res.locals.user = user || null;
+        
         next();
       }
       return;

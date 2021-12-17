@@ -11,7 +11,8 @@ export const AppRouter = (app: Application) => {
   app.use("/user", userRouter);
   app.use(
     "/province",
-    // JWTmiddlewares, roleRequire(Role.A1),
+    JWTmiddlewares, 
+    //roleRequire(Role.A1),
     provinceRoute
   );
 };

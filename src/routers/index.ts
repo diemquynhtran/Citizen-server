@@ -12,7 +12,7 @@ export const AppRouter = (app: Application) => {
   app.use(
     "/province",
     JWTmiddlewares, 
-    //roleRequire(Role.A1),
+    roleRequire(Role.A1),
     provinceRoute
   );
 };

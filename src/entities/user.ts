@@ -26,16 +26,6 @@ export class User {
   @Column()
   password: string;
   @BeforeInsert()
-  async hashPassword(): Promise<void> {
-    try {
-        this.password = await bcrypt.hash(this.password, 10);
-    }
-    catch (e) {
-      console.log(e);
-      
-    }
-  }
-  
   @Expose()
   @Column({ nullable: false })
   displayName: string;
@@ -53,5 +43,15 @@ export class User {
   province: Province;
   @ManyToOne(() => Village)
   village: Village;
+
+  async hashPassword(): Promise<void> {
+    try {
+        this.password = await bcrypt.hash(this.password, 10);
+    }
+    catch (e) {
+      console.log(e);
+      
+    }
+  }
   
 }

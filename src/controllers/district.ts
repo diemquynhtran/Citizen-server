@@ -3,7 +3,10 @@ import { getRepository } from "typeorm";
 import { District } from "../entities/district";
 import { User } from "../entities/user";
 export const districtController = {
+  //[GET] /district
   getDistrict: async (req: Request, res: Response) => {},
+  
+  //[POST] /district
   create: async (req: Request, res: Response) => {
     try {
       const user: User = res.locals.user;

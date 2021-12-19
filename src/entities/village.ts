@@ -31,6 +31,7 @@ export class Village {
   @OneToOne(() => User, { onDelete: "CASCADE" })
   @JoinColumn()
   admin: User;
+  newvillage: Ward;
   // trỏ tới 1 provinceId
   // có 1 tài khoản : 1 : 1
   // có nhiều ward

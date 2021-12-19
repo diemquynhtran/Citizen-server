@@ -6,7 +6,7 @@ const express = require("express");
 const router = express.Router();
 
 router.get("/",roleRequire(Role.A1), districtController.getAllDistricts);
-router.get("/getByA2", districtController.getDistrictsByA2);
+router.get("/getByA2", districtController.getDistrictsByRole);
 router.post("/create",roleRequire(Role.A2), districtController.create);
 router.put("/update",roleRequire(Role.A2), districtController.update);
 router.delete("/delete",roleRequire(Role.A2), districtController.delete);

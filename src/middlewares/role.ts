@@ -3,9 +3,6 @@ import { Role } from "../entities/user";
 export const roleRequire = (...roles: Role[]) => {
   return function (req: Request, res: Response, next: NextFunction) {
     let user = res.locals.user;
-    //console.log(roles);
-    //console.log(typeof(user.role));
-    //console.log(user);
     let check = false;
     let i;
     for (i=0 ; i< roles.length;i++) {

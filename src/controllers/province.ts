@@ -44,8 +44,11 @@ export const provinceController = {
         temp = '' + count;
       }
       let newProvince = new Province();
+      const userRepo = getRepository(User); 
+      const userAdmin = await userRepo.find({username: temp});
       newProvince.code = temp;
       newProvince.name = req.body.name;
+      newProvince.admin = userAdmin[0];
       const result = await provinceRepo.save(newProvince);
       res.status(200);
       return res.send(result);
@@ -98,5 +101,49 @@ export const provinceController = {
       return res.send("Yêu cầu không hợp lệ");
     }
   },
-  // getById: async (req: Request, res: Response) => {},
+  
+  getById: async (req: Request, res: Response) => {
+    try {
+      const provinceRepo = getRepository(Province);
+      const result =await provinceRepo.find({code: req.body.code});      
+      res.status(200);
+      return res.send(result);
+    }
+    catch (e) {
+      console.log(e);
+      res.status(400);
+      res.send("Không tìm thấy")
+      
+    }
+  },
+
+  // async getPersonByProvince(req, res) {
+  //   const { ids = [] } = req.body;
+  //   try {
+  //     const provinceNames = [];
+  //     var personsResult = [];
+  //     for (const id of ids) {
+  //       if (await validationProvinceId(id, "getPerson")) {
+  //         const province = await Province.findOne({
+  //           where: { provinceId: id },
+  //         });
+  //         provinceNames.push(province.provinceName);
+  //       }
+  //     }
+
+  //     for (const provinceName of provinceNames) {
+  //       const persons = await Person.findAll({
+  //         where: {
+  //           thuongTru: {
+  //             [Op.like]: `%${provinceName}%`,
+  //           },
+  //         },
+  //       });
+  //       personsResult = personsResult.concat(persons);
+  //     }
+  //     return res.json({ status: 1, persons: personsResult });
+  //   } catch (e) {
+  //     return res.json({ status: 0, error: "GET_PERSON_BY_PROVINCE_ERROR!" });
+  //   }
+  // }
 };

@@ -25,7 +25,10 @@ export class User {
   @Expose()
   @Column()
   password: string;
-  @BeforeInsert()
+  @Column({
+    default: true,
+  })
+  permission: Boolean;
   @Expose()
   @Column({ nullable: false })
   displayName: string;
@@ -44,6 +47,7 @@ export class User {
   @ManyToOne(() => Village)
   village: Village;
 
+  @BeforeInsert()
   async hashPassword(): Promise<void> {
     try {
         this.password = await bcrypt.hash(this.password, 10);

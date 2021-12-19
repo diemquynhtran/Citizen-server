@@ -1,33 +1,88 @@
+import { plainToClass } from "class-transformer";
 import { Request, Response } from "express";
-import { getRepository } from "typeorm";
+import { getRepository, Like } from "typeorm";
+import { DistrictTitle } from "../dto/district";
 import { District } from "../entities/district";
+import { Province } from "../entities/province";
 import { User } from "../entities/user";
+
+
 export const districtController = {
   //[GET] /district
-  getDistrict: async (req: Request, res: Response) => {},
-  
-  //[POST] /district
+  getDistricts: async (req: Request, res: Response) => {
+    const body = req.body;
+    const districtRepo = getRepository(District);
+    const districts = await districtRepo.find({
+      where: {},
+      relations: ["admin"],
+    });
+    console.log(districts);
+
+    let result = plainToClass(DistrictTitle, districts, {
+      excludeExtraneousValues: true,
+    });
+    res.status(200);
+    return res.send(result);
+  },
+
+  //[POST] /district/create
   create: async (req: Request, res: Response) => {
     try {
       const user: User = res.locals.user;
+      if (!req.body.name) {
+        res.status(400);
+        return res.send("Tên huyện không hợp lệ");
+      }
       const districtRepo = getRepository(District);
       const count = await districtRepo.count({
-        where: {
-          province: user.province,
-        },
-      });
-      let newDistrict = new District();
-      newDistrict.code = user.province.code + "2 chữ";
-      newDistrict.name = req.body.name;
-      const result = await districtRepo.save(newDistrict);
+        code: Like(`${user.username}%`)
+      }) + 1;
+      let temp;
+      if (count < 10) {
+        temp = '0' + count;
+      } else {
+        temp = '' + count;
+      }
+      let newdistrict = new District();
+      const userRepo = getRepository(User);
+      newdistrict.code = user.username + temp;
+      newdistrict.name = req.body.name;
+      const province = await getRepository(Province).find({code: user.username});
+      newdistrict.province = province[0];
+      const result = await districtRepo.save(newdistrict);
       res.status(200);
       return res.send(result);
     } catch (e) {
       res.status(400);
-      return res.send("Có lỗi xảy ra");
+      return res.send("Huyện này đã tồn tại");
     }
   },
-  update: async (req: Request, res: Response) => {},
-  delete: async (req: Request, res: Response) => {},
-  getById: async (req: Request, res: Response) => {},
+
+
+  update: async (req: Request, res: Response) => { },
+  delete: async (req: Request, res: Response) => {
+    // try {
+    //   if(!req.body.code) {
+    //     res.status(400);
+    //     return res.send("Yêu cầu không hợp lệ");
+    //   }
+    //   const districtRepo = getRepository(District);
+    //   const count = await districtRepo.count({});
+    //   if(req.body.code == count) {
+    //     await districtRepo.delete({code: req.body.code});
+    //     res.status(200);
+    //     return res.send("Xóa huyện thành công");
+    //   }
+    //   res.status(400);
+    //   console.log(count);
+      
+    //   return res.send("Không xóa được mã này");
+    // }
+    // catch (e) {
+    //   console.log(e);
+    //   res.status(400);
+    //   return res.send("Yêu cầu không hợp lệ");
+    // }
+  },
+  getById: async (req: Request, res: Response) => { },
 };

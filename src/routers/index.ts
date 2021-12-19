@@ -11,5 +11,5 @@ export const AppRouter = (app: Application) => {
   app.use("/auth", authRouter);
   app.use("/user", JWTmiddlewares,userRouter);
   app.use("/province", JWTmiddlewares, roleRequire(Role.A1), provinceRoute);
-  app.use("/district",JWTmiddlewares, roleRequire(Role.A1), districtRoute);
+  app.use("/district",JWTmiddlewares, roleRequire(Role.A1, Role.A2), districtRoute);
 };

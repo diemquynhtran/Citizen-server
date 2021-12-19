@@ -48,7 +48,7 @@ export const provinceController = {
       const userAdmin = await userRepo.find({username: temp});
       newProvince.code = temp;
       newProvince.name = req.body.name;
-      newProvince.admin = userAdmin[0];
+      //newProvince.admin = userAdmin[0];
       const result = await provinceRepo.save(newProvince);
       res.status(200);
       return res.send(result);

@@ -17,7 +17,7 @@ export const userController = {
       console.log(user.role);
       
       const userRepo = getRepository(User);
-      const check = await userRepo.find({username: req.body.code})
+      const check = await userRepo.find({username: req.body.code}||{displayName: req.body.name})
       if(check == null) {
         res.status(400);
         console.log(check);

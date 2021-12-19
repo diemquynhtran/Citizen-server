@@ -9,7 +9,7 @@ import { User } from "../entities/user";
 
 export const districtController = {
   //[GET] /district
-  getDistricts: async (req: Request, res: Response) => {
+  getAllDistricts: async (req: Request, res: Response) => {
     const body = req.body;
     const districtRepo = getRepository(District);
     const districts = await districtRepo.find({
@@ -18,6 +18,21 @@ export const districtController = {
     });
     console.log(districts);
 
+    let result = plainToClass(DistrictTitle, districts, {
+      excludeExtraneousValues: true,
+    });
+    res.status(200);
+    return res.send(result);
+  },
+
+  //[GET] /district/getByA2
+  getDistrictsByA2: async (req: Request, res: Response) => {
+    const user: User = res.locals.user;
+    const body = req.body;
+    const districtRepo = getRepository(District);
+    const districts = await districtRepo.find({
+      code: Like(`${user.username}%`)
+    });
     let result = plainToClass(DistrictTitle, districts, {
       excludeExtraneousValues: true,
     });
@@ -59,30 +74,57 @@ export const districtController = {
   },
 
 
-  update: async (req: Request, res: Response) => { },
-  delete: async (req: Request, res: Response) => {
-    // try {
-    //   if(!req.body.code) {
-    //     res.status(400);
-    //     return res.send("Yêu cầu không hợp lệ");
-    //   }
-    //   const districtRepo = getRepository(District);
-    //   const count = await districtRepo.count({});
-    //   if(req.body.code == count) {
-    //     await districtRepo.delete({code: req.body.code});
-    //     res.status(200);
-    //     return res.send("Xóa huyện thành công");
-    //   }
-    //   res.status(400);
-    //   console.log(count);
+  update: async (req: Request, res: Response) => {
+    try {
+      const user: User = res.locals.user;
+      if (!req.body.name) {
+        res.status(400);
+        return res.send("Têu cầu không hợp lệ");
+      }      
       
-    //   return res.send("Không xóa được mã này");
-    // }
-    // catch (e) {
-    //   console.log(e);
-    //   res.status(400);
-    //   return res.send("Yêu cầu không hợp lệ");
-    // }
+      const districtRepo = getRepository(District);
+      await districtRepo.update({code: req.body.code}, {name: req.body.name});
+      const result =await districtRepo.find({code: req.body.code});      
+      res.status(200);
+      return res.send(result);
+    }
+    catch (e) {
+      res.status(400);
+      return res.send("Huyện này đã tồn tại");
+    }
+  },
+  delete: async (req: Request, res: Response) => {
+    try {
+      const user: User = res.locals.user;
+      if(!req.body.code) {
+        res.status(400);
+        return res.send("Yêu cầu không hợp lệ");
+      }
+      const districtRepo = getRepository(District);
+      const count = await districtRepo.count({
+        code: Like(`${user.username}%`)
+      });
+      let temp;
+      if (count < 10) {
+        temp =user.username + '0' + count;
+      } else {
+        temp = user.username + count;
+      }
+      if(req.body.code == temp) {
+        await districtRepo.delete({code: req.body.code});
+        res.status(200);
+        return res.send("Xóa huyện thành công");
+      }
+      res.status(400);
+      console.log(count);
+      
+      return res.send("Không xóa được mã này");
+    }
+    catch (e) {
+      console.log(e);
+      res.status(400);
+      return res.send("Yêu cầu không hợp lệ");
+    }
   },
   getById: async (req: Request, res: Response) => { },
 };

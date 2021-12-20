@@ -8,4 +8,5 @@ router.get("/", provinceController.getProvinces);
 router.post("/create", permissionUser, provinceController.create);
 router.put("/update", permissionUser, provinceController.update);
 router.delete("/delete", permissionUser, provinceController.delete);
+router.post("/getByName", permissionUser, provinceController.getByName);
 export default router;

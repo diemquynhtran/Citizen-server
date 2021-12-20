@@ -20,6 +20,8 @@ export class District {
   @Expose()
   @Column({ nullable: false, unique: true })
   name: string;
+  @Column({default: false})
+  state: Boolean;
   @ManyToOne(() => Province, (province) => province.districts, {
     onDelete: "CASCADE",
     onUpdate: "CASCADE",

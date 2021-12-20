@@ -14,7 +14,7 @@ export const provinceController = {
       where: {},
       relations: ["admin"],
     });
-    console.log(provinces);
+    //console.log(provinces);
 
     let result = plainToClass(ProvinceTitle, provinces, {
       excludeExtraneousValues: true,
@@ -53,6 +53,8 @@ export const provinceController = {
       res.status(200);
       return res.send(result);
     } catch (e) {
+      console.log(e);
+      
       res.status(400);
       return res.send("Tỉnh này đã tồn tại");
     }
@@ -102,17 +104,17 @@ export const provinceController = {
     }
   },
   
-  getById: async (req: Request, res: Response) => {
+  getByName: async (req: Request, res: Response) => {
     try {
       const provinceRepo = getRepository(Province);
-      const result =await provinceRepo.find({code: req.body.code});      
+      const result =await provinceRepo.find({name: req.body.name});      
       res.status(200);
       return res.send(result);
     }
     catch (e) {
       console.log(e);
       res.status(400);
-      res.send("Không tìm thấy")
+      res.send("Không tìm thấy");
       
     }
   },

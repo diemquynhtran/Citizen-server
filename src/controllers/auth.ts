@@ -41,6 +41,7 @@ export const authController = {
       status: 200,
       message: "Xác thực thành công",
       role: user.role,
+      permission: user.permission,
       token: JWTService.generate(payload),
     })
     

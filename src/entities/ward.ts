@@ -20,6 +20,8 @@ export class Ward {
   @Expose()
   @Column({ nullable: false, unique: true })
   name: string;
+  @Column({default: false})
+  state: Boolean;
   @ManyToOne(() => District, (district) => district.wards)
   district: District;
   @OneToMany(() => Village, (v) => v.ward)

@@ -21,11 +21,13 @@ export class Village {
   @Expose()
   @Column({ nullable: false, unique: true })
   name: string;
+  @Column({default: false})
+  state: Boolean;
   @ManyToOne(() => Ward, (ward) => ward.villages, {
     onDelete: "CASCADE",
     onUpdate: "CASCADE",
   })
-  ward: Ward[];
+  ward: Ward;
   @Column({ default: Status.YET })
   status: Status;
   @OneToOne(() => User, { onDelete: "CASCADE" })

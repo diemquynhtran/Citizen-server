@@ -8,4 +8,6 @@ export class DistrictTitle {
   name: string;
   @Expose()
   admin: UserTitleDto;
+  @Expose()
+  state: Boolean;
 }

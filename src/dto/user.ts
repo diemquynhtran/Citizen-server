@@ -8,5 +8,5 @@ export class UserTitleDto {
   @Expose()
   displayName: string;
   @Expose()
-  phoneNumber: string;
+  state: Boolean;
 }

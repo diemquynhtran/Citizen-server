@@ -18,6 +18,8 @@ export class Province {
   @Expose()
   @Column({ nullable: false, unique: true })
   name: string;
+  @Column({default: false})
+  state: Boolean;
   @OneToMany(() => District, (district) => district.province)
   districts: District[];
   @OneToOne(() => User, { onDelete: "CASCADE" })

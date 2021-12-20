@@ -8,4 +8,6 @@ export class WardTitle {
   name: string;
   @Expose()
   admin: UserTitleDto;
+  @Expose()
+  state: Boolean;
 }

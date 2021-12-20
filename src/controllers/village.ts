@@ -62,7 +62,7 @@ export const villageController = {
       newvillage.code = user.username + temp;
       newvillage.name = req.body.name;
       const ward = await getRepository(Ward).find({code: user.username});
-      newvillage.ward = ward;
+      newvillage.ward = ward[0];
       const result = await villageRepo.save(newvillage);
       res.status(200);
       return res.send(result);

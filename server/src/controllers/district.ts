@@ -25,7 +25,7 @@ export const districtController = {
     return res.send(result);
   },
 
-  //[GET] /district/getByA2
+  //[GET] /district/getByRole
   getDistrictsByRole: async (req: Request, res: Response) => {
     const user: User = res.locals.user;
     const body = req.body;

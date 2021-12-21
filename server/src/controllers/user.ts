@@ -3,10 +3,13 @@ import { Role, User } from "../entities/user";
 import { getRepository } from "typeorm";
 
 export const userController = {
+
+  //[GET] /user/
   getUser: async (_: Request, res: Response) => {
     return res.send(200);
   },
 
+  //[POST] user/create  : Mặc định khi cấp timeEnd, timeStart hợp lệ thì permission = true;
   create: async (req: Request, res: Response) => {
     try {
       const userReq = req.body;
@@ -57,4 +60,39 @@ export const userController = {
       return res.send("Yêu cầu không hợp lệ");
     }
   },
+
+  //[PUT] /user/update
+  update: async (_: Request, res: Response) => {
+    return res.send(200);
+  },
+
+  //[DELETE] /user/delete
+  deltete: async (_: Request, res: Response) => {
+    return res.send(200);
+  },
+
+  //Khóa quyền khai báo
+  //[GET] /
+  cancelDeclare: async (_: Request, res: Response) => {
+    return res.send(200);
+  },
+
+  //Cấp lại quyền khai báo 
+  //[GET] /
+  grantDeclare: async (_: Request, res: Response) => {
+    return res.send(200);
+  },
+
+  //Xác nhận hoàn thành điều tra: Chỉ cấp thôn do B1 quản lí của xã xác nhận cho các thôn, các cấp trên thì nếu all cấp dưới hoàn thành thì là cấp trên hoàn thành
+  //[GET] /
+  comfirmComplete: async (_: Request, res: Response) => {
+    return res.send(200);
+  },
+
+  //Hủy xác nhận hoàn thành điều tra:
+  //[GET] /
+  cancelConfirmComplete: async (_: Request, res: Response) => {
+    return res.send(200);
+  },
+
 };

@@ -1,0 +1,38 @@
+.admin-layout .makeStyles-wrapper-2 {
+  height: calc(100vh);
+  width: calc(100vw) !important;
+  background: #fafafa !important;
+}
+.admin-wrap {
+  background-color: rgb(245, 245, 244);
+  width: 100%;
+  padding-top: 64px;
+  height: 100vh;
+  overflow-y: auto;
+  display: flex;
+  position: relative;
+  .main-content-document {
+    margin-top: 5px;
+    padding: 16px 24px;
+  }
+}
+@media screen and (max-width: 600px) {
+  .main-content-document {
+    padding: 5px !important;
+  }
+}
+
+@media only screen and (min-width: 1280px) {
+  .admin-wrap {
+    padding-top: 64px;
+  }
+}
+@media only screen and (max-width: 600px) {
+  .admin-wrap {
+    padding-top: 56px !important;
+    // height: calc(100vh - 54px) !important;
+  }
+}
+.admin-page {
+  width: 100%;
+}

@@ -1,0 +1,21 @@
+.paper {
+}
+.admin-topbar-icon {
+  color: rebeccapurple !important;
+}
+
+.title-logo {
+  color: white !important;
+  font-size: 20px;
+  font-weight: bold;
+  :hover {
+    color: white !important;
+    text-decoration: none;
+  }
+  text-decoration: none;
+}
+.title-logo-a {
+  a {
+    text-decoration: none !important;
+  }
+}

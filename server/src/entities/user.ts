@@ -5,6 +5,7 @@ import { Province } from "./province";
 import { Village } from "./village";
 import { Ward } from "./ward";
 import * as bcrypt from "bcrypt";
+
 export enum Role {
   A1,
   A2,

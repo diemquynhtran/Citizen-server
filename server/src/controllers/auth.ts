@@ -1,8 +1,10 @@
 import { Request, Response } from "express";
+import { plainToClass } from "class-transformer";
 import { getRepository } from "typeorm";
 import { User } from "../entities/user";
 import { JWTService } from "../helpers/jwt";
 import * as bcrypt from "bcrypt";
+import { UserTitleDto } from "../dto/user";
 
 export const authController = {
 
@@ -37,11 +39,13 @@ export const authController = {
       role: user.role,
       displayName: user.displayName,
     };
+    let info = plainToClass(UserTitleDto, user, {
+      excludeExtraneousValues: true,
+    });
     return res.json({
       status: 200,
       message: "Xác thực thành công",
-      role: user.role,
-      permission: user.permission,
+      information: info,
       token: JWTService.generate(payload),
     })
     

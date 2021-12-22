@@ -7,41 +7,28 @@ import * as bcrypt from "bcrypt";
 import { UserTitleDto } from "../dto/user";
 
 export const authController = {
-
   //[POST] /auth/login
   login: async (req: Request, res: Response) => {
     const reqUser = req.body;
     if (!reqUser.username || !reqUser.password || !reqUser)
-      return res.json({
-        status: 400,
-        messenger: "Yêu cầu không hợp lệ"
-      })
+      return res.status(400).send("Không hợp lệ");
+    // if (reqUser.username != "admin") {
+    //   isValidPassword
+    // }
     const user = await getRepository(User).findOne({
       where: {
         username: reqUser.username,
-      }
-    })
-    if (!user){
-      return res.json({
-        status: 400,
-        messenger: "Tên tài khoản không đúng"
-      })
-    }
+      },
+    });
+    if (!user) return res.status(400).send("Tên tài khoản không đúng");
     else if (user.username == "admin") {
       if (user.password != reqUser.password) {
-        return res.json({
-          status: 400,
-          messenger: "Mật khẩu không đúng"
-        })
-    }
-  }
-    else {
+        return res.status(400).send("Mật khẩu không đúng");
+      }
+    } else {
       const check = await bcrypt.compare(reqUser.password, user.password);
       if (!check) {
-        return res.json({
-          status: 400,
-          messenger: "Mật khẩu không đúng"
-        })      
+        return res.status(400).send("Mật khẩu không đúng");
       }
     }
     const payload = {

@@ -1,5 +1,12 @@
 import { Expose } from "class-transformer";
-import { Entity, Column, ManyToOne, Generated, PrimaryColumn, BeforeInsert } from "typeorm";
+import {
+  Entity,
+  Column,
+  ManyToOne,
+  Generated,
+  PrimaryColumn,
+  BeforeInsert,
+} from "typeorm";
 import { District } from "./district";
 import { Province } from "./province";
 import { Village } from "./village";
@@ -58,11 +65,9 @@ export class User {
   @BeforeInsert()
   async hashPassword(): Promise<void> {
     try {
-        this.password = await bcrypt.hash(this.password, 10);
-    }
-    catch (e) {
+      this.password = await bcrypt.hash(this.password, 10);
+    } catch (e) {
       console.log(e);
-      
     }
   }
 
@@ -76,6 +81,4 @@ export class User {
   //     throw error
   //   }
   // }
-  
 }
-

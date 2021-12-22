@@ -9,6 +9,5 @@ export const staticData = {
       password: "123",
       displayName: "Admin",
     },
-
   ],
 };

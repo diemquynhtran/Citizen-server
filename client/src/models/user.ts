@@ -15,3 +15,7 @@ export interface UserRedux {
   accessToken?: string;
   userInfo?: UserInfo;
 }
+export interface LoginRequest {
+  username: string;
+  password: string;
+}

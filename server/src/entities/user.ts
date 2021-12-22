@@ -6,6 +6,7 @@ import {
   Generated,
   PrimaryColumn,
   BeforeInsert,
+  CreateDateColumn,
 } from "typeorm";
 import { District } from "./district";
 import { Province } from "./province";
@@ -47,7 +48,7 @@ export class User {
   startTime: Date;
   @Column({ nullable: true })
   endTime: Date;
-  @Column({ nullable: true})
+  @CreateDateColumn()
   @Expose()
   createdAt: Date;
   @Column({

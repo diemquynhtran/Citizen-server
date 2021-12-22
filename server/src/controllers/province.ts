@@ -2,10 +2,29 @@ import { plainToClass } from "class-transformer";
 import { Request, Response } from "express";
 import { getRepository } from "typeorm";
 import { ProvinceTitle } from "../dto/province";
+import { District } from "../entities/district";
 import { Province } from "../entities/province";
 import { User } from "../entities/user";
+import { Village } from "../entities/village";
+import { Ward } from "../entities/ward";
 
 export const provinceController = {
+ 
+  getAll: async (req: Request, res: Response) => {
+
+    let provinceRepo = getRepository(Province);
+    let districtRepo = getRepository(District);
+    let wardRepo = getRepository(Ward);
+    let villageRepo = getRepository(Village);
+    let result = [];
+    result = await villageRepo.find({
+      relations: ["Ward"],
+    })  
+    // for (const i of result) {
+    //   i.district.province = await districtRepo.find(District)({
+    //     relations: ["province"],
+    //   })
+  },
   //[GET] province/
   getProvinces: async (req: Request, res: Response) => {
     const body = req.body;

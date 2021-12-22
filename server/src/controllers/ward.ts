@@ -22,8 +22,11 @@ export const wardController = {
     let result = plainToClass(WardTitle, wards, {
       excludeExtraneousValues: true,
     });
-    res.status(200);
-    return res.send(result);
+    return res.json({
+      status: 200,
+      messenger: "",
+      result: result
+    })
   },
 
   //[GET] /ward/getByA3
@@ -37,8 +40,11 @@ export const wardController = {
     let result = plainToClass(WardTitle, wards, {
       excludeExtraneousValues: true,
     });
-    res.status(200);
-    return res.send(result);
+    return res.json({
+      status: 200,
+      messenger: "",
+      result: result
+    })
   },
 
   //[POST] /ward/create
@@ -46,8 +52,10 @@ export const wardController = {
     try {
       const user: User = res.locals.user;
       if (!req.body.name) {
-        res.status(400);
-        return res.send("Tên xã không hợp lệ");
+        return res.json({
+          status: 400,
+          messenger: "Lỗi tên"
+        })
       }
       const wardRepo = getRepository(Ward);
       const count = await wardRepo.count({
@@ -66,11 +74,16 @@ export const wardController = {
       const district = await getRepository(District).find({code: user.username});
       newward.district = district[0];
       const result = await wardRepo.save(newward);
-      res.status(200);
-      return res.send(result);
+      return res.json({
+        status: 200,
+        messenger: "",
+        result: result
+      })
     } catch (e) {
-      res.status(400);
-      return res.send("Xã này đã tồn tại");
+      return res.json({
+        status: 400,
+        messenger: "Lỗi ward"
+      })
     }
   },
 
@@ -79,27 +92,36 @@ export const wardController = {
     try {
       const user: User = res.locals.user;
       if (!req.body.name) {
-        res.status(400);
-        return res.send("Têu cầu không hợp lệ");
+        return res.json({
+          status: 400,
+          messenger: "Lỗi tên"
+        })
       }      
       
       const wardRepo = getRepository(Ward);
       await wardRepo.update({code: req.body.code}, {name: req.body.name});
       const result =await wardRepo.find({code: req.body.code});      
-      res.status(200);
-      return res.send(result);
+      return res.json({
+        status: 200,
+        messenger: "",
+        result: result
+      })
     }
     catch (e) {
-      res.status(400);
-      return res.send("Xã này đã tồn tại");
+      return res.json({
+        status: 400,
+        messenger: "Lỗi ward"
+      })
     }
   },
   delete: async (req: Request, res: Response) => {
     try {
       const user: User = res.locals.user;
       if(!req.body.code) {
-        res.status(400);
-        return res.send("Yêu cầu không hợp lệ");
+        return res.json({
+          status: 400,
+          messenger: "Lỗi"
+        })
       }
       const wardRepo = getRepository(Ward);
       const count = await wardRepo.count({
@@ -113,19 +135,40 @@ export const wardController = {
       }
       if(req.body.code == temp) {
         await wardRepo.delete({code: req.body.code});
-        res.status(200);
-        return res.send("Xóa xã thành công");
+        return res.json({
+          status: 200,
+          messenger: "Xóa thành công"
+        })
       }
-      res.status(400);
-      console.log(count);
-      
-      return res.send("Không xóa được mã này");
+      return res.json({
+        status: 400,
+        messenger: "Không xóa được"
+      })
     }
     catch (e) {
-      console.log(e);
-      res.status(400);
-      return res.send("Yêu cầu không hợp lệ");
+      return res.json({
+        status: 400,
+        messenger: e
+      })
     }
   },
   getById: async (req: Request, res: Response) => { },
+
+  getByDistrict: async (req: Request, res: Response) => {
+    const reqbody = req.body;
+    if(!reqbody || !reqbody.code) {
+      return res.json({
+        status: 400,
+        messenger: "Error"
+      })
+    }
+    let result = await getRepository(Ward).find({
+      relations:["district"]
+    })
+    return res.json({
+      status: 200,
+      messenger: "",
+      result: result
+    })
+  },
 };

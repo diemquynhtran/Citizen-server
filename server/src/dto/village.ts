@@ -1,4 +1,6 @@
 import { Expose } from "class-transformer";
+import { Province } from "../entities/province";
+import { Ward } from "../entities/ward";
 import { UserTitleDto } from "./user";
 
 export class VillageTitle {
@@ -10,4 +12,6 @@ export class VillageTitle {
   admin: UserTitleDto;
   @Expose()
   state: Boolean;
+  @Expose()
+  ward: Ward
 }

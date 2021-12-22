@@ -16,13 +16,14 @@ export const villageController = {
       where: {},
       relations: ["admin"],
     });
-    console.log(villages);
-
     let result = plainToClass(VillageTitle, villages, {
       excludeExtraneousValues: true,
     });
-    res.status(200);
-    return res.send(result);
+    return res.json({
+      status: 200,
+      messenger: "",
+      result: result
+    })
   },
 
   //[GET] /village/getByA3
@@ -36,8 +37,11 @@ export const villageController = {
     let result = plainToClass(VillageTitle, villages, {
       excludeExtraneousValues: true,
     });
-    res.status(200);
-    return res.send(result);
+    return res.json({
+      status: 400,
+      messenger: "",
+      result: result
+    })
   },
 
   //[POST] /village/create
@@ -45,8 +49,10 @@ export const villageController = {
     try {
       const user: User = res.locals.user;
       if (!req.body.name) {
-        res.status(400);
-        return res.send("Tên xã không hợp lệ");
+        return res.json({
+          status: 400,
+          messenger: "Tên xã không hợp lệ"
+        })
       }
       const villageRepo = getRepository(Village);
       const count = await villageRepo.count({
@@ -64,11 +70,16 @@ export const villageController = {
       const ward = await getRepository(Ward).find({code: user.username});
       newvillage.ward = ward[0];
       const result = await villageRepo.save(newvillage);
-      res.status(200);
-      return res.send(result);
+      return res.json({
+        status: 200,
+        messenger: "Thành công",
+        result: result
+      })
     } catch (e) {
-      res.status(400);
-      return res.send("Xã này đã tồn tại");
+      return res.json({
+        status: 400,
+        messenger: "Lỗi village"
+      })
     }
   },
 
@@ -77,27 +88,36 @@ export const villageController = {
     try {
       const user: User = res.locals.user;
       if (!req.body.name) {
-        res.status(400);
-        return res.send("Yêu cầu không hợp lệ");
+        return res.json({
+          status: 400,
+          messenger: "Tên không hợp lệ"
+        })
       }      
       
       const villageRepo = getRepository(Village);
       await villageRepo.update({code: req.body.code}, {name: req.body.name});
       const result =await villageRepo.find({code: req.body.code});      
-      res.status(200);
-      return res.send(result);
+      return res.json({
+        status: 200,
+        messenger: "",
+        result: result
+      })
     }
     catch (e) {
-      res.status(400);
-      return res.send("Thôn này đã tồn tại");
+      return res.json({
+        status: 400,
+        messenger: "lỗi village"
+      })
     }
   },
   delete: async (req: Request, res: Response) => {
     try {
       const user: User = res.locals.user;
       if(!req.body.code) {
-        res.status(400);
-        return res.send("Yêu cầu không hợp lệ");
+        return res.json({
+          status: 400,
+          messenger: "Lỗi"
+        })
       }
       const villageRepo = getRepository(Village);
       const count = await villageRepo.count({
@@ -111,19 +131,40 @@ export const villageController = {
       }
       if(req.body.code == temp) {
         await villageRepo.delete({code: req.body.code});
-        res.status(200);
-        return res.send("Xóa thôn thành công");
+        return res.json({
+          status: 400,
+          messenger: "Thành công"
+        })
       }
-      res.status(400);
-      console.log(count);
-      
-      return res.send("Không xóa được mã này");
+      return res.json({
+        status: 400,
+        messenger: "Không xóa được mã này"
+      })
     }
     catch (e) {
-      console.log(e);
-      res.status(400);
-      return res.send("Yêu cầu không hợp lệ");
+      return res.json({
+        status: 400,
+        messenger: "Lỗi village"
+      })
     }
   },
   getById: async (req: Request, res: Response) => { },
+
+  getByWard: async (req: Request, res: Response) => {
+    const reqbody = req.body;
+    if(!reqbody || !reqbody.code) {
+      return res.json({
+        status: 400,
+        messenger: "Error"
+      })
+    }
+    let result = await getRepository(Village).find({
+      relations:["ward"]
+    })
+    return res.json({
+      status: 200,
+      messenger: "",
+      result: result
+    })
+  },
 };

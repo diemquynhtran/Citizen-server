@@ -14,21 +14,25 @@ export const userController = {
     try {
       const userReq = req.body;
       if (!userReq.code || !userReq.name || !userReq.password) {
-        res.status(400);
-        return res.send("Yêu cầu không hợp lệ");
+        return res.json({
+          status: 400,
+          messenger: "Lỗi yêu cầu"
+        })
       }
       const user: User = res.locals.user;
       const userRepo = getRepository(User);
       const check = await userRepo.find({ username: userReq.code } || { displayName: userReq.name });      
       if (check.length !=0) {
-        res.status(400);
-        console.log(check);
-        
-        return res.send("Tài khoản đã tồn tại");
+        return res.json({
+          status: 400,
+          messenger: "Tài khoản đã tồn tại"
+        })
       }
       if (userReq.startTime < Date.now || userReq.endTime < Date.now || userReq.startTime < userReq.endTime) {
-        return res.send("Time không hợp lệ");
-      }
+        return res.json({
+          status: 400,
+          messenger: "Time không hợp lệ"
+        })      }
 
       let newUser = new User();
       if (user.role == Role.A1) {
@@ -44,20 +48,27 @@ export const userController = {
         newUser.role = Role.B2
       }
       else {
-        return res.send("Yêu cầu không hợp lệ");
-      }
+        return res.json({
+          status: 400,
+          messenger: "Lỗi yêu cầu"
+        })      }
       newUser.username = userReq.code;
       newUser.password = userReq.password;
       newUser.displayName = userReq.name;
       newUser.startTime = userReq.startTime;
       newUser.endTime = userReq.endTime;
       const result = await userRepo.save(newUser);
-      res.status(200);
-      return res.send(result);
+      return res.json({
+        status: 200,
+        messenger: "Thành công",
+        result: result
+      })
     }
     catch (e) {
-      console.log(e);
-      return res.send("Yêu cầu không hợp lệ");
+      return res.json({
+        status: 400,
+        messenger: "Yêu cầu không hợp lệ user"
+      })
     }
   },
 

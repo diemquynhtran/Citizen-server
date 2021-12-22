@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken";
+import { Address } from "../entities/address";
 
 export const JWTService = {
   generate: (payload : any) => {

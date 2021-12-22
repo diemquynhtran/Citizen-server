@@ -5,6 +5,7 @@ const express = require("express");
 const router = express.Router();
 
 router.get("/", provinceController.getProvinces);
+router.get("/get", provinceController.getAll);
 router.post("/create", permissionUser, provinceController.create);
 router.put("/update", permissionUser, provinceController.update);
 router.delete("/delete", permissionUser, provinceController.delete);

@@ -1,4 +1,5 @@
 import { Expose } from "class-transformer";
+import { Province } from "../entities/province";
 import { UserTitleDto } from "./user";
 
 export class DistrictTitle {
@@ -10,4 +11,6 @@ export class DistrictTitle {
   admin: UserTitleDto;
   @Expose()
   state: Boolean;
+  @Expose()
+  province: Province
 }

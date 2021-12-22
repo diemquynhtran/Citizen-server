@@ -45,12 +45,17 @@ export const userProvinceController = {
             
             // province[0].admin = newUser;
             // await getRepository(Province).save(province[0]);
-            res.status(200);
-            return res.send(result);
+            return res.json({
+                status: 400,
+                messenger: "",
+                result: result
+              })
         }
         catch (e) {
-            console.log(e);
-            return res.send("Yêu cầu không hợp lệ");
+            return res.json({
+                status: 400,
+                messenger: "Lỗi userProvince"
+              })
         }
 
     },

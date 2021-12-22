@@ -1,7 +1,7 @@
 import { Role } from "settings/role";
 
 export const defaultRouter = (role?: Role) => {
-  if (!role) {
+  if (role === undefined) {
     return "/403";
   }
   switch (role as any) {

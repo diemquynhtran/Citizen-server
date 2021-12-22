@@ -28,14 +28,18 @@ export const provinceController = {
     try {
       const user: User = res.locals.user;
       if (!req.body.name) {
-        res.status(400);
-        return res.send("Tên tỉnh không hợp lệ");
+        return res.json({
+          status: 400,
+          messenger: "Yêu cầu không hợp lệ"
+        })
       }
       const provinceRepo = getRepository(Province);
       const count = await provinceRepo.count({}) + 1;
       if (count > 63) {
-        res.status(400);
-        res.send("Đã đủ số lượng tỉnh");
+        return res.json({
+          status: 400,
+          messenger: "Đủ số lượng tỉnh"
+        })
       }
       let temp;
       if (count < 10) {
@@ -54,9 +58,10 @@ export const provinceController = {
       return res.send(result);
     } catch (e) {
       console.log(e);
-      
-      res.status(400);
-      return res.send("Tỉnh này đã tồn tại");
+      return res.json({
+        status: 400,
+        messenger: "Tỉnh đã tồn tại"
+      })
     }
   },
 
@@ -65,8 +70,10 @@ export const provinceController = {
     try {
       const user: User = res.locals.user;
       if (!req.body.name) {
-        res.status(400);
-        return res.send("Tên tỉnh không hợp lệ");
+        return res.json({
+          status: 400,
+          messenger: "Yêu cầu không hợp lệ"
+        })
       }      
       const provinceRepo = getRepository(Province);
       await provinceRepo.update({code: req.body.code}, {name: req.body.name});
@@ -75,8 +82,10 @@ export const provinceController = {
       return res.send(result);
     }
     catch (e) {
-      res.status(400);
-      return res.send("Tỉnh này đã tồn tại");
+      return res.json({
+        status: 400,
+        messenger: "Tỉnh đã tồn tại"
+      })
     }
   },
 
@@ -84,23 +93,31 @@ export const provinceController = {
   delete: async (req: Request, res: Response) => {
     try {
       if(!req.body.code) {
-        res.status(400);
-        return res.send("Yêu cầu không hợp lệ");
+        return res.json({
+          status: 400,
+          messenger: "Yêu cầu không hợp lệ"
+        })
       }
       const provinceRepo = getRepository(Province);
       const count = await provinceRepo.count({});
       if(req.body.code == count) {
         await provinceRepo.delete({code: req.body.code});
-        res.status(200);
-        return res.send("Xóa tỉnh thành công");
+        return res.json({
+          status: 200,
+          messenger: "Xóa tỉnh thành công"
+        })
       }
-      res.status(400);
-      return res.send("Không xóa được mã này");
+      return res.json({
+        status: 400,
+        messenger: "Không thể xóa"
+      })
     }
     catch (e) {
       console.log(e);
-      res.status(400);
-      return res.send("Yêu cầu không hợp lệ");
+      return res.json({
+        status: 400,
+        messenger: "Yêu cầu không hợp lệ"
+      })
     }
   },
   
@@ -108,13 +125,20 @@ export const provinceController = {
     try {
       const provinceRepo = getRepository(Province);
       const result =await provinceRepo.find({name: req.body.name});      
-      res.status(200);
-      return res.send(result);
+      return res.json({
+        status: 200,
+        messenger: "Thành công",
+        province: result
+      })
+      // res.status(200);
+      // return res.send(result);
     }
     catch (e) {
       console.log(e);
-      res.status(400);
-      res.send("Không tìm thấy");
+      return res.json({
+        status: 400,
+        messenger: "Không tìm thấy tỉnh"
+      })
       
     }
   },

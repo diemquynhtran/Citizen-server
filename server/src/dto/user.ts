@@ -1,4 +1,6 @@
 import { Expose } from "class-transformer";
+import { Gender } from "../entities/person";
+import { Role } from "../entities/user";
 
 export class UserTitleDto {
   @Expose()
@@ -14,4 +16,11 @@ export class UserTitleDto {
   @Expose()
   startTime: Date;
   @Expose()
-  endTime: Date;}
+  endTime: Date;
+  @Expose()
+  role: Role;
+  @Expose()
+  createdAt: Date;
+  @Expose()
+  gender: Gender;
+}

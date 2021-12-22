@@ -11,7 +11,7 @@ import {
   UpdateDateColumn,
 } from "typeorm";
 import { Address } from "./address";
-enum Gender {
+export enum Gender {
   FEMALE,
   MALE,
 }

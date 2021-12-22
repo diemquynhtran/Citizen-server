@@ -5,6 +5,7 @@ import { Province } from "./province";
 import { Village } from "./village";
 import { Ward } from "./ward";
 import * as bcrypt from "bcrypt";
+import { Gender } from "./person";
 
 export enum Role {
   A1,
@@ -39,6 +40,12 @@ export class User {
   startTime: Date;
   @Column({ nullable: true })
   endTime: Date;
+  @Column()
+  @Expose()
+  createdAt: Date;
+  @Column()
+  @Expose()
+  gender: Gender;
   @ManyToOne(() => Ward)
   ward: Ward;
   @ManyToOne(() => District)

@@ -3,7 +3,10 @@ import storage from "redux-persist/lib/storage";
 import { persistReducer, persistStore } from "redux-persist";
 import { logger } from "redux-logger";
 import { combineReducers, createStore, applyMiddleware } from "redux";
-const RootReducer = combineReducers({});
+import { UserReducer } from "./UserReducer/reducer";
+const RootReducer = combineReducers({
+  user: UserReducer,
+});
 const persistConfig = {
   key: "app-dan-so",
   storage,

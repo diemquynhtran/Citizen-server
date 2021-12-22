@@ -21,7 +21,7 @@ const AdminLayout: React.FC = ({ children }) => {
           <div className={classes.wrapper}>
             <div className={classes.contentContainer}>
               <div className={classes.content}>
-                <div className="admin-wrap"></div>
+                <div className="admin-wrap">{children}</div>
               </div>
             </div>
           </div>

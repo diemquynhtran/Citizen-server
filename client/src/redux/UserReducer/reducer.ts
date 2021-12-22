@@ -8,11 +8,11 @@ const initialState: UserRedux = {
 export const UserReducer = (
   state = initialState,
   action: ActionReducer<UserActcion, UserRedux>
-) => {
+): UserRedux => {
   switch (action.type) {
     case UserActcion.LogOut:
       localStorage.removeItem("token");
-      return { token: "" };
+      return { ...state, accessToken: "", userInfo: undefined };
     case UserActcion.Login:
       localStorage.setItem("token", action.payload?.accessToken as any);
       return { ...action.payload };
@@ -21,7 +21,7 @@ export const UserReducer = (
 
       return {
         ...state,
-        userInfo: { ...(userInfo as UserInfo), emailConfirmed: true },
+        userInfo: { ...(userInfo as UserInfo) },
       };
     case UserActcion.UpdateUser:
       return {

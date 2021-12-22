@@ -1,9 +1,11 @@
 import axios from "axios";
 import { history } from "helpers/history";
 import { toastService } from "helpers/toast";
+import { store } from "redux/store";
+import { UserFunction } from "redux/UserReducer/action";
 
 const axiosInstance = axios.create({
-  baseURL: "http://localhost:3000",
+  baseURL: "http://localhost:8080",
   responseType: "json",
 });
 
@@ -11,7 +13,7 @@ export const setupAxios = () => {
   const requestHandler = (request: any) => {
     const authToken = localStorage.getItem("token");
     if (authToken) {
-      request.headers.token = `Bearer ${authToken}`;
+      request.headers.token = `${authToken}`;
     }
 
     return request;
@@ -23,8 +25,10 @@ export const setupAxios = () => {
 
   const errorHandler = (error: any) => {
     const errorRes = error.response;
+
     if (errorRes) {
       if (errorRes.status === 401) {
+        store.dispatch(UserFunction.logout());
         history.push("/login");
         return toastService.error("Phiên đăng nhập đã hết hạn");
       } else {
@@ -76,5 +80,5 @@ export const setupAxios = () => {
     (error) => errorHandler(error)
   );
 };
-
+setupAxios();
 export default axiosInstance;

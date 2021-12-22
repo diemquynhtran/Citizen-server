@@ -2,7 +2,7 @@ import { Role } from "settings/role";
 
 export const defaultRouter = (role?: Role) => {
   if (!role) {
-    return "/";
+    return "/403";
   }
   switch (role as any) {
     case Role.A1:
@@ -16,6 +16,6 @@ export const defaultRouter = (role?: Role) => {
     case Role.B2:
       return "/admin/B2";
     default:
-      return "/";
+      return "/403";
   }
 };

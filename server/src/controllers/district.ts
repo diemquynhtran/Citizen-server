@@ -1,4 +1,5 @@
 import { plainToClass } from "class-transformer";
+import { timeStamp } from "console";
 import { Request, Response } from "express";
 import { getRepository, Like } from "typeorm";
 import { DistrictTitle } from "../dto/district";
@@ -14,9 +15,10 @@ export const districtController = {
     const districtRepo = getRepository(District);
     const districts = await districtRepo.find({
       where: {},
-      relations: ["admin"],
+      relations: ["province"],
     });
     console.log(districts);
+    
 
     let result = plainToClass(DistrictTitle, districts, {
       excludeExtraneousValues: true,
@@ -46,8 +48,10 @@ export const districtController = {
       const user: User = res.locals.user;
       if (!req.body.name) {
         res.status(400);
-        return res.send("Tên huyện không hợp lệ");
-      }
+        return res.json({
+          status: 400,
+          messenger: "Tên huyện không hợp lệ"
+        })      }
       const districtRepo = getRepository(District);
       const count = await districtRepo.count({
         code: Like(`${user.username}%`)
@@ -65,11 +69,16 @@ export const districtController = {
       const province = await getRepository(Province).find({code: user.username});
       newdistrict.province = province[0];
       const result = await districtRepo.save(newdistrict);
-      res.status(200);
-      return res.send(result);
+      return res.json({
+        status: 200,
+        messenger: "Thành công",
+        result: result
+      })
     } catch (e) {
-      res.status(400);
-      return res.send("Huyện này đã tồn tại");
+      return res.json({
+        status: 400,
+        messenger: "Huyện đã tồn tại e"
+      })
     }
   },
 
@@ -78,27 +87,36 @@ export const districtController = {
     try {
       const user: User = res.locals.user;
       if (!req.body.name) {
-        res.status(400);
-        return res.send("Têu cầu không hợp lệ");
+        return res.json({
+          status: 400,
+          messenger: "Yêu cầu không hợp lệ"
+        })
       }      
       
       const districtRepo = getRepository(District);
       await districtRepo.update({code: req.body.code}, {name: req.body.name});
       const result =await districtRepo.find({code: req.body.code});      
-      res.status(200);
-      return res.send(result);
+      return res.json({
+        status: 200,
+        messenger: "Thành công",
+        result: result
+      })
     }
     catch (e) {
-      res.status(400);
-      return res.send("Huyện này đã tồn tại");
+      return res.json({
+        status: 400,
+        messenger: "Huyện đã tồn tại"
+      })
     }
   },
   delete: async (req: Request, res: Response) => {
     try {
       const user: User = res.locals.user;
       if(!req.body.code) {
-        res.status(400);
-        return res.send("Yêu cầu không hợp lệ");
+        return res.json({
+          status: 400,
+          messenger: "Yêu cầu không hợp lệ"
+        })
       }
       const districtRepo = getRepository(District);
       const count = await districtRepo.count({
@@ -112,19 +130,39 @@ export const districtController = {
       }
       if(req.body.code == temp) {
         await districtRepo.delete({code: req.body.code});
-        res.status(200);
-        return res.send("Xóa huyện thành công");
+        return res.json({
+          status: 200,
+          messenger: "Xóa huyện thành công"
+        })
       }
-      res.status(400);
-      console.log(count);
-      
-      return res.send("Không xóa được mã này");
+      return res.json({
+        status: 400,
+        messenger: "Không xóa được mã này"
+      })
     }
     catch (e) {
-      console.log(e);
-      res.status(400);
-      return res.send("Yêu cầu không hợp lệ");
+      return res.json({
+        status: 400,
+        messenger: "Yêu cầu có lỗi"
+      })
     }
   },
-  getById: async (req: Request, res: Response) => { },
+  getByProvince: async (req: Request, res: Response) => {
+    const reqbody = req.body;
+    if(!reqbody || !reqbody.code) {
+      return res.json({
+        status: 400,
+        messenger: "Error"
+      })
+    }
+    let result = await getRepository(District).find({
+      relations:["province"]
+    })
+    return res.json({
+      status: 200,
+      messenger: "",
+      result: result
+    })
+  },
 };
+

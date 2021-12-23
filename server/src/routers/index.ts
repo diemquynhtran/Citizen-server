@@ -4,6 +4,7 @@ import provinceRoute from "./province";
 import districtRoute from "./district";
 import wardRoute from "./ward";
 import authRoute from "./auth";
+import personRoute from "./person";
 import villageRoute from "./village";
 import { roleRequire } from "../middlewares/role";
 import { Role } from "../entities/user";
@@ -16,5 +17,6 @@ export const AppRouter = (app: Application) => {
   app.use("/district",JWTmiddlewares, roleRequire(Role.A1, Role.A2), districtRoute);
   app.use("/ward",JWTmiddlewares, roleRequire(Role.A1, Role.A2, Role.A3), wardRoute);
   app.use("/village", JWTmiddlewares, roleRequire(Role.A1,Role.A2,Role.A3,Role.B1), villageRoute);
+  app.use("/person", JWTmiddlewares, personRoute);
 
 };

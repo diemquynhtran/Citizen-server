@@ -11,8 +11,10 @@ export const authController = {
   login: async (req: Request, res: Response) => {
     const reqUser = req.body;
     if (!reqUser.username || !reqUser.password || !reqUser)
-      return res.status(400).send("Không hợp lệ");
-    // if (reqUser.username != "admin") {
+    return res.json({
+      status: 400,
+      messenger: "Không hợp lệ"
+    })    // if (reqUser.username != "admin") {
     //   isValidPassword
     // }
     const user = await getRepository(User).findOne({
@@ -20,16 +22,25 @@ export const authController = {
         username: reqUser.username,
       },
     });
-    if (!user) return res.status(400).send("Tên tài khoản không đúng");
+    if (!user) {
+      return res.json({
+        status: 400,
+        messenger: "Tên tài khoản không đúng"
+      });
+    }
     else if (user.username == "admin") {
       if (user.password != reqUser.password) {
-        return res.status(400).send("Mật khẩu không đúng");
-      }
+        return res.json({
+          status: 400,
+          messenger: "Mật khẩu không đúng"
+        })      }
     } else {
       const check = await bcrypt.compare(reqUser.password, user.password);
       if (!check) {
-        return res.status(400).send("Mật khẩu không đúng");
-      }
+        return res.json({
+          status: 400,
+          messenger: "Mật khẩu không đúng"
+        })      }
     }
     const payload = {
       username: user.username,
@@ -45,6 +56,5 @@ export const authController = {
       userInfo: info,
       token: JWTService.generate(payload)
     })
-
   },
 }

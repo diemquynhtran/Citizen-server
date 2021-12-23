@@ -7,6 +7,8 @@ import { Role } from "settings/role";
 export const useRole = (...roles: Role[]) => {
   const { userInfo } = useSelector((state: RootState) => state.user);
   useEffect(() => {
+
+    //ff
     if (roles.length && !!userInfo?.role && !roles.includes(userInfo?.role)) {
       return history.push("/403");
     }

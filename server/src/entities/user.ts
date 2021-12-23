@@ -6,6 +6,7 @@ import {
   Generated,
   PrimaryColumn,
   BeforeInsert,
+  CreateDateColumn,
 } from "typeorm";
 import { District } from "./district";
 import { Province } from "./province";
@@ -47,10 +48,10 @@ export class User {
   startTime: Date;
   @Column({ nullable: true })
   endTime: Date;
-  @Column()
+  @Column({ nullable: true })
   @Expose()
   createdAt: Date;
-  @Column()
+  @Column({default: Gender.FEMALE,})
   @Expose()
   gender: Gender;
   @ManyToOne(() => Ward)
@@ -70,15 +71,4 @@ export class User {
       console.log(e);
     }
   }
-
-  // /**
-  //  * isValidPassword
-  //  */
-  // public async isValidPassword(password: any) {
-  //   try {
-  //     return await bcrypt.compare(password, this.password)
-  //   } catch (error) {
-  //     throw error
-  //   }
-  // }
 }

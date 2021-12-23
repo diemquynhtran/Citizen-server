@@ -17,12 +17,16 @@ export const JWTmiddlewares = async (
     process.env.TOKEN_SECRET_TV as any,
     async (err: any, verifiedJwt: any) => {
       if (err) {
-        res.status(401);
-        return res.send("Bạn chưa đăng nhập");
+        return res.json({
+          status: 400,
+          messenger: "Chưa đăng nhập"
+        })
       } else {
         if (!token) {
-          res.status(401);
-          return res.send("Bạn chưa đăng nhập");
+          return res.json({
+            status: 400,
+            messenger: "Chưa đăng nhập"
+          })
         }
         var userRepo = getRepository(User);
 

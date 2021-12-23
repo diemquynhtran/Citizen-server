@@ -1,9 +1,14 @@
 import { Request, Response } from "express";
 export const profileController = {
   updateInfo: async (req: Request, res: Response) => {
-    return res.send(200);
-  },
+    return res.json({
+      status: 200,
+      messenger: ""
+    })  },
   resetPassword: async (req: Request, res: Response) => {
-    return res.send();
-  },
+    return res.json({
+      status: 400,
+      messenger: ""
+    })
+    },
 };

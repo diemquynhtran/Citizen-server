@@ -50,7 +50,7 @@ export const personController = {
                 await getRepository(Person).delete({ id: req.body.id });
                 return res.json({
                     status: 200,
-                    messenger: "",
+                    messenger: " ",
                     result: result
                 })
             }

@@ -3,6 +3,12 @@ import clsx from "clsx";
 import React from "react";
 import { NavLink } from "react-router-dom";
 import { useStyleItem } from "./useStyles";
+import { useSelector } from "react-redux";
+import { RootState } from "redux/store";
+import { history } from "helpers/history";
+import { useEffect } from "react";
+import { Role } from "settings/role";
+
 interface Props {
   className?: string;
   href: string;
@@ -13,6 +19,10 @@ interface Props {
 const SideBarItem: React.FC<Props> = (props: Props) => {
   const classes = useStyleItem();
   const { className, href, icon: Icon, title, ...rest } = props;
+  const { userInfo } = useSelector((state: RootState) => state.user);
+  
+  
+  console.log(userInfo);
   return (
     <ListItem
       className={clsx(classes.item, className)}

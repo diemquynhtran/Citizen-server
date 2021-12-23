@@ -1,7 +1,7 @@
 import { hexToRgb, makeStyles } from "@material-ui/core";
 export const useStyles: any = makeStyles((theme: any) => ({
   root: {
-    backgroundColor: "#ffffff",
+    backgroundColor: "#d8e7e6",
     borderBottom: "1px solid #ede9e9",
   },
   title: {

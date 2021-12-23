@@ -48,12 +48,10 @@ export class User {
   startTime: Date;
   @Column({ nullable: true })
   endTime: Date;
-  @CreateDateColumn()
+  @Column({ nullable: true })
   @Expose()
   createdAt: Date;
-  @Column({
-    default: Gender.FEMALE,
-  })
+  @Column({default: Gender.FEMALE,})
   @Expose()
   gender: Gender;
   @ManyToOne(() => Ward)

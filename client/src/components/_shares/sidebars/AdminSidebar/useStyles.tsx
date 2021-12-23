@@ -2,12 +2,14 @@ import { makeStyles } from "@material-ui/core";
 export const useStyles: any = makeStyles((theme: any) => ({
   mobileDrawer: {
     width: 256,
+    backgroundColor: "#d8e7e6",
   },
   desktopDrawer: {
     width: 256,
     top: 64,
     height: "calc(100% - 64px)",
     borderTop: "1px solid #ede9e9",
+    backgroundColor: "#d8e7e6",
   },
   avatar: {
     cursor: "pointer",

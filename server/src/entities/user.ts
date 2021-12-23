@@ -52,7 +52,7 @@ export class User {
   @Expose()
   @Column({ nullable: true })
   endTime: Date;
-  @Column({nullable: true})
+  @CreateDateColumn({nullable: true})
   @Expose()
   createdAt: Date;
   @Column({default: Gender.FEMALE,})

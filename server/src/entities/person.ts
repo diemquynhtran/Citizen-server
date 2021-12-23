@@ -43,6 +43,8 @@ export class Person {
   level: number;
   @Column({ default: "", nullable: false })
   job: string;
+  @Column()
+  admincode: string;
   // địa chỉ tạm trú : adrdess 1 : 0
   @OneToOne(() => Address, { onDelete: "SET NULL" })
   @JoinColumn()

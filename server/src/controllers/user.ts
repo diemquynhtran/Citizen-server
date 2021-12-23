@@ -6,7 +6,7 @@ import { Province } from "../entities/province";
 export const userController = {
 
   //[GET] /user/
-  getUser: async (_: Request, res: Response) => {
+  getUser: async (req: Request, res: Response) => {
     return res.send(200);
   },
 
@@ -61,36 +61,37 @@ export const userController = {
   },
 
   //[PUT] /user/update
-  update: async (_: Request, res: Response) => {
+  update: async (req: Request, res: Response) => {
     return res.send(200);
   },
 
   //[DELETE] /user/delete
-  deltete: async (_: Request, res: Response) => {
+  deltete: async (req: Request, res: Response) => {
     return res.send(200);
   },
 
   //Khóa quyền khai báo
   //[GET] /
-  cancelDeclare: async (_: Request, res: Response) => {
+  cancelDeclare: async (req: Request, res: Response) => {
+    
     return res.send(200);
   },
 
   //Cấp lại quyền khai báo 
   //[GET] /
-  grantDeclare: async (_: Request, res: Response) => {
+  grantDeclare: async (req: Request, res: Response) => {
     return res.send(200);
   },
 
   //Xác nhận hoàn thành điều tra: Chỉ cấp thôn do B1 quản lí của xã xác nhận cho các thôn, các cấp trên thì nếu all cấp dưới hoàn thành thì là cấp trên hoàn thành
   //[GET] /
-  comfirmComplete: async (_: Request, res: Response) => {
+  comfirmComplete: async (req: Request, res: Response) => {
     return res.send(200);
   },
 
   //Hủy xác nhận hoàn thành điều tra:
   //[GET] /
-  cancelConfirmComplete: async (_: Request, res: Response) => {
+  cancelConfirmComplete: async (req: Request, res: Response) => {
     return res.send(200);
   },
 

@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { Role, User } from "../entities/user";
 import { getRepository } from "typeorm";
+import { Province } from "../entities/province";
 
 export const userController = {
 
@@ -9,7 +10,7 @@ export const userController = {
     return res.send(200);
   },
 
-  //[POST] user/create  : Mặc định khi cấp timeEnd, timeStart hợp lệ thì permission = true;
+  //[POST] user/create/A2  : Mặc định khi cấp timeEnd, timeStart hợp lệ thì permission = true;
   create: async (req: Request, res: Response) => {
     try {
       const userReq = req.body;
@@ -35,29 +36,16 @@ export const userController = {
         })      }
 
       let newUser = new User();
-      if (user.role == Role.A1) {
-        newUser.role = Role.A2
-      }
-      else if (user.role == Role.A2) {
-        newUser.role = Role.A3
-      }
-      else if (user.role == Role.A3) {
-        newUser.role = Role.B1
-      }
-      else if (user.role == Role.B1) {
-        newUser.role = Role.B2
-      }
-      else {
-        return res.json({
-          status: 400,
-          messenger: "Lỗi yêu cầu"
-        })      }
+      newUser.role = Role.A2;
       newUser.username = userReq.code;
       newUser.password = userReq.password;
       newUser.displayName = userReq.name;
       newUser.startTime = userReq.startTime;
       newUser.endTime = userReq.endTime;
       const result = await userRepo.save(newUser);
+      const province = await getRepository(Province).find({code: userReq.code});
+      province[0].admin = result;
+      await getRepository(Province).save(province);
       return res.json({
         status: 200,
         messenger: "Thành công",

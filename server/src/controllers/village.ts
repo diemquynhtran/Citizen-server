@@ -159,7 +159,7 @@ export const villageController = {
       })
     }
     let result = await getRepository(Village).find({
-      relations:["ward"]
+      relations:["ward","admin"]
     })
     return res.json({
       status: 200,

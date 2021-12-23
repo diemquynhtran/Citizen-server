@@ -156,7 +156,7 @@ export const districtController = {
       })
     }
     let result = await getRepository(District).find({
-      relations:["province"]
+      relations:["province","admin"]
     })
     return res.json({
       status: 200,

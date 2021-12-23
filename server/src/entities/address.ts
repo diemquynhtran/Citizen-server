@@ -19,7 +19,7 @@ export class Address {
   @Expose()
   @PrimaryGeneratedColumn()
   id: UUID;
-  @Column({ default: null })
+  @Column({nullable: true})
   detail: string;
   @ManyToOne(() => Ward)
   ward: Ward;

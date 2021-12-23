@@ -1,7 +1,7 @@
 import React from "react";
 
-const B1AdminPage = () => {
+const B1StatPage = () => {
   return <div></div>;
 };
 
-export default B1AdminPage;
+export default B1StatPage;

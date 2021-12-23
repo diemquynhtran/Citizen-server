@@ -71,7 +71,7 @@ const AdminSideBar: React.FC<Props> = ({ onMobileClose, openMobile }) => {
               >
                 {(() => {
                   switch (userInfo?.role) {
-                    case 5:
+                    case 4:
                       return (
                         <ListItem
                           className="list-item"

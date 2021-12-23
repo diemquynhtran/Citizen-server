@@ -9,6 +9,10 @@ import { useLocation } from "react-router-dom";
 import "./style.scss";
 import { useStyles } from "./useStyles";
 import SideBarItem from "./SideBarItem";
+import { history } from "helpers/history";
+import { useSelector } from "react-redux";
+import { RootState } from "redux/store";
+import { Role } from "settings/role";
 
 interface Props {
   onMobileClose: () => void;
@@ -17,7 +21,7 @@ interface Props {
 const AdminSideBar: React.FC<Props> = ({ onMobileClose, openMobile }) => {
   const location = useLocation();
   const [selectedIndex, setSelectedIndex] = React.useState(1);
-
+  const { userInfo } = useSelector((state: RootState) => state.user);
   const handleListItemClick = (event: any, index: any) => {
     setSelectedIndex(index);
   };
@@ -30,67 +34,9 @@ const AdminSideBar: React.FC<Props> = ({ onMobileClose, openMobile }) => {
   }, [location.pathname]);
   const classes = useStyles();
 
-  const content = (
-    <Box height="100%" display="flex" flexDirection="column">
-      {/* <Box
-        alignItems="center"
-        display="flex"
-        flexDirection="column"
-        p={2}
-      ></Box> */}
-      {/* <hr className="divider-line" /> */}
-      <Box p={2} padding="0">
-        <Divider />
-        <List component="nav" aria-label="secondary mailbox folder">
-          <ListItem
-            className="list-item"
-            button
-            selected={selectedIndex === 1}
-            onClick={(event) => handleListItemClick(event, 1)}
-          >
-            <ListItemIcon>
-              <EqualizerIcon />
-            </ListItemIcon>
-            <ListItemText primary="Thống kê" />
-          </ListItem>
-          <ListItem
-            className="list-item"
-            button
-            selected={selectedIndex === 2}
-            onClick={(event) => handleListItemClick(event, 2)}
-          >
-            <ListItemIcon>
-              <LibraryBooksIcon />
-            </ListItemIcon>
-            <ListItemText primary="Dữ liệu địa phương" />
-          </ListItem>
-          <ListItem
-            className="list-item"
-            button
-            selected={selectedIndex === 3}
-            onClick={(event) => handleListItemClick(event, 3)}
-          >
-            <ListItemIcon>
-              <PeopleIcon />
-            </ListItemIcon>
-            <ListItemText primary="Dân số" />
-          </ListItem>
+  // const content = (
 
-          {/* {adminRoutes.map((item:any) => {
-            return (
-              <SideBarItem
-                href={item.href}
-                key={item.title}
-                title={item.title}
-                icon={item.icon}
-              />
-            );
-          })} */}
-        </List>
-      </Box>
-      <Box flexGrow={1} />
-    </Box>
-  );
+  // );
   return (
     <>
       <Hidden lgUp>
@@ -100,9 +46,7 @@ const AdminSideBar: React.FC<Props> = ({ onMobileClose, openMobile }) => {
           onClose={onMobileClose}
           open={openMobile}
           variant="temporary"
-        >
-          {content}
-        </Drawer>
+        ></Drawer>
       </Hidden>
       <Hidden mdDown>
         <Drawer
@@ -111,7 +55,80 @@ const AdminSideBar: React.FC<Props> = ({ onMobileClose, openMobile }) => {
           open
           variant="persistent"
         >
-          {content}
+          <Box height="100%" display="flex" flexDirection="column">
+            {/* <Box
+        alignItems="center"
+        display="flex"
+        flexDirection="column"
+        p={2}
+      ></Box> */}
+            {/* <hr className="divider-line" /> */}
+            <Box p={2} padding="0">
+              <List
+                component="nav"
+                aria-label="secondary mailbox folder"
+                style={{ padding: 0 }}
+              >
+                {(() => {
+                  switch (userInfo?.role) {
+                    case 5:
+                      return (
+                        <ListItem
+                          className="list-item"
+                          button
+                          selected={selectedIndex === 3}
+                          onClick={(event) => handleListItemClick(event, 3)}
+                        >
+                          <ListItemIcon>
+                            <PeopleIcon />
+                          </ListItemIcon>
+                          <ListItemText primary="Dân số" />
+                        </ListItem>
+                      );
+                    default:
+                      return (
+                        <>
+                          <ListItem
+                            className="list-item"
+                            button
+                            selected={selectedIndex === 1}
+                            onClick={(event) => handleListItemClick(event, 1)}
+                          >
+                            <ListItemIcon>
+                              <EqualizerIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="Thống kê" />
+                          </ListItem>
+                          <ListItem
+                            className="list-item"
+                            button
+                            selected={selectedIndex === 2}
+                            onClick={(event) => handleListItemClick(event, 2)}
+                          >
+                            <ListItemIcon>
+                              <LibraryBooksIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="Dữ liệu địa phương" />
+                          </ListItem>
+                          <ListItem
+                            className="list-item"
+                            button
+                            selected={selectedIndex === 3}
+                            onClick={(event) => handleListItemClick(event, 3)}
+                          >
+                            <ListItemIcon>
+                              <PeopleIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="Dân số" />
+                          </ListItem>
+                        </>
+                      );
+                  }
+                })()}
+              </List>
+            </Box>
+            <Box flexGrow={1} />
+          </Box>
         </Drawer>
       </Hidden>
     </>

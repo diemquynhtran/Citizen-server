@@ -28,7 +28,7 @@ const AdminTopBar: React.FC<Props> = ({ className, onMobileNavOpen, rest }) => {
           <Link to="/">
             <span className={"title-logo"}>
               <img
-                src="gso_logo.png"
+                src="https://dichvucong.moh.gov.vn/byte-dvc-theme/images/logo.png"
                 alt=""
                 width="40px"
                 height="40px"

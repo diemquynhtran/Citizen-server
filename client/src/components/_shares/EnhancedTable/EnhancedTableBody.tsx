@@ -75,7 +75,8 @@ const EnhancedTableBody: React.FC<Props> = ({ head, rows }) => {
 			  >
 				<EnhancedTableHead head={head} rows={rows} />
 				<TableBody>
-				  {rows.map((row: any, index: any) => {
+				  {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+				  .map((row: any, index: any) => {
 					  const labelId = `enhanced-table-checkbox-${index}`;
 
 					  return (

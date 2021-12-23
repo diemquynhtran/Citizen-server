@@ -27,14 +27,15 @@ export class User {
   @PrimaryColumn({ type: "uuid" })
   @Generated("uuid")
   id: string;
+  @Expose()
   @Column()
   role: Role;
   @Expose()
   @Column({ unique: true })
   username: string;
-  @Expose()
   @Column()
   password: string;
+  @Expose()
   @Column({
     default: true,
   })
@@ -42,13 +43,16 @@ export class User {
   @Expose()
   @Column({ nullable: false })
   displayName: string;
+  @Expose()
   @Column({ nullable: true })
   phoneNumber: string;
+  @Expose()
   @Column({ nullable: true })
   startTime: Date;
+  @Expose()
   @Column({ nullable: true })
   endTime: Date;
-  @Column({ nullable: true })
+  @Column({nullable: true})
   @Expose()
   createdAt: Date;
   @Column({default: Gender.FEMALE,})

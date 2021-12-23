@@ -19,7 +19,7 @@ export class Address {
   @Expose()
   @PrimaryGeneratedColumn()
   id: UUID;
-  @Column({ default: "" })
+  @Column({nullable: true})
   detail: string;
   @ManyToOne(() => Ward)
   ward: Ward;
@@ -29,9 +29,7 @@ export class Address {
   province: Province;
   @ManyToOne(() => Village)
   village: Village;
-  @OneToOne(() => User, { onDelete: "CASCADE" })
-  @JoinColumn()
-  admin: User;
+  
 
   // trỏ tới 1 đỉa chỉ : phường , huyện, tỉnh
 }

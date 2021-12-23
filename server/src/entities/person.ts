@@ -9,8 +9,10 @@ import {
   JoinColumn,
   CreateDateColumn,
   UpdateDateColumn,
+  ManyToOne,
 } from "typeorm";
 import { Address } from "./address";
+import { User } from "./user";
 export enum Gender {
   FEMALE,
   MALE,
@@ -22,7 +24,7 @@ export class Person {
   @PrimaryGeneratedColumn()
   id: UUID;
   @Expose()
-  @Column()
+  @Column({nullable: true})
   @Index()
   uid: string;
   @Column({ nullable: false })
@@ -53,4 +55,7 @@ export class Person {
   @UpdateDateColumn()
   updateAt: Date;
   // địa chỉ thường trú : address 1 :
+  @ManyToOne(() => User, { onDelete: "CASCADE" })
+  @JoinColumn()
+  admin: User;
 }

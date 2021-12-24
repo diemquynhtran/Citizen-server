@@ -39,8 +39,8 @@ export class Person {
   })
   religion: string;
 
-  @Column({ default: 1 })
-  level: number;
+  @Column()
+  level: string;
   @Column({ default: "", nullable: false })
   job: string;
   @Column()
@@ -52,6 +52,9 @@ export class Person {
   @OneToOne(() => Address, { onDelete: "SET NULL" })
   @JoinColumn()
   otherAddress: Address;
+  @OneToOne(() => Address, { onDelete: "SET NULL" })
+  @JoinColumn()
+  hometown: Address;
   @CreateDateColumn()
   createAt: Date;
   @UpdateDateColumn()

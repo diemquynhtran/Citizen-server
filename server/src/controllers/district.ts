@@ -149,7 +149,6 @@ export const districtController = {
   },
   getByProvince: async (req: Request, res: Response) => {
     const reqbody = req.body;
-	console.log(req.body);
     if(!reqbody || !reqbody.code) {
       return res.json({
         status: 400,
@@ -157,8 +156,8 @@ export const districtController = {
       })
     }
     let result = await getRepository(District).find({
-      relations:["province","admin"]
-    })
+      code: Like(`${reqbody.code}%`)
+    });    
     return res.json({
       status: 200,
       messenger: "",

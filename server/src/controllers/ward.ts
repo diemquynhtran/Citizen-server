@@ -163,7 +163,7 @@ export const wardController = {
       })
     }
     let result = await getRepository(Ward).find({
-      relations:["district"]
+      code: Like(`${reqbody.code}%`)
     })
     return res.json({
       status: 200,

@@ -9,6 +9,7 @@ import A1AdminPage from "./A1Admin";
 import A2AdminPage from "./A2Admin";
 import A3AdminPage from "./A3Admin";
 import B1AdminPage from "./B1Admin";
+import B2AdminPage from "./B2Admin";
 const routers = [
   {
     path: "/admin/A1",
@@ -24,11 +25,11 @@ const routers = [
   },
   {
     path: "/admin/B1",
-    component: A3AdminPage,
+    component: B1AdminPage,
   },
   {
-    path: "/admin/B1",
-    component: B1AdminPage,
+    path: "/admin/B2",
+    component: B2AdminPage,
   },
 ];
 const AdminPage: React.FC = () => {

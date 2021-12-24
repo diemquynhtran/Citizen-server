@@ -30,8 +30,17 @@ const A1AdminPage = () => {
 	const [ward, setWard] = React.useState([]);
 	const [village, setVillage] = React.useState([]);
 	
+	const [provinceID, setProvinceID] = React.useState("");
+	const [districtID, setDistrictID] = React.useState("");
+	const [wardID, setWardID] = React.useState("");
+	
 	const [data, setData] = React.useState([]);
 	const [tableName, setTableName] = React.useState("Toàn quốc");
+	
+	const [provinceName, setProvinceName] = React.useState("");
+	const [districtName, setDistrictName] = React.useState("");
+	const [wardName, setWardName] = React.useState("");
+	
 	
 	useEffect(() => {
 		provinceApi.getProvinces().then((res: any) => {
@@ -47,6 +56,8 @@ const A1AdminPage = () => {
 			setTableName(value.name);
 			districtApi.getByProvince(value.code).then((res: any) => {
 				if (res.status === 200) {
+					setProvinceID(value.code);
+					setProvinceName(value.name);
 					setDistrict(res.data.result);
 					setData(res.data.result.map((data: any) => ({code: data.code, name: data.name, status:data.status,})));
 				}
@@ -67,11 +78,21 @@ const A1AdminPage = () => {
 			setTableName(value.name);
 			wardApi.getByDistrict(value.code).then((res: any) => {
 				if (res.status === 200) {
+					setDistrictID(value.code);
+					setDistrictName(value.name);
 					setWard(res.data.result);
 					setData(res.data.result.map((data: any) => ({code: data.code, name: data.name, status:data.status,})));
 				}
 			});
-		} else {}
+		} else {
+			districtApi.getByProvince(provinceID).then((res: any) => {
+				if (res.status === 200) {
+					setTableName(provinceName);
+					setDistrict(res.data.result);
+					setData(res.data.result.map((data: any) => ({code: data.code, name: data.name, status:data.status,})));
+				}
+			});
+		}
 	};
 	
 	const onChangeWard = (event: unknown, value: any) => {
@@ -79,7 +100,17 @@ const A1AdminPage = () => {
 			setTableName(value.name);
 			villageApi.getByWard(value.code).then((res: any) => {
 				if (res.status === 200) {
+					setWardID(value.code);
+					setWardName(value.name);
 					setVillage(res.data.result);
+					setData(res.data.result.map((data: any) => ({code: data.code, name: data.name, status:data.status,})));
+				}
+			});
+		} else {
+			wardApi.getByDistrict(districtID).then((res: any) => {
+				if (res.status === 200) {
+					setTableName(districtName);
+					setWard(res.data.result);
 					setData(res.data.result.map((data: any) => ({code: data.code, name: data.name, status:data.status,})));
 				}
 			});

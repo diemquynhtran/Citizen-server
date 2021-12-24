@@ -25,8 +25,12 @@ const A3AdminPage = () => {
 	const [ward, setWard] = React.useState([]);
 	const [village, setVillage] = React.useState([]);
 	
+	const [wardID, setWardID] = React.useState("");
+	
 	const [data, setData] = React.useState([]);
 	const [tableName, setTableName] = React.useState("");
+	
+	const [wardName, setWardName] = React.useState("");
 	
 	useEffect(() => {
 		wardApi.getByRole().then((res: any) => {
@@ -42,8 +46,17 @@ const A3AdminPage = () => {
 			setTableName(value.name);
 			villageApi.getByWard(value.code).then((res: any) => {
 				if (res.status === 200) {
+					setWardID(value.code);
+					setWardName(value.name);
 					setVillage(res.data.result);
 					setData(res.data.result.map((data: any) => ({code: data.code, name: data.name, status:data.status,})));
+				}
+			});
+		} else {
+			wardApi.getByRole().then((res: any) => {
+				if (res.status === 200) {
+					setWard(res.data);
+					setData(res.data.map((data: any) => ({code: data.code, name: data.name, status:data.status,})));
 				}
 			});
 		}

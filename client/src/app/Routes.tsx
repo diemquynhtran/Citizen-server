@@ -9,11 +9,7 @@ const Routes = () => {
   return (
     <Switch>
       <Route path={"/admin"} component={AdminPage} />
-<<<<<<< HEAD
-	    <Route path={"/stat"} component={StatPage} />
       <Route path={"/manage"} component={ManagePage} />
-=======
->>>>>>> d07715ef4e070a3d130d4fffce89166a26a2deb7
       <Route path={"/login"} exact component={Login} />
       <Route path={"/403"} exact component={NotPermisionPage} />
       <Redirect from="/" to="/admin" />

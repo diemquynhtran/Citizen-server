@@ -16,7 +16,7 @@ interface Props {
   options: any;
   getOptionLabel: any;
   label: string;
-  onChange: any;  
+  onChange: any; 
 }
 
 const AutocompleteDropdown: React.FC<Props> = ({ className, options, getOptionLabel, label, onChange }) => {

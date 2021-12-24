@@ -1,18 +1,15 @@
 .paper {
-
 }
 .admin-topbar-icon {
   color: rebeccapurple !important;
 }
 
 .title-logo {
-  color: #27ad63 !important;
-  margin-top: 12px;
-  margin-left: 10px;
-  font-size: 30px;
+  color: white !important;
+  font-size: 20px;
   font-weight: bold;
   :hover {
-    color: #27ad63 !important;
+    color: white !important;
     text-decoration: none;
   }
   text-decoration: none;
@@ -21,8 +18,4 @@
   a {
     text-decoration: none !important;
   }
-
-.admin-topbar-icon{
-  margin-left: 25px;
-}
 }

@@ -1,7 +1,7 @@
 import React from "react";
 
-const A3AdminPage = () => {
+const A3StatPage = () => {
   return <div></div>;
 };
 
-export default A3AdminPage;
+export default A3StatPage;

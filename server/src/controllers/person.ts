@@ -44,10 +44,23 @@ export const personController = {
         try {
             let user = res.locals.user;
             const result = await getRepository(Person).find({
-                admincode: Like(`${user.username}%`)
+                relations:["defaultAddress", "otherAddress", "hometown",
+                "defaultAddress.province","defaultAddress.district", "defaultAddress.village", "defaultAddress.ward", 
+                "otherAddress.province","otherAddress.district", "otherAddress.village", "otherAddress.ward",
+                "hometown.province","hometown.district", "hometown.village", "hometown.ward",
+            ],
+                where: {admincode: Like(`${user.username}%`)}
             });
+            console.log(result);
+            
+
+            // const result = await getRepository(Person).createQueryBuilder("person")
+            //     .innerJoinAndSelect("person.defaultAddress", "address")
+            //     .innerJoinAndSelect("person.otherAddress", "address")
+            //     .where("person.admincode: like ????")
+
+
             if (result) {
-                await getRepository(Person).delete({ id: req.body.id });
                 return res.json({
                     status: 200,
                     messenger: " ",
@@ -77,7 +90,8 @@ export const personController = {
     //[POST] /person/create
     create: async (req: Request, res: Response) => {
         try {
-            const { name, birthDay, gender, religion, level, job, defaultAddress, otherAddress } = req.body;
+            const { name, birthDay, gender, religion, level, job, defaultAddress, otherAddress, hometown } = req.body;
+
             let newPerson = new Person();
             newPerson.name = name;
             newPerson.birthDay = birthDay;
@@ -87,6 +101,8 @@ export const personController = {
             newPerson.job = job;
             let reqDefaultAddress = new Address();
             let reqOtherAddress = new Address();
+            let reqHometown = new Address();
+
             let villageRepo = getRepository(Village);
             let provinceRepo = getRepository(Province);
             let districtRepo = getRepository(District);
@@ -110,10 +126,23 @@ export const personController = {
             reqOtherAddress.district = district2;
             let province2 = (await provinceRepo.find({ code: otherAddress.province }))[0];
             reqOtherAddress.province = province2;
+
+            let village3 = (await villageRepo.find({ code: hometown.village }))[0];
+            reqHometown.village = village3;
+            let ward3 = (await wardRepo.find({ code: hometown.ward }))[0];
+            reqHometown.ward = ward3;
+            let district3 = (await districtRepo.find({ code: hometown.district }))[0];
+            reqHometown.district = district3;
+            let province3 = (await provinceRepo.find({ code: hometown.province }))[0];
+            reqHometown.province = province3;
+
             let addr = await getRepository(Address).save(reqDefaultAddress);
             let addr2 = await getRepository(Address).save(reqOtherAddress);
+            let addr3 = await getRepository(Address).save(reqHometown);
+
             newPerson.defaultAddress = addr;
             newPerson.otherAddress = addr2;
+            newPerson.hometown = addr3;
             newPerson.admin = res.locals.user;
             newPerson.admincode = res.locals.user.username;
 
@@ -148,8 +177,7 @@ export const personController = {
     //[POST] /person/update
     update: async (req: Request, res: Response) => {
         try {
-            const { name, birthDay, gender, religion, level, job, defaultAddress, otherAddress, id } = req.body;
-            console.log("1");
+            const { name, birthDay, gender, religion, level, job, defaultAddress, otherAddress, hometown, id } = req.body;
 
             let newPerson = await getRepository(Person).findOne(id);
             console.log(newPerson);
@@ -165,6 +193,8 @@ export const personController = {
             newPerson.job = job;
             let reqDefaultAddress = new Address();
             let reqOtherAddress = new Address();
+            let reqHometown = new Address();
+
             let villageRepo = getRepository(Village);
             let provinceRepo = getRepository(Province);
             let districtRepo = getRepository(District);
@@ -188,10 +218,23 @@ export const personController = {
             reqOtherAddress.district = district2;
             let province2 = (await provinceRepo.find({ code: otherAddress.province }))[0];
             reqOtherAddress.province = province2;
+
+            let village3 = (await villageRepo.find({ code: hometown.village }))[0];
+            reqHometown.village = village3;
+            let ward3 = (await wardRepo.find({ code: hometown.ward }))[0];
+            reqHometown.ward = ward3;
+            let district3 = (await districtRepo.find({ code: hometown.district }))[0];
+            reqHometown.district = district3;
+            let province3 = (await provinceRepo.find({ code: hometown.province }))[0];
+            reqHometown.province = province3;
+
             let addr = await getRepository(Address).save(reqDefaultAddress);
             let addr2 = await getRepository(Address).save(reqOtherAddress);
+            let addr3 = await getRepository(Address).save(reqHometown);
+
             newPerson.defaultAddress = addr;
             newPerson.otherAddress = addr2;
+            newPerson.hometown = addr3;
             newPerson.admin = res.locals.user;
 
             let pers = await getRepository(Person).save(newPerson);

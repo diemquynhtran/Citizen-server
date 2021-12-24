@@ -156,8 +156,8 @@ export const districtController = {
       })
     }
     let result = await getRepository(District).find({
-      relations:["province","admin"]
-    })
+      code: Like(`${reqbody.code}%`)
+    });    
     return res.json({
       status: 200,
       messenger: "",

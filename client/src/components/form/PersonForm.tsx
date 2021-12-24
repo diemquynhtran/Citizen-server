@@ -14,6 +14,21 @@ const genderData = [
 	{value: 1, label: "Nữ"},
 ]
 
+const scholarshipData = [
+	{value: 1, label: '1/12'},
+	{value: 2, label: '2/12'},
+	{value: 3, label: '3/12'},
+	{value: 4, label: '4/12'},
+	{value: 5, label: '5/12'},
+	{value: 6, label: '6/12'},
+	{value: 7, label: '7/12'},
+	{value: 8, label: '8/12'},
+	{value: 9, label: '9/12'},
+	{value: 10, label: '10/12'},
+	{value: 11, label: '11/12'},
+	{value: 12, label: '12/12'},
+]
+
 const PersonForm = () => {
   return (
 	<form>
@@ -32,17 +47,11 @@ const PersonForm = () => {
 		label="Giới tính"
 		data={genderData}/>
 
+		<TextField id="standard-basic" label="Tôn giáo" />
 		
-		<TextField id="standard-basic" label="Religion" />
-		
-		<InputLabel id="age">Trình độ học vấn</InputLabel>
-		<Select
-		labelId="level"
-		onChange={(value) => console.log(value)}
-		>
-			<MenuItem value={0}>Nam</MenuItem>
-			<MenuItem value={1}>Nữ</MenuItem>
-		</Select>
+		<BasicDropdownMenu
+		label="Học vấn"
+		data={scholarshipData}/>
 		
 	</form>
   );

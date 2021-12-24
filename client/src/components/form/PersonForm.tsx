@@ -53,6 +53,8 @@ const PersonForm = () => {
 		label="Học vấn"
 		data={scholarshipData}/>
 		
+		<TextField id="standard-basic" label="Nghề nghiệp" />
+		
 	</form>
   );
 };

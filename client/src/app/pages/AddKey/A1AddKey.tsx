@@ -53,28 +53,23 @@ const A1AddKeyPage: React.FC = () => {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  let codeNew = data.length + 1;
-//   Number(codeNew);
-//   codeNew = Number(codeNew) < 10 ? `0${codeNew}` : codeNew;
-  
-  console.log(codeNew);
+  let codeNew:any = data.length + 1;
+  codeNew = Number(codeNew) < 10 ? `0${codeNew}` : codeNew;
 
   return (
     <>
       <Form style={{ margin: 10, padding: 10 }}>
         <Form.Group className="mb-3" controlId="formBasicEmail">
-          <Form.Label>Tên tỉnh</Form.Label>
-          <EnhancedDropdownMenu
-            options={province}
-            getOptionLabel={(element: any) => element.name}
-            label="Tỉnh/Thành phố"
-            onChange={onChange}
-          />
+          <Form.Label>Khai báo Tỉnh/Thành phố</Form.Label>
+          <Form.Control
+              type="name"
+              placeholder="Nhập tên tỉnh/thành phố"
+        />   
         </Form.Group>
 
         <Form.Group className="mb-3" controlId="formBasicPassword">
           <Form.Label>Mã</Form.Label>
-          <InputGroup.Text id="basic-addon2"></InputGroup.Text>
+          <InputGroup.Text id="basic-addon2">{codeNew}</InputGroup.Text>
         </Form.Group>
       </Form>
     </>

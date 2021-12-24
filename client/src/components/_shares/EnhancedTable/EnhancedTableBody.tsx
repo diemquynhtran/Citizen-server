@@ -86,12 +86,12 @@ const EnhancedTableBody: React.FC<Props> = ({ head, rows }) => {
                     })}
 
                     <TableCell padding="checkbox">
-                      {/* <IconButton aria-label="delete" size="small">
+                      <IconButton aria-label="delete" size="small">
                         <EditIcon />
                       </IconButton>
                       <IconButton aria-label="delete" size="small">
                         <DeleteIcon />
-                      </IconButton> */}
+                      </IconButton>
                     </TableCell>
                   </StyledTableRow>
                 );

@@ -34,10 +34,6 @@ const AdminSideBar: React.FC<Props> = ({ onMobileClose, openMobile }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.pathname]);
   const classes = useStyles();
-
-  // const content = (
-
-  // );
   return (
     <>
       <Hidden lgUp>
@@ -109,7 +105,7 @@ const AdminSideBar: React.FC<Props> = ({ onMobileClose, openMobile }) => {
                             <ListItemIcon>
                               <LibraryBooksIcon />
                             </ListItemIcon>
-                            <ListItemText primary="Dữ liệu địa phương" />
+                            <ListItemText primary="Quản lý" />
                           </ListItem>
                           <ListItem
                             className="list-item"
@@ -120,7 +116,18 @@ const AdminSideBar: React.FC<Props> = ({ onMobileClose, openMobile }) => {
                             <ListItemIcon>
                               <PeopleIcon />
                             </ListItemIcon>
-                            <ListItemText primary="Dân số" />
+                            <ListItemText primary="Theo dõi" />
+                          </ListItem>
+                          <ListItem
+                            className="list-item"
+                            button
+                            selected={selectedIndex === 4}
+                            onClick={(event) => handleListItemClick(event, 4)}
+                          >
+                            <ListItemIcon>
+                              <PeopleIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="Nhập liệu" />
                           </ListItem>
                         </>
                       );

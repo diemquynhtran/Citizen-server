@@ -48,54 +48,38 @@ const A1AddAccPage: React.FC = () => {
     }
   };
   const onChange = (event: unknown) => {};
-  const codeNew = (code: any) => {
-    return code + 1;
-  };
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  let codeNew: any = data.length + 1;
+  codeNew = Number(codeNew) < 10 ? `0${codeNew}` : codeNew;
   return (
     <>
       <Form style={{ margin: 10, padding: 10 }}>
-        <Form.Group className="mb-3" controlId="formBasicEmail">
-          <Form.Label>Tên tỉnh</Form.Label>
-          <InputGroup.Text id="basic-addon2">{province}</InputGroup.Text>
+        <Form.Group className="mb-3" controlId="formBasicPassword">
+          <Form.Label>Tỉnh/Thành phố</Form.Label>
+          <InputGroup.Text id="basic-addon2">Hà Nội</InputGroup.Text>
         </Form.Group>
 
         <Form.Group className="mb-3" controlId="formBasicPassword">
-          <Form.Label>Mã</Form.Label>
+          <Form.Label>Mã tỉnh/thành phố</Form.Label>
           <InputGroup.Text id="basic-addon2">{codeNew}</InputGroup.Text>
         </Form.Group>
+
         <Form.Group className="mb-3" controlId="formBasicPassword">
-          <Form.Label>Mật khẩu</Form.Label>
-          <Form.Control
-            type="password"
-            placeholder="Password"
-            // onChange={(e) =>
-            //   setInfoLogin({ ...infoLogin, password: e.target.value })
-            // }
-          />
+          <Form.Label>Cấp mật khẩu</Form.Label>
+          <Form.Control type="password" placeholder="Nhập mật khẩu" />
         </Form.Group>
-        
+
         <Form.Group className="mb-3" controlId="formBasicPassword">
           <Form.Label>Ngày cấp</Form.Label>
-          <Form.Control
-            type="password"
-            placeholder="Ngày cấp"
-            // onChange={(e) =>
-            //   setInfoLogin({ ...infoLogin, password: e.target.value })
-            // }
-          />
-          
+          <Form.Control type="date" placeholder="Nhập mật khẩu" />
+        </Form.Group>
+        <Form.Group className="mb-3" controlId="formBasicPassword">
           <Form.Label>Ngày hết hạn</Form.Label>
-          <Form.Control
-            type="password"
-            placeholder="Ngày hết hạn"
-            // onChange={(e) =>
-            //   setInfoLogin({ ...infoLogin, password: e.target.value })
-            // }
-          />
+          <Form.Control type="date" placeholder="Nhập mật khẩu" />
         </Form.Group>
       </Form>
     </>

@@ -101,20 +101,25 @@ const A1ManagePage = () => {
     },
   }));
   const classesButton = useStyles();
-  const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const [keyShow, setKeyShow] = useState(false);
+  const [accShow, setAccShow] = useState(false);
+  const handleCloseKey = () => setKeyShow(false);
+  const handleCloseAcc = () => setAccShow(false);
 
   return (
     <Box mt={5} ml={5} style={{ marginTop: 0 }}>
       <div>
-        <Button variant="primary" onClick={handleShow} style={{ margin: 10 }}>
+        <Button variant="primary" onClick={() => setKeyShow(true)} style={{ margin: 10 }}>
           <AddIcon />
           Cấp mã
         </Button>
+        <Button variant="primary" onClick={() => setAccShow(true)} style={{ margin: 10 }}>
+          <AddIcon />
+          Cấp tài khoản
+        </Button>
         <Modal
-          show={show}
-          onHide={handleClose}
+          show={keyShow}
+          onHide={() => setKeyShow(false)}
           animation={false}
           size="sm"
           aria-labelledby="contained-modal-title-vcenter"
@@ -126,20 +131,17 @@ const A1ManagePage = () => {
           <div className="login-form">
             <A1AddKeyPage />
             <Modal.Footer>
-              <Button variant="secondary" onClick={handleClose}>
+              <Button variant="secondary" onClick={handleCloseKey}>
                 Hủy
               </Button>
               <Button variant="primary">Hoàn thành</Button>
             </Modal.Footer>
           </div>
         </Modal>            
-        <Button variant="primary" onClick={handleShow} style={{ margin: 10 }}>
-          <AddIcon />
-          Cấp tài khoản
-        </Button>
+        
         <Modal
-          show={show}
-          onHide={handleClose}
+          show={accShow}
+          onHide={() => setAccShow(false)}
           animation={false}
           size="sm"
           aria-labelledby="contained-modal-title-vcenter"
@@ -151,7 +153,7 @@ const A1ManagePage = () => {
           <div className="login-form">
             <A1AddAccPage />
             <Modal.Footer>
-              <Button variant="secondary" onClick={handleClose}>
+              <Button variant="secondary" onClick={handleCloseAcc}>
                 Hủy
               </Button>
               <Button variant="primary">Hoàn thành</Button>

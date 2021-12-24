@@ -21,6 +21,7 @@ interface Props {
 const AdminSideBar: React.FC<Props> = ({ onMobileClose, openMobile }) => {
   const location = useLocation();
   const [selectedIndex, setSelectedIndex] = React.useState(1);
+
   const { userInfo } = useSelector((state: RootState) => state.user);
   const handleListItemClick = (event: any, index: any) => {
     setSelectedIndex(index);

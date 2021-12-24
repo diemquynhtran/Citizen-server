@@ -13,6 +13,7 @@ import EnhancedStatisticalTable from "components/_shares/EnhancedTable";
 import { provinceApi } from "services/api/province";
 import { districtApi } from "services/api/district";
 import { wardApi } from "services/api/ward";
+import { villageApi } from "services/api/village";
 
 
 const head = [
@@ -21,7 +22,7 @@ const head = [
 	{id: 3, label:"Đã hoàn thành?"},
 ]
 
-const A1StatPage = () => {
+const A1AdminPage = () => {
 	useRole(Role.A1);
 	
 	const [province, setProvince] = React.useState([]);
@@ -29,14 +30,22 @@ const A1StatPage = () => {
 	const [ward, setWard] = React.useState([]);
 	const [village, setVillage] = React.useState([]);
 	
+	const [provinceID, setProvinceID] = React.useState("");
+	const [districtID, setDistrictID] = React.useState("");
+	const [wardID, setWardID] = React.useState("");
+	
 	const [data, setData] = React.useState([]);
 	const [tableName, setTableName] = React.useState("Toàn quốc");
+	
+	const [provinceName, setProvinceName] = React.useState("");
+	const [districtName, setDistrictName] = React.useState("");
+	const [wardName, setWardName] = React.useState("");
+	
 	
 	useEffect(() => {
 		provinceApi.getProvinces().then((res: any) => {
 			if (res.status === 200) {
 				setProvince(res.data);
-				console.log(res.data);
 				setData(res.data.map((data: any) => ({code: data.code, name: data.name, status:data.status,})));
 			}
 		})
@@ -47,10 +56,20 @@ const A1StatPage = () => {
 			setTableName(value.name);
 			districtApi.getByProvince(value.code).then((res: any) => {
 				if (res.status === 200) {
+					setProvinceID(value.code);
+					setProvinceName(value.name);
 					setDistrict(res.data.result);
 					setData(res.data.result.map((data: any) => ({code: data.code, name: data.name, status:data.status,})));
 				}
 			});
+		} else {
+			setTableName("Toàn quốc");
+			provinceApi.getProvinces().then((res: any) => {
+				if (res.status === 200) {
+					setProvince(res.data);
+					setData(res.data.map((data: any) => ({code: data.code, name: data.name, status:data.status,})));
+				}
+			})
 		}
 	};
 	
@@ -59,15 +78,44 @@ const A1StatPage = () => {
 			setTableName(value.name);
 			wardApi.getByDistrict(value.code).then((res: any) => {
 				if (res.status === 200) {
+					setDistrictID(value.code);
+					setDistrictName(value.name);
 					setWard(res.data.result);
-					console.log(res.data);
+					setData(res.data.result.map((data: any) => ({code: data.code, name: data.name, status:data.status,})));
+				}
+			});
+		} else {
+			districtApi.getByProvince(provinceID).then((res: any) => {
+				if (res.status === 200) {
+					setTableName(provinceName);
+					setDistrict(res.data.result);
 					setData(res.data.result.map((data: any) => ({code: data.code, name: data.name, status:data.status,})));
 				}
 			});
 		}
 	};
 	
-	const onChange = (event: unknown) => {};
+	const onChangeWard = (event: unknown, value: any) => {
+		if (value != null) {
+			setTableName(value.name);
+			villageApi.getByWard(value.code).then((res: any) => {
+				if (res.status === 200) {
+					setWardID(value.code);
+					setWardName(value.name);
+					setVillage(res.data.result);
+					setData(res.data.result.map((data: any) => ({code: data.code, name: data.name, status:data.status,})));
+				}
+			});
+		} else {
+			wardApi.getByDistrict(districtID).then((res: any) => {
+				if (res.status === 200) {
+					setTableName(districtName);
+					setWard(res.data.result);
+					setData(res.data.result.map((data: any) => ({code: data.code, name: data.name, status:data.status,})));
+				}
+			});
+		}
+	};
 	
 	return (
 		<Box mt={5} ml={5}>
@@ -95,15 +143,7 @@ const A1StatPage = () => {
 					options={ward}
 					getOptionLabel={(element: any) => element.name}
 					label="Phường/Xã"
-					onChange={onChange}
-					/>
-				</Box>
-				<Box mb={2}>	
-					<EnhancedDropdownMenu
-					options={village}
-					getOptionLabel={(element: any) => element.name}
-					label="Thôn/Làng"
-					onChange={onChange}
+					onChange={onChangeWard}
 					/>
 				</Box>
 				</Grid>
@@ -120,4 +160,4 @@ const A1StatPage = () => {
 	);
 };
 
-export default A1StatPage;
+export default A1AdminPage;

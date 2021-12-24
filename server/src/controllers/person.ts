@@ -52,12 +52,6 @@ export const personController = {
                 where: {admincode: Like(`${user.username}%`)}
             });
             console.log(result);
-            
-
-            // const result = await getRepository(Person).createQueryBuilder("person")
-            //     .innerJoinAndSelect("person.defaultAddress", "address")
-            //     .innerJoinAndSelect("person.otherAddress", "address")
-            //     .where("person.admincode: like ????")
 
 
             if (result) {

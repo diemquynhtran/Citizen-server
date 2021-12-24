@@ -1,16 +1,16 @@
 import { Request, Response } from "express";
 import { Role, User } from "../entities/user";
-import { getRepository } from "typeorm";
-import { Province } from "../entities/province";
+import { getRepository, Timestamp } from "typeorm";
+import { Ward } from "../entities/ward";
 
-export const userProvinceController = {
+export const userwardController = {
 
-    //[GET] /user/province/
+    //[GET] /user/ward/
     get: async (req: Request, res: Response) => {
         
     },
 
-    //[post] /user/province/create
+    //[post] /user/ward/create
     create: async (req: Request, res: Response) => {
         try {
             const userReq = req.body;
@@ -33,20 +33,19 @@ export const userProvinceController = {
                     messenger: "Thời gian không hợp lệ"
                 });
             }
-            let province = await getRepository(Province).find(
-                { code: userReq.code });
+            let ward = await getRepository(Ward).find({ code: userReq.code });
             let newUser = new User();
             newUser.username = userReq.code;
             newUser.password = userReq.password;
             newUser.displayName = userReq.name;
             newUser.startTime = userReq.startTime;
             newUser.endTime = userReq.endTime;
-            newUser.province = province[0];
-            newUser.role = Role.A2;
+            //newUser.ward = ward[0];
+            newUser.role = Role.A3;
             const result = await userRepo.save(newUser);
             
-            province[0].admin = newUser;
-            await getRepository(Province).save(province[0]);
+            ward[0].admin = newUser;
+            await getRepository(Ward).save(ward[0]);
             return res.json({
                 status: 400,
                 messenger: "",
@@ -54,9 +53,11 @@ export const userProvinceController = {
               })
         }
         catch (e) {
+            console.log(e);
+            
             return res.json({
                 status: 400,
-                messenger: "Lỗi userProvince"
+                messenger: "Lỗi userward"
               })
         }
 

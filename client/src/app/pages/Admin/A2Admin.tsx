@@ -36,6 +36,8 @@ const A2AdminPage = () => {
 	const [districtName, setDistrictName] = React.useState("");
 	const [wardName, setWardName] = React.useState("");
 	
+	const [wardKey, setWardKey] = React.useState(0);
+	
 	useEffect(() => {
 		districtApi.getByRole().then((res: any) => {
 			if (res.status === 200) {
@@ -52,7 +54,10 @@ const A2AdminPage = () => {
 				if (res.status === 200) {
 					setDistrictID(value.code);
 					setDistrictName(value.name);
+					
+					setWardKey(wardKey + 1);
 					setWard(res.data.result);
+					
 					setData(res.data.result.map((data: any) => ({code: data.code, name: data.name, status:data.status,})));
 				}
 			});
@@ -63,6 +68,9 @@ const A2AdminPage = () => {
 					console.log(res);
 					setDistrict(res.data);
 					setData(res.data.map((data: any) => ({code: data.code, name: data.name, status:data.status,})));
+					
+					setWardKey(wardKey + 1);
+					setWard([]);
 				}
 			});
 		}

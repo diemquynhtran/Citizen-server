@@ -36,8 +36,7 @@ export const JWTmiddlewares = async (
           },
           relations: ["ward", "village", "province", "district"],
         });
-        res.locals.user = user || null;
-        
+        res.locals.user = user || null;        
         next();
       }
       return;

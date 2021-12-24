@@ -1,16 +1,16 @@
 import { Request, Response } from "express";
 import { Role, User } from "../entities/user";
-import { getRepository } from "typeorm";
-import { Province } from "../entities/province";
+import { getRepository, Timestamp } from "typeorm";
+import { Village } from "../entities/village";
 
-export const userProvinceController = {
+export const userVillageController = {
 
-    //[GET] /user/province/
+    //[GET] /user/village/
     get: async (req: Request, res: Response) => {
         
     },
 
-    //[post] /user/province/create
+    //[post] /user/village/create
     create: async (req: Request, res: Response) => {
         try {
             const userReq = req.body;
@@ -33,20 +33,19 @@ export const userProvinceController = {
                     messenger: "Thời gian không hợp lệ"
                 });
             }
-            let province = await getRepository(Province).find(
-                { code: userReq.code });
+            let village = await getRepository(Village).find({ code: userReq.code });
             let newUser = new User();
             newUser.username = userReq.code;
             newUser.password = userReq.password;
             newUser.displayName = userReq.name;
             newUser.startTime = userReq.startTime;
             newUser.endTime = userReq.endTime;
-            newUser.province = province[0];
-            newUser.role = Role.A2;
+            //newUser.village = village[0];
+            newUser.role = Role.B2;
             const result = await userRepo.save(newUser);
             
-            province[0].admin = newUser;
-            await getRepository(Province).save(province[0]);
+            village[0].admin = newUser;
+            await getRepository(Village).save(village[0]);
             return res.json({
                 status: 400,
                 messenger: "",
@@ -54,9 +53,11 @@ export const userProvinceController = {
               })
         }
         catch (e) {
+            console.log(e);
+            
             return res.json({
                 status: 400,
-                messenger: "Lỗi userProvince"
+                messenger: "Lỗi uservillage"
               })
         }
 

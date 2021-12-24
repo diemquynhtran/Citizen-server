@@ -41,6 +41,9 @@ const A1AdminPage = () => {
 	const [districtName, setDistrictName] = React.useState("");
 	const [wardName, setWardName] = React.useState("");
 	
+	const [districtKey, setDistrictKey] = React.useState(0);
+	const [wardKey, setWardKey] = React.useState(0);
+	
 	
 	useEffect(() => {
 		provinceApi.getProvinces().then((res: any) => {
@@ -58,7 +61,13 @@ const A1AdminPage = () => {
 				if (res.status === 200) {
 					setProvinceID(value.code);
 					setProvinceName(value.name);
+					
+					setDistrictKey(districtKey + 1);
 					setDistrict(res.data.result);
+					
+					setWardKey(wardKey + 1);
+					setWard([]);
+					
 					setData(res.data.result.map((data: any) => ({code: data.code, name: data.name, status:data.status,})));
 				}
 			});
@@ -68,6 +77,12 @@ const A1AdminPage = () => {
 				if (res.status === 200) {
 					setProvince(res.data);
 					setData(res.data.map((data: any) => ({code: data.code, name: data.name, status:data.status,})));
+					
+					setDistrictKey(districtKey + 1);
+					setDistrict([]);
+					
+					setWardKey(wardKey + 1);
+					setWard([]);
 				}
 			})
 		}
@@ -80,7 +95,10 @@ const A1AdminPage = () => {
 				if (res.status === 200) {
 					setDistrictID(value.code);
 					setDistrictName(value.name);
+					
+					setWardKey(wardKey + 1);
 					setWard(res.data.result);
+					
 					setData(res.data.result.map((data: any) => ({code: data.code, name: data.name, status:data.status,})));
 				}
 			});
@@ -90,6 +108,9 @@ const A1AdminPage = () => {
 					setTableName(provinceName);
 					setDistrict(res.data.result);
 					setData(res.data.result.map((data: any) => ({code: data.code, name: data.name, status:data.status,})));
+					
+					setWardKey(wardKey + 1);
+					setWard([]);
 				}
 			});
 		}
@@ -128,6 +149,7 @@ const A1AdminPage = () => {
 					getOptionLabel={(element: any) => element.name}
 					label="Tỉnh/Thành phố"
 					onChange={onChangeProvince}
+					
 					/>
 				</Box>
 				<Box mb={2}>
@@ -136,6 +158,7 @@ const A1AdminPage = () => {
 					getOptionLabel={(element: any) => element.name}
 					label="Quận/Huyện"
 					onChange={onChangeDistrict}
+					key={districtKey}
 					/>
 				</Box>
 				<Box mb={2}>
@@ -144,6 +167,7 @@ const A1AdminPage = () => {
 					getOptionLabel={(element: any) => element.name}
 					label="Phường/Xã"
 					onChange={onChangeWard}
+					key={wardKey}
 					/>
 				</Box>
 				</Grid>

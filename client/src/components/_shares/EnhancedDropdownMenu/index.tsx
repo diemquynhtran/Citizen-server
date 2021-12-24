@@ -17,6 +17,7 @@ interface Props {
   getOptionLabel: any;
   label: string;
   onChange: any;
+  isStandard?: boolean;
 }
 
 const AutocompleteDropdown: React.FC<Props> = ({
@@ -25,6 +26,7 @@ const AutocompleteDropdown: React.FC<Props> = ({
   getOptionLabel,
   label,
   onChange,
+  isStandard
 }) => {
   const classes = useStyles();
   return (
@@ -35,7 +37,7 @@ const AutocompleteDropdown: React.FC<Props> = ({
       options={options}
       getOptionLabel={getOptionLabel}
       renderInput={(params) => (
-        <TextField {...params} label={label} variant="outlined" />
+        <TextField {...params} label={label} variant={isStandard ? "standard" : "outlined"} />
       )}
       onChange={onChange}
     />

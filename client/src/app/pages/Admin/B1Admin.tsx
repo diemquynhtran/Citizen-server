@@ -36,7 +36,7 @@ const B1AdminPage = () => {
 	}, []);
 	
 	return (
-		<Box mt={5} ml={5}>
+		<Box mt={5} mx="auto">
 			<EnhancedStatisticalTable 
 			tableName={tableName}
 			rows={data}

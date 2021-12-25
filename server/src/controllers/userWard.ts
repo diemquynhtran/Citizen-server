@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { Role, User } from "../entities/user";
 import { getRepository, Timestamp } from "typeorm";
 import { Ward } from "../entities/ward";
+import moment from "moment";
 
 export const userwardController = {
 
@@ -13,36 +14,44 @@ export const userwardController = {
     //[post] /user/ward/create
     create: async (req: Request, res: Response) => {
         try {
-            const userReq = req.body;
-            if (!userReq.code || !userReq.name || !userReq.password) {
+            let timeNow = moment();
+            let {code, name, password, timeEnd, timeStart} = req.body;
+            if (!code || !name || !password) {
                 res.status(400);
                 return res.send("Yêu cầu không hợp lệ");
             }
             const user: User = res.locals.user;
             const userRepo = getRepository(User);
-            const check = await userRepo.find({ username: userReq.code } || { displayName: userReq.name });
-            if (check.length != 0) {
+            const check1 = await userRepo.find({ username: code });
+            const check2 = await userRepo.find({ displayName: name});            
+            if (check1.length != 0 || check2.length!=0) {
                 return res.send({
                     code: 401,
                     messenger: "Tài khoản đã tồn tại"
                 });
             }
-            if (userReq.startTime < Date.now || userReq.endTime < Date.now || userReq.startTime < userReq.endTime) {
+            let newUser = new User();
+            const reqTimeStart = moment(timeStart);            
+            const reqTimeEnd = moment(timeEnd);
+            if (reqTimeEnd < moment()) {
                 return res.send({
                     code: 401,
                     messenger: "Thời gian không hợp lệ"
                 });
             }
-            let ward = await getRepository(Ward).find({ code: userReq.code });
-            let newUser = new User();
-            newUser.username = userReq.code;
-            newUser.password = userReq.password;
-            newUser.displayName = userReq.name;
-            newUser.startTime = userReq.startTime;
-            newUser.endTime = userReq.endTime;
-            //newUser.ward = ward[0];
-            newUser.role = Role.A3;
-            const result = await userRepo.save(newUser);
+            if (reqTimeStart <= timeNow) {
+                newUser.permission = true;
+            }
+            else newUser.permission = false;
+            let ward = await getRepository(Ward).find(
+                { code: code });
+            newUser.username = code;
+            newUser.password = password;
+            newUser.displayName = name;
+            newUser.startTime = reqTimeStart.toDate();
+            newUser.endTime = reqTimeEnd.toDate();
+            newUser.role = Role.B1;
+            const result = await userRepo.save(newUser);            
             
             ward[0].admin = newUser;
             await getRepository(Ward).save(ward[0]);

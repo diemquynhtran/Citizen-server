@@ -25,8 +25,7 @@ export class Person {
   id: UUID;
   @Expose()
   @Column({nullable: true})
-  @Index()
-  uid: string;
+  cmnd: string;
   @Column({ nullable: false })
   name: string;
   @Column()

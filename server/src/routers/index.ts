@@ -13,10 +13,10 @@ import { JWTmiddlewares } from "../middlewares/jwt";
 export const AppRouter = (app: Application) => {
   app.use("/auth", authRoute);
   app.use("/user", JWTmiddlewares,userRoute);
-  app.use("/province", JWTmiddlewares, roleRequire(Role.A1), provinceRoute);
-  app.use("/district",JWTmiddlewares, roleRequire(Role.A1, Role.A2), districtRoute);
-  app.use("/ward",JWTmiddlewares, roleRequire(Role.A1, Role.A2, Role.A3), wardRoute);
-  app.use("/village", JWTmiddlewares, roleRequire(Role.A1,Role.A2,Role.A3,Role.B1), villageRoute);
+  app.use("/province", JWTmiddlewares, provinceRoute);
+  app.use("/district",JWTmiddlewares, districtRoute);
+  app.use("/ward",JWTmiddlewares, wardRoute);
+  app.use("/village", JWTmiddlewares, villageRoute);
   app.use("/person", JWTmiddlewares, personRoute);
 
 };

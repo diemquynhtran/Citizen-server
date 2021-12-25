@@ -151,7 +151,7 @@ export const userController = {
         await getRepository(District).update({ code: district }, { state: true });
       }
 
-      let province = code.slice(0, 4);
+      let province = code.slice(0, 2);
       let checkProvince = await getRepository(District).find({
         where:[
           {code: Like(`${province}%`),

@@ -64,7 +64,7 @@ export const userController = {
 
   //[PUT] /user/update
   update: async (req: Request, res: Response) => {
-    return res.send(200);
+    
   },
 
   //[DELETE] /user/delete

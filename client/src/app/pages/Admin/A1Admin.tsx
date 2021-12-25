@@ -139,45 +139,53 @@ const A1AdminPage = () => {
 	};
 	
 	return (
-		<Box mt={5} ml={5}>
-			<Grid container>
-			<Box mr={3} mt={1}>
-			<Grid item>
-				<Box mb={2}>
-					<EnhancedDropdownMenu
-					options={province}
-					getOptionLabel={(element: any) => element.name}
-					label="Tỉnh/Thành phố"
-					onChange={onChangeProvince}
+		<Box mx="auto" mt={3}>
+			<Grid container spacing={3}>
+				<Grid container xs={12}>
+					<Grid item xs={4}>
+						<Box p={2}>
+							<EnhancedDropdownMenu
+							options={province}
+							getOptionLabel={(element: any) => element.name}
+							label="Tỉnh/Thành phố"
+							onChange={onChangeProvince}
+							/>
+						</Box>
+					</Grid>
 					
-					/>
-				</Box>
-				<Box mb={2}>
-					<EnhancedDropdownMenu
-					options={district}
-					getOptionLabel={(element: any) => element.name}
-					label="Quận/Huyện"
-					onChange={onChangeDistrict}
-					key={districtKey}
-					/>
-				</Box>
-				<Box mb={2}>
-					<EnhancedDropdownMenu
-					options={ward}
-					getOptionLabel={(element: any) => element.name}
-					label="Phường/Xã"
-					onChange={onChangeWard}
-					key={wardKey}
-					/>
-				</Box>
+					<Grid item xs={4}>
+						<Box p={2}>
+							<EnhancedDropdownMenu
+							options={district}
+							getOptionLabel={(element: any) => element.name}
+							label="Quận/Huyện"
+							onChange={onChangeDistrict}
+							key={districtKey}
+							/>
+						</Box>
+					</Grid>
+					
+					<Grid item xs={4}>
+						<Box p={2}>
+							<EnhancedDropdownMenu
+							options={ward}
+							getOptionLabel={(element: any) => element.name}
+							label="Phường/Xã"
+							onChange={onChangeWard}
+							key={wardKey}
+							/>
+						</Box>
+					</Grid>
 				</Grid>
-				</Box>
-				<Grid item>
-				<EnhancedStatisticalTable 
-				tableName={tableName}
-				rows={data}
-				head={head}
-				/>
+				
+				<Grid item xs={12}>
+					<Box p={1} mx="auto">
+						<EnhancedStatisticalTable 
+						tableName={tableName}
+						rows={data}
+						head={head}
+						/>
+					</Box>
 				</Grid>
 			</Grid>
 		</Box>

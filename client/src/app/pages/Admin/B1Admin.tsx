@@ -36,12 +36,18 @@ const B1AdminPage = () => {
 	}, []);
 	
 	return (
-		<Box mt={5} mx="auto">
-			<EnhancedStatisticalTable 
-			tableName={tableName}
-			rows={data}
-			head={head}
-			/>
+		<Box mx="auto" mt={3}>
+			<Grid container spacing={3}>
+				<Grid item xs={12}>
+					<Box p={1} mx="auto">
+						<EnhancedStatisticalTable 
+						tableName={tableName}
+						rows={data}
+						head={head}
+						/>
+					</Box>
+				</Grid>
+			</Grid>
 		</Box>
 	);
 };

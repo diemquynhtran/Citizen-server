@@ -2,6 +2,8 @@ import { Request, Response } from "express";
 import { Role, User } from "../entities/user";
 import { getRepository } from "typeorm";
 import { Province } from "../entities/province";
+import {Moment} from "moment";
+import moment from "moment";
 
 export const userProvinceController = {
 
@@ -10,41 +12,47 @@ export const userProvinceController = {
         
     },
 
-    //[post] /user/province/create
+    //[POST] /user/province/create
     create: async (req: Request, res: Response) => {
         try {
-            const userReq = req.body;
-            console.log(req.body);
-            if (!userReq.code || !userReq.name || !userReq.password) {
+            let timeNow = moment();
+            let {code, name, password, timeEnd, timeStart} = req.body;
+            if (!code || !name || !password) {
                 res.status(400);
                 return res.send("Yêu cầu không hợp lệ");
             }
             const user: User = res.locals.user;
             const userRepo = getRepository(User);
-            const check = await userRepo.find({ username: userReq.code } || { displayName: userReq.name });
-            if (check.length != 0) {
+            const check1 = await userRepo.find({ username: code });
+            const check2 = await userRepo.find({ displayName: name});            
+            if (check1.length != 0 || check2.length!=0) {
                 return res.send({
                     code: 401,
                     messenger: "Tài khoản đã tồn tại"
                 });
             }
-            if (userReq.startTime < Date.now || userReq.endTime < Date.now || userReq.startTime < userReq.endTime) {
+            let newUser = new User();
+            const reqTimeStart = moment(timeStart);            
+            const reqTimeEnd = moment(timeEnd);
+            if (reqTimeEnd < moment()) {
                 return res.send({
                     code: 401,
                     messenger: "Thời gian không hợp lệ"
                 });
             }
+            if (reqTimeStart <= timeNow) {
+                newUser.permission = true;
+            }
+            else newUser.permission = false;
             let province = await getRepository(Province).find(
-                { code: userReq.code });
-            let newUser = new User();
-            newUser.username = userReq.code;
-            newUser.password = userReq.password;
-            newUser.displayName = userReq.name;
-            newUser.startTime = userReq.startTime;
-            newUser.endTime = userReq.endTime;
-            newUser.province = province[0];
+                { code: code });
+            newUser.username = code;
+            newUser.password = password;
+            newUser.displayName = name;
+            newUser.startTime = reqTimeStart.toDate();
+            newUser.endTime = reqTimeEnd.toDate();
             newUser.role = Role.A2;
-            const result = await userRepo.save(newUser);
+            const result = await userRepo.save(newUser);            
             
             province[0].admin = newUser;
             await getRepository(Province).save(province[0]);
@@ -55,7 +63,9 @@ export const userProvinceController = {
               })
         }
         catch (e) {
-            return res.json({
+            console.log(e);
+
+            return res.json({                
                 status: 400,
                 messenger: "Lỗi userProvince"
               })

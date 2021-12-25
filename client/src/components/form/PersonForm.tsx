@@ -16,6 +16,7 @@ import { districtApi } from "services/api/district";
 import { wardApi } from "services/api/ward";
 import { villageApi } from "services/api/village";
 import { personApi } from "services/api/person";
+import { toastService } from "helpers/toast";
 
 const genderData = [
 	{value: 0, label: "Nam"},
@@ -717,10 +718,15 @@ const PersonForm = () => {
 
 	const handleSubmit = (event: any) => {
 		event.preventDefault();
-		//console.log(formValue);
 		
 		personApi.createPerson(formValue).then((res: any) => {
-			console.log(res);
+			if (res.status === 200) {
+				if (res.data.status === 200) {
+					toastService.success("Nhập liệu thành công");
+				} else {
+					toastService.error("Vui lòng kiểm tra lại file nhập liệu");
+				}
+			}
 		})
 	}
 
@@ -936,7 +942,7 @@ const PersonForm = () => {
 				</Box>
 				
 				<Button variant="contained" color="primary" type="submit">
-					Primary
+					Nhập
 				</Button>
 			</Box>
 		</form>

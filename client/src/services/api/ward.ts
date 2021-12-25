@@ -5,7 +5,7 @@ export const wardApi = {
 	return api.get(`${baseURL}/`);
 	},
 	
-	getByA3: () => {
+	getByRole: () => {
 	return api.get(`${baseURL}/getByA3`);
 	},
 	

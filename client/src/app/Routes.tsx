@@ -9,7 +9,6 @@ const Routes = () => {
   return (
     <Switch>
       <Route path={"/admin"} component={AdminPage} />
-	    <Route path={"/stat"} component={AdminPage} />
       <Route path={"/manage"} component={ManagePage} />
       <Route path={"/login"} exact component={Login} />
       <Route path={"/403"} exact component={NotPermisionPage} />

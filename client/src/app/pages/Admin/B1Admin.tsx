@@ -30,7 +30,7 @@ const B1AdminPage = () => {
 		villageApi.getByRole().then((res: any) => {
 			if (res.status === 200) {
 				setVillage(res.data);
-				setData(res.data.map((data: any) => ({code: data.code, name: data.name, status:data.status,})));
+				setData(res.data.map((data: any) => ({code: data.code, name: data.name, status:data.state ? "Đã Hoàn thành" : "Chưa hoàn thành",})));
 			}
 		})
 	}, []);
@@ -44,7 +44,7 @@ const B1AdminPage = () => {
 						tableName={tableName}
 						rows={data}
 						head={head}
-						hasButton={false}
+						hasButtons={false}
 						/>
 					</Box>
 				</Grid>

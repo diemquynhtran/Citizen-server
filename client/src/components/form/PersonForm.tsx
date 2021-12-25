@@ -639,12 +639,15 @@ const PersonForm = () => {
 		}
 	};
 
-	const onChangeNameField = (e: any) => {
+	 const onChangeNameField = (e: any) => {
 		const { name, value } = e.target;
+		
 		setFormValue({
 			...formValue,
 			name: value,
 		});
+		
+		console.log(formValue.name);
 	};
 	
 	const onChangeUIDField = (e: any) => {
@@ -700,6 +703,8 @@ const PersonForm = () => {
 			...defaultValue,
 			detail: value,
 		});
+		
+		console.log(defaultValue.detail);
 		
 		setFormValue({
 			...formValue,

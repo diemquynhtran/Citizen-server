@@ -85,6 +85,7 @@ export const personController = {
     create: async (req: Request, res: Response) => {
         try {
             const { name, birthDay, gender, religion, level, job, defaultAddress, otherAddress, hometown, cmnd } = req.body;
+
             let newPerson = new Person();
             newPerson.cmnd = cmnd;
             newPerson.name = name;
@@ -188,6 +189,7 @@ export const personController = {
             let reqDefaultAddress = new Address();
             let reqOtherAddress = new Address();
             let reqHometown = new Address();
+
             let villageRepo = getRepository(Village);
             let provinceRepo = getRepository(Province);
             let districtRepo = getRepository(District);

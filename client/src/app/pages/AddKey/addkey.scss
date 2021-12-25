@@ -1,0 +1,16 @@
+#login-page {
+    height: 100vh;
+    .login-form {
+      height: 100%;
+      display: flex;
+      background-color: white;
+      justify-content: center;
+      align-items: center;
+      form {
+        border: 1px solid gainsboro;
+        padding: 1rem 2.5rem;
+        border-radius: 10px;
+      }
+    }
+  }
+  

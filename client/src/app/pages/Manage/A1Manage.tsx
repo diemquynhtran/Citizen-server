@@ -30,10 +30,11 @@ import { userInfo } from "os";
 const head = [
   { id: 1, label: "Mã tỉnh" },
   { id: 2, label: "Tên tỉnh" },
-  { id: 3, label: "Tài khoản" },
-  { id: 4, label: "Trạng thái" },
+  { id: 3, label: "Trạng thái" },
+  // { id: 4, label: "Ngày bắt đầu" },
+  // { id: 5, label: "Ngày hết hạn" },
+  // { id: 6, label: "Trạng thái" }, 
 ];
-
 const A1ManagePage = () => {
   useRole(Role.A1);
   const { userInfo } = useSelector((state: RootState) => state.user);
@@ -55,6 +56,7 @@ const A1ManagePage = () => {
 
   const [data, setData] = React.useState([]);
   const [tableName, setTableName] = React.useState("Quản lý tài khoản");
+  const [date, setDate] = React.useState([]);
 
   useEffect(() => {
     provinceApi.getProvinces().then((res: any) => {
@@ -65,14 +67,15 @@ const A1ManagePage = () => {
             code: data.code,
             name: data.name,
             account: data.code,
+            // start: data.admin.startTime || " ",
+            // end: data.admin.endTime || " ",
+            // status: data.admin.permission ? "Active" : "Inactive",
           }))
         );
       }
-      
     });
   }, []);
-  console.log(userInfo)
-  console.log(province)
+  console.log(province);
 
   const onChangeProvince = (event: unknown, value: any) => {
     if (value != null) {
@@ -230,6 +233,9 @@ const A1ManagePage = () => {
                     code: data.code,
                     name: data.name,
                     account: data.code,
+                    // start: data.admin.startTime || " ",
+                    // end: data.admin.endTime || " ",
+                    // status: data.admin.permission ? "Active" : "Inactive",
                   }))
                 );
               }

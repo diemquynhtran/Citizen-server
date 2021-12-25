@@ -19,6 +19,7 @@ interface Props {
   rows: any;
 }
 
+
 const EnhancedTableHead: React.FC<Props> = ({ head }) => {
   return (
     <TableHead style={{ backgroundColor: "rgb(124, 209, 124)" }}>

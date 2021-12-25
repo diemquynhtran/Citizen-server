@@ -723,9 +723,12 @@ const PersonForm = () => {
 
 	const handleSubmit = (event: any) => {
 		event.preventDefault();
+		//console.log(formValue);
 		
 		personApi.createPerson(formValue).then((res: any) => {
+			console.log(res);
 			if (res.status === 200) {
+				
 				if (res.data.status === 200) {
 					toastService.success("Nhập liệu thành công");
 				} else {

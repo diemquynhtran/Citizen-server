@@ -44,6 +44,7 @@ const B1AdminPage = () => {
 						tableName={tableName}
 						rows={data}
 						head={head}
+						hasButton={false}
 						/>
 					</Box>
 				</Grid>

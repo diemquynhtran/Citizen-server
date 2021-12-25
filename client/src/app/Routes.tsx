@@ -5,6 +5,7 @@ import NotPermisionPage from "./pages/403";
 import AdminPage from "./pages/Admin";
 import Login from "./pages/Login";
 import ManagePage from "./pages/Manage";
+import AddPerson from "./pages/AddPerson";
 const Routes = () => {
   return (
     <Switch>
@@ -12,6 +13,7 @@ const Routes = () => {
       <Route path={"/manage"} component={ManagePage} />
       <Route path={"/login"} exact component={Login} />
       <Route path={"/403"} exact component={NotPermisionPage} />
+	  <Route path={"/addperson"} exact component={AddPerson} />
       <Redirect from="/" to="/admin" />
     </Switch>
   );

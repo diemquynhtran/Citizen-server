@@ -1,8 +1,9 @@
 import { Request, Response } from "express";
 import { Role, User } from "../entities/user";
-import { getRepository } from "typeorm";
+import { getRepository, Like } from "typeorm";
 import { Province } from "../entities/province";
 import { Ward } from "../entities/ward";
+import { District } from "../entities/district";
 
 export const userController = {
 
@@ -11,7 +12,7 @@ export const userController = {
     return res.send(200);
   },
 
-  //[POST] user/create/A2  : Mặc định khi cấp timeEnd, timeStart hợp lệ thì permission = true;
+  //[POST] user/create/A2  
   create: async (req: Request, res: Response) => {
     try {
       const userReq = req.body;
@@ -127,7 +128,7 @@ export const userController = {
   },
 
   //Xác nhận hoàn thành điều tra: Chỉ cấp xã có tài khoản B1 quản lí của xã xác nhận cho xã đó, các cấp trên thì nếu all cấp dưới hoàn thành thì là cấp trên hoàn thành
-  //[GET] /
+  //[POST] /
   comfirmComplete: async (req: Request, res: Response) => {
     try {
       const { code } = req.body;
@@ -139,6 +140,28 @@ export const userController = {
       }
       let ward = await getRepository(Ward).find({ code: code });
       let result = await getRepository(Ward).update({ code: ward[0].code }, { state: true });
+      let district = code.slice(0, 4);
+      let checkWard = await getRepository(Ward).find({
+        where:[
+          {code: Like(`${district}%`),
+          state: false}
+        ]
+      })
+      if(checkWard.length == 0) {
+        await getRepository(District).update({ code: district }, { state: true });
+      }
+
+      let province = code.slice(0, 4);
+      let checkProvince = await getRepository(District).find({
+        where:[
+          {code: Like(`${province}%`),
+          state: false}
+        ]
+      })
+      if(checkProvince.length == 0) {
+        await getRepository(Province).update({ code: province }, { state: true });
+      }
+      
       if (result == null) {
         return res.json({
           status: 400,

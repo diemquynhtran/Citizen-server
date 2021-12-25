@@ -12,6 +12,7 @@ const router = express.Router();
 
 router.put("/cancelDeclare",permissionUser, userController.cancelDeclare); //khoá quyền khai báo (user.permission=false), gửi lên code của user cần khóa
 router.put("/grantDeclare",permissionUser, userController.grantDeclare)
+router.post("/confirmComplete", permissionUser, roleRequire(Role.B1), userController.comfirmComplete); //hoàn thành khai báo, gửi code
 
 router.get("/province",roleRequire(Role.A1), userProvinceController.get);
 router.post("/province/create",roleRequire(Role.A1), permissionUser,userProvinceController.create);

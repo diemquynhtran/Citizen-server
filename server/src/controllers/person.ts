@@ -12,7 +12,7 @@ import { Village } from "../entities/village";
 import { Ward } from "../entities/ward";
 export const personController = {
 
-    //[POST] /person/create
+    //[DELETE] /person/create
     delete: async (req: Request, res: Response) => {
         try {
             let check = await getRepository(Person).findOne(req.body.id);
@@ -52,12 +52,6 @@ export const personController = {
                 where: {admincode: Like(`${user.username}%`)}
             });
             console.log(result);
-            
-
-            // const result = await getRepository(Person).createQueryBuilder("person")
-            //     .innerJoinAndSelect("person.defaultAddress", "address")
-            //     .innerJoinAndSelect("person.otherAddress", "address")
-            //     .where("person.admincode: like ????")
 
 
             if (result) {
@@ -90,9 +84,10 @@ export const personController = {
     //[POST] /person/create
     create: async (req: Request, res: Response) => {
         try {
-            const { name, birthDay, gender, religion, level, job, defaultAddress, otherAddress, hometown } = req.body;
+            const { name, birthDay, gender, religion, level, job, defaultAddress, otherAddress, hometown, cmnd } = req.body;
 
             let newPerson = new Person();
+            newPerson.cmnd = cmnd;
             newPerson.name = name;
             newPerson.birthDay = birthDay;
             newPerson.gender = gender;
@@ -174,17 +169,17 @@ export const personController = {
         }
     },
 
-    //[POST] /person/update
+    //[PUT] /person/update
     update: async (req: Request, res: Response) => {
         try {
-            const { name, birthDay, gender, religion, level, job, defaultAddress, otherAddress, hometown, id } = req.body;
-
+            const { name, birthDay, gender, religion, level, job, defaultAddress, otherAddress, hometown, id, cmnd } = req.body;
             let newPerson = await getRepository(Person).findOne(id);
             console.log(newPerson);
 
             if (newPerson == null) {
                 return res.json("Khong tim thay nguoi nay");
             }
+            newPerson.cmnd = cmnd;
             newPerson.name = name;
             newPerson.birthDay = birthDay;
             newPerson.gender = gender;

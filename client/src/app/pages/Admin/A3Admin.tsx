@@ -63,33 +63,31 @@ const A3AdminPage = () => {
 	};
 	
 	return (
-		<Box mt={5} ml={5}>
-			<Grid container>
-			<Box mr={3} mt={1}>
-			<Grid item>
-				<Box mb={2}>
-					<EnhancedDropdownMenu
-					options={ward}
-					getOptionLabel={(element: any) => element.name}
-					label="Phường/Xã"
-					onChange={onChangeWard}
-					/>
-				</Box>
+		<Box mx="auto" mt={3}>
+			<Grid container spacing={3}>
+				<Grid item xs={12}>					
+					<Box p={2}>
+						<EnhancedDropdownMenu
+						options={ward}
+						getOptionLabel={(element: any) => element.name}
+						label="Phường/Xã"
+						onChange={onChangeWard}
+						/>
+					</Box>
 				</Grid>
-				</Box>
-				<Grid item>
-				<EnhancedStatisticalTable 
-				tableName={tableName}
-				rows={data}
-				head={head}
-				/>
+				
+				<Grid item xs={12}>
+					<Box p={1} mx="auto">
+						<EnhancedStatisticalTable 
+						tableName={tableName}
+						rows={data}
+						head={head}
+						/>
+					</Box>
 				</Grid>
 			</Grid>
 		</Box>
 	);
-	
-	
-  return <div></div>;
 };
 
 export default A3AdminPage;

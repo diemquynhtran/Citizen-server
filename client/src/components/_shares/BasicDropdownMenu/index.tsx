@@ -7,7 +7,6 @@ import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 
 import { useStyles } from "./useStyles";
-
 interface Props {
 	label: string,
 	onChange?: any,
@@ -28,7 +27,7 @@ const BasicDropdown: React.FC<Props> = ({ label, onChange, data }) => {
 	
 	const classes = useStyles();
 	return (
-		<FormControl>
+		<FormControl className={classes.root}>
 			<InputLabel id="a">{label}</InputLabel>
 			<Select
 			labelId="a"

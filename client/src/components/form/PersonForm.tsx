@@ -8,6 +8,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
 
 import EnhancedDropdownMenu from "components/_shares/EnhancedDropdownMenu";
 import BasicDropdownMenu from "components/_shares/BasicDropdownMenu";
@@ -17,6 +18,8 @@ import { wardApi } from "services/api/ward";
 import { villageApi } from "services/api/village";
 import { personApi } from "services/api/person";
 import { toastService } from "helpers/toast";
+
+import { useStyles } from "./useStyles";
 
 const genderData = [
 	{value: 0, label: "Nam"},
@@ -41,7 +44,7 @@ const scholarshipData = [
 const defaultFormValue = {
 	name: "",
 	birthDay: "",
-	uid: "",
+	cmnd: "",
 	gender: 0,
 	religion: "",
 	level: 0,
@@ -92,6 +95,8 @@ const defaultTempValue = {
 };
 
 const PersonForm = () => {
+	const classes = useStyles();
+	
 	const [formValue, setFormValue] = React.useState(defaultFormValue);
 	const [hometownValue, setHometownValue] = React.useState(defaultHometownValue);
 	const [defaultValue, setDefaultValue] = React.useState(defaultDefaultValue);
@@ -643,10 +648,10 @@ const PersonForm = () => {
 	};
 	
 	const onChangeUIDField = (e: any) => {
-		const { uid, value } = e.target;
+		const { cmnd, value } = e.target;
 		setFormValue({
 			...formValue,
-			uid: value,
+			cmnd: value,
 		});
 	};
 	
@@ -731,219 +736,292 @@ const PersonForm = () => {
 	}
 
 	return (
-		<form onSubmit={handleSubmit}>
-			<Box m={2}>
-				<Box mb={2}>
-					<TextField
-					id="standard-basic"
-					label="Họ và tên"
-					onChange={onChangeNameField} />
-				</Box>
+		<form onSubmit={handleSubmit} className={classes.root}>
+			<Box m={3}>
+				<Grid container spacing={3}>
+					<Grid container xs={12}>
+						<Box p={2}><h5>Thông tin cá nhân</h5></Box>
+					</Grid>
 				
-				<Box mb={2}>
-					<TextField
-					id="standard-basic"
-					label="Số CMND/CCCD"
-					onChange={onChangeUIDField}/>
-				</Box>
+					<Grid container xs={12}>
+						<Grid item xs={6}>
+							<Box p={2}>
+								<TextField
+								id="standard-basic"
+								label="Họ và tên"
+								onChange={onChangeNameField} />
+							</Box>
+						</Grid>
+						<Grid item xs={6}>
+							<Box p={2}>
+								<TextField
+								id="standard-basic"
+								label="Số CMND/CCCD"
+								onChange={onChangeUIDField}/>
+							</Box>
+						</Grid>
+					</Grid>
 				
-				<Box mb={2}>
-					<Box mr={2} display="inline">
-						<TextField
-						id="date"
-						label="Ngày sinh"
-						type="date"
-						InputLabelProps={{
-						  shrink: true,
-						}}
-						onChange={onChangeBirthdayField}
-						/>
-					</Box>
-				
-					<Box display="inline">
-						<BasicDropdownMenu
-						label="Giới tính"
-						data={genderData}
-						onChange={onChangeGenderField}/>
-					</Box>
-				</Box>
-				
-				
-				<Box mb={2}>
-					<Box mr={2} display="inline">
-						<TextField
-						id="standard-basic"
-						label="Tôn giáo"
-						onChange={onChangeReligionField}/>
-					</Box>
+					<Grid container xs={12}>
+						<Grid item xs={4}>
+							<Box p={2}>
+								<TextField
+								id="date"
+								label="Ngày sinh"
+								type="date"
+								InputLabelProps={{
+								  shrink: true,
+								}}
+								onChange={onChangeBirthdayField}
+								/>
+							</Box>
+						</Grid>
 					
-					<Box display="inline">
-						<BasicDropdownMenu
-						label="Học vấn"
-						data={scholarshipData}
-						onChange={onChangeScholarshipField}/>
-					</Box>
-				</Box>
-				
-				<Box mb={2}>
-					<TextField
-					id="standard-basic"
-					label="Nghề nghiệp"
-					onChange={onChangeJobField}/>
-				</Box>
-				
-				<br></br>
-				
-				<Box mb={2}>
-					<Box mb={2}>Quê quán</Box>
-				
-					<Box mb={2}>
-						<EnhancedDropdownMenu
-						options={provinceHome}
-						getOptionLabel={(element: any) => element.name}
-						label="Tỉnh/Thành phố"
-						onChange={onChangeProvinceHome}
-						isStandard={true}
-						/>
-					</Box>
-					<Box mb={2}>
-						<EnhancedDropdownMenu
-						options={districtHome}
-						getOptionLabel={(element: any) => element.name}
-						label="Quận/Huyện"
-						onChange={onChangeDistrictHome}
-						key={districtHomeKey}
-						isStandard={true}
-						/>
-					</Box>
-					<Box mb={2}>
-						<EnhancedDropdownMenu
-						options={wardHome}
-						getOptionLabel={(element: any) => element.name}
-						label="Phường/Xã"
-						onChange={onChangeWardHome}
-						key={wardHomeKey}
-						isStandard={true}
-						/>
-					</Box>
-					<Box mb={2}>
-						<EnhancedDropdownMenu
-						options={villageHome}
-						getOptionLabel={(element: any) => element.name}
-						label="Thôn/Làng/Bản"
-						onChange={onChangeVillageHome}
-						key={villageHomeKey}
-						isStandard={true}
-						/>
-					</Box>
-				</Box>
-				
-				<br></br>
-				
-				<Box mb={2}>
-					<Box mb={2}>Địa chỉ thường trú</Box>
-				
-					<Box mb={2}>
-						<EnhancedDropdownMenu
-						options={provinceDefault}
-						getOptionLabel={(element: any) => element.name}
-						label="Tỉnh/Thành phố"
-						onChange={onChangeProvinceDefault}
-						isStandard={true}
-						/>
-					</Box>
-					<Box mb={2}>
-						<EnhancedDropdownMenu
-						options={districtDefault}
-						getOptionLabel={(element: any) => element.name}
-						label="Quận/Huyện"
-						onChange={onChangeDistrictDefault}
-						key={districtDefaultKey}
-						isStandard={true}
-						/>
-					</Box>
-					<Box mb={2}>
-						<EnhancedDropdownMenu
-						options={wardDefault}
-						getOptionLabel={(element: any) => element.name}
-						label="Phường/Xã"
-						onChange={onChangeWardDefault}
-						key={wardDefaultKey}
-						isStandard={true}
-						/>
-					</Box>
-					<Box mb={2}>
-						<EnhancedDropdownMenu
-						options={villageDefault}
-						getOptionLabel={(element: any) => element.name}
-						label="Thôn/Làng/Bản"
-						onChange={onChangeVillageDefault}
-						key={villageDefaultKey}
-						isStandard={true}
-						/>
-					</Box>
+						<Grid item xs={4}>
+							<Box p={2}>
+								<BasicDropdownMenu
+								label="Giới tính"
+								data={genderData}
+								onChange={onChangeGenderField}/>
+							</Box>
+						</Grid>
 					
-					<Box mb={2}>
-						<TextField
-						id="standard-basic"
-						label="Số nhà, Đường, Phố"
-						onChange={onChangeDefaultDetail}/>
-					</Box>
-				</Box>
+						<Grid item xs={4}>
+							<Box p={2}>
+								<BasicDropdownMenu
+								label="Học vấn"
+								data={scholarshipData}
+								onChange={onChangeScholarshipField}/>
+							</Box>
+						</Grid>
+					</Grid>
 				
-				<br></br>
-				
-				<Box mb={2}>
-					<Box mb={2}>Địa chỉ tạm trú</Box>
-				
-					<Box mb={2}>
-						<EnhancedDropdownMenu
-						options={provinceTemp}
-						getOptionLabel={(element: any) => element.name}
-						label="Tỉnh/Thành phố"
-						onChange={onChangeProvinceTemp}
-						isStandard={true}
-						/>
-					</Box>
-					<Box mb={2}>
-						<EnhancedDropdownMenu
-						options={districtTemp}
-						getOptionLabel={(element: any) => element.name}
-						label="Quận/Huyện"
-						onChange={onChangeDistrictTemp}
-						key={districtTempKey}
-						isStandard={true}
-						/>
-					</Box>
-					<Box mb={2}>
-						<EnhancedDropdownMenu
-						options={wardTemp}
-						getOptionLabel={(element: any) => element.name}
-						label="Phường/Xã"
-						onChange={onChangeWardTemp}
-						key={wardTempKey}
-						isStandard={true}
-						/>
-					</Box>
-					<Box mb={2}>
-						<EnhancedDropdownMenu
-						options={villageTemp}
-						getOptionLabel={(element: any) => element.name}
-						label="Thôn/Làng/Bản"
-						onChange={onChangeVillageTemp}
-						key={villageTempKey}
-						isStandard={true}
-						/>
-					</Box>
+					<Grid container xs={12}>
+						<Grid item xs={6}>
+							<Box p={2}>
+								<TextField
+								id="standard-basic"
+								label="Tôn giáo"
+								onChange={onChangeReligionField}/>
+							</Box>
+						</Grid>
+						<Grid item xs={6}>
+							<Box p={2}>
+								<TextField
+								id="standard-basic"
+								label="Nghề nghiệp"
+								onChange={onChangeJobField}/>
+							</Box>
+						</Grid>
+					</Grid>
 					
-					<Box mb={2}>
-						<TextField id="standard-basic" label="Số nhà, Đường, Phố" />
-					</Box>
-				</Box>
-				
-				<Button variant="contained" color="primary" type="submit">
-					Nhập
-				</Button>
+					<Grid container xs={12}>
+						<Box p={2}><h5>Quê quán</h5></Box>
+					</Grid>
+					
+					<Grid container xs={12}>
+						<Grid item xs={6}>
+							<Box p={2}>
+								<EnhancedDropdownMenu
+								options={provinceHome}
+								getOptionLabel={(element: any) => element.name}
+								label="Tỉnh/Thành phố"
+								onChange={onChangeProvinceHome}
+								isStandard={true}
+								/>
+							</Box>
+						</Grid>
+
+						<Grid item xs={6}>
+							<Box p={2}>
+								<EnhancedDropdownMenu
+								options={districtHome}
+								getOptionLabel={(element: any) => element.name}
+								label="Quận/Huyện"
+								onChange={onChangeDistrictHome}
+								key={districtHomeKey}
+								isStandard={true}
+								/>
+							</Box>
+						</Grid>
+					</Grid>
+					
+					<Grid container xs={12}>
+						<Grid item xs={6}>
+							<Box p={2}>
+								<EnhancedDropdownMenu
+								options={wardHome}
+								getOptionLabel={(element: any) => element.name}
+								label="Phường/Xã"
+								onChange={onChangeWardHome}
+								key={wardHomeKey}
+								isStandard={true}
+								/>
+							</Box>
+						</Grid>
+						
+						<Grid item xs={6}>
+							<Box p={2}>
+								<EnhancedDropdownMenu
+								options={villageHome}
+								getOptionLabel={(element: any) => element.name}
+								label="Thôn/Làng/Bản"
+								onChange={onChangeVillageHome}
+								key={villageHomeKey}
+								isStandard={true}
+								/>
+							</Box>
+						</Grid>
+					</Grid>
+					
+					<Grid container xs={12}>
+						<Box p={2}><h5>Địa chỉ thường trú</h5></Box>
+					</Grid>
+					
+					<Grid container xs={12}>
+						<Grid item xs={6}>
+							<Box p={2}>
+								<EnhancedDropdownMenu
+								options={provinceDefault}
+								getOptionLabel={(element: any) => element.name}
+								label="Tỉnh/Thành phố"
+								onChange={onChangeProvinceDefault}
+								isStandard={true}
+								/>
+							</Box>
+						</Grid>
+						
+						<Grid item xs={6}>
+							<Box p={2}>
+								<EnhancedDropdownMenu
+								options={districtDefault}
+								getOptionLabel={(element: any) => element.name}
+								label="Quận/Huyện"
+								onChange={onChangeDistrictDefault}
+								key={districtDefaultKey}
+								isStandard={true}
+								/>
+							</Box>
+						</Grid>
+					</Grid>
+					
+					<Grid container xs={12}>
+						<Grid item xs={6}>
+							<Box p={2}>
+								<EnhancedDropdownMenu
+								options={wardDefault}
+								getOptionLabel={(element: any) => element.name}
+								label="Phường/Xã"
+								onChange={onChangeWardDefault}
+								key={wardDefaultKey}
+								isStandard={true}
+								/>
+							</Box>
+						</Grid>
+						
+						<Grid item xs={6}>
+							<Box p={2}>
+								<EnhancedDropdownMenu
+								options={villageDefault}
+								getOptionLabel={(element: any) => element.name}
+								label="Thôn/Làng/Bản"
+								onChange={onChangeVillageDefault}
+								key={villageDefaultKey}
+								isStandard={true}
+								/>
+							</Box>
+						</Grid>
+					</Grid>
+					
+					<Grid container xs={12}>
+						<Box p={2}>
+							<TextField
+							id="standard-basic"
+							label="Số nhà, Đường, Phố"
+							onChange={onChangeDefaultDetail}/>
+						</Box>
+					</Grid>
+					
+					<Grid container xs={12}>
+						<Box p={2}><h5>Địa chỉ tạm trú</h5></Box>
+					</Grid>
+					
+					<Grid container xs={12}>
+						<Grid item xs={6}>
+							<Box p={2}>
+								<EnhancedDropdownMenu
+								options={provinceTemp}
+								getOptionLabel={(element: any) => element.name}
+								label="Tỉnh/Thành phố"
+								onChange={onChangeProvinceTemp}
+								isStandard={true}
+								/>
+							</Box>
+						</Grid>
+						
+						<Grid item xs={6}>
+							<Box p={2}>
+								<EnhancedDropdownMenu
+								options={districtTemp}
+								getOptionLabel={(element: any) => element.name}
+								label="Quận/Huyện"
+								onChange={onChangeDistrictTemp}
+								key={districtTempKey}
+								isStandard={true}
+								/>
+							</Box>
+						</Grid>
+					</Grid>
+					
+					<Grid container xs={12}>
+						<Grid item xs={6}>
+							<Box p={2}>
+								<EnhancedDropdownMenu
+								options={wardTemp}
+								getOptionLabel={(element: any) => element.name}
+								label="Phường/Xã"
+								onChange={onChangeWardTemp}
+								key={wardTempKey}
+								isStandard={true}
+								/>
+							</Box>
+						</Grid>
+						
+						<Grid item xs={6}>
+							<Box p={2}>
+								<EnhancedDropdownMenu
+								options={villageTemp}
+								getOptionLabel={(element: any) => element.name}
+								label="Thôn/Làng/Bản"
+								onChange={onChangeVillageTemp}
+								key={villageTempKey}
+								isStandard={true}
+								/>
+							</Box>
+						</Grid>
+					</Grid>
+					
+					<Grid container xs={12}>
+						<Box p={2}>
+							<TextField
+							id="standard-basic"
+							label="Số nhà, Đường, Phố"
+							onChange={onChangeTempDetail} />
+						</Box>
+					</Grid>
+					
+					<Grid container xs={12}>
+						<Grid item xs={10}></Grid>
+						
+						<Grid item xs={2}>
+							<Box p={2}>
+								<Button variant="contained" color="primary" type="submit">
+									Nhập
+								</Button>
+							</Box>
+						</Grid>
+					</Grid>
+				</Grid>
 			</Box>
 		</form>
 	);

@@ -3,25 +3,24 @@ import React, { useEffect, useState } from "react";
 import { useRole } from "hocs/useRole";
 import { Role } from "settings/role";
 import EnhancedDropdownMenu from "components/_shares/EnhancedDropdownMenu";
-import { provinceApi } from "services/api/province";
 import { districtApi } from "services/api/district";
 import { wardApi } from "services/api/ward";
 import { Modal } from "react-bootstrap";
 import { InputGroup } from "react-bootstrap";
 import { authApi } from "services/api/auth";
-const A1AddKeyPage: React.FC = () => {
-  useRole(Role.A1);
+const A2AddKeyPage: React.FC = () => {
+  useRole(Role.A2);
 
-  const [province, setProvince] = React.useState([]);
+  const [district, setDistrict] = React.useState([]);
   const [ward, setWard] = React.useState([]);
   const [data, setData] = React.useState([]);
   const [tableName, setTableName] = React.useState("Toàn quốc");
-  const [postprovince, setPostProvince] = React.useState([]);
+  const [postdistrict, setPostdistrict] = React.useState([]);
 
   useEffect(() => {
-    provinceApi.getProvinces().then((res: any) => {
+    districtApi.getDistricts().then((res: any) => {
       if (res.status === 200) {
-        setProvince(res.data);
+        setDistrict(res.data);
         setData(
           res.data.map((data: any) => ({
             code: data.code,
@@ -40,10 +39,10 @@ const A1AddKeyPage: React.FC = () => {
     <>
       <Form style={{ margin: 10, padding: 10 }}>
         <Form.Group className="mb-3" controlId="formBasicEmail">
-          <Form.Label>Khai báo Tỉnh/Thành phố</Form.Label>
+          <Form.Label>Khai báo Quận/Huyện/Thị xã</Form.Label>
           <Form.Control
             type="name"
-            placeholder="Nhập tên tỉnh/thành phố"
+            placeholder="Nhập tên quận/huyện/thị xã"
             
           />
         </Form.Group>
@@ -57,4 +56,4 @@ const A1AddKeyPage: React.FC = () => {
   );
 };
 
-export default A1AddKeyPage;
+export default A2AddKeyPage;

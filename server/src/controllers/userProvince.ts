@@ -14,6 +14,7 @@ export const userProvinceController = {
     create: async (req: Request, res: Response) => {
         try {
             const userReq = req.body;
+            console.log(req.body);
             if (!userReq.code || !userReq.name || !userReq.password) {
                 res.status(400);
                 return res.send("Yêu cầu không hợp lệ");

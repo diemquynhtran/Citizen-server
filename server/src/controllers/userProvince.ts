@@ -57,7 +57,7 @@ export const userProvinceController = {
             province[0].admin = newUser;
             await getRepository(Province).save(province[0]);
             return res.json({
-                status: 400,
+                status: 200,
                 messenger: "",
                 result: result
               })

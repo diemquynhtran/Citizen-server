@@ -56,7 +56,7 @@ export const userwardController = {
             ward[0].admin = newUser;
             await getRepository(Ward).save(ward[0]);
             return res.json({
-                status: 400,
+                status: 200,
                 messenger: "",
                 result: result
               })

@@ -56,7 +56,7 @@ export const userVillageController = {
             village[0].admin = newUser;
             await getRepository(Village).save(village[0]);
             return res.json({
-                status: 400,
+                status: 200,
                 messenger: "",
                 result: result
               })

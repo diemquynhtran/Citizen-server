@@ -57,7 +57,7 @@ export const userDistrictController = {
             district[0].admin = newUser;
             await getRepository(District).save(district[0]);
             return res.json({
-                status: 400,
+                status: 200,
                 messenger: "",
                 result: result
               })

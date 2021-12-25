@@ -3,25 +3,24 @@ import React, { useEffect, useState } from "react";
 import { useRole } from "hocs/useRole";
 import { Role } from "settings/role";
 import EnhancedDropdownMenu from "components/_shares/EnhancedDropdownMenu";
-import { provinceApi } from "services/api/province";
-import { districtApi } from "services/api/district";
 import { wardApi } from "services/api/ward";
+import { districtApi } from "services/api/district";
 import { Modal } from "react-bootstrap";
 import { InputGroup } from "react-bootstrap";
 import { authApi } from "services/api/auth";
-const A1AddKeyPage: React.FC = () => {
-  useRole(Role.A1);
 
-  const [province, setProvince] = React.useState([]);
+const A3AddKeyPage: React.FC = () => {
+  useRole(Role.A3);
+
   const [ward, setWard] = React.useState([]);
   const [data, setData] = React.useState([]);
   const [tableName, setTableName] = React.useState("Toàn quốc");
-  const [postprovince, setPostProvince] = React.useState([]);
+  const [postward, setPostward] = React.useState([]);
 
   useEffect(() => {
-    provinceApi.getProvinces().then((res: any) => {
+    wardApi.getWards().then((res: any) => {
       if (res.status === 200) {
-        setProvince(res.data);
+        setWard(res.data);
         setData(
           res.data.map((data: any) => ({
             code: data.code,
@@ -57,4 +56,4 @@ const A1AddKeyPage: React.FC = () => {
   );
 };
 
-export default A1AddKeyPage;
+export default A3AddKeyPage;

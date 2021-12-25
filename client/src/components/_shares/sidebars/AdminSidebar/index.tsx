@@ -1,5 +1,5 @@
 import { Hidden, Drawer, Box, List } from "@material-ui/core";
-import Divider from "@material-ui/core/Divider";
+import EditIcon from '@material-ui/icons/Edit';
 import { ListItem, ListItemIcon, ListItemText } from "@material-ui/core";
 import PeopleIcon from "@material-ui/icons/People";
 import LibraryBooksIcon from "@material-ui/icons/LibraryBooks";
@@ -9,7 +9,6 @@ import { useLocation } from "react-router-dom";
 import "./style.scss";
 import { useStyles } from "./useStyles";
 import SideBarItem from "./SideBarItem";
-import { history } from "helpers/history";
 import { useSelector } from "react-redux";
 import { RootState } from "redux/store";
 import { Role } from "settings/role";
@@ -68,21 +67,7 @@ const AdminSideBar: React.FC<Props> = ({ onMobileClose, openMobile }) => {
               >
                 {(() => {
                   switch (userInfo?.role) {
-                    case 4:
-                      return (
-                        <ListItem
-                          className="list-item"
-                          button
-                          selected={selectedIndex === 3}
-                          onClick={(event) => handleListItemClick(event, 3)}
-                        >
-                          <ListItemIcon>
-                            <PeopleIcon />
-                          </ListItemIcon>
-                          <ListItemText primary="Dân số" />
-                        </ListItem>
-                      );
-                    default:
+                    case 3:
                       return (
                         <>
                           <ListItem
@@ -125,9 +110,61 @@ const AdminSideBar: React.FC<Props> = ({ onMobileClose, openMobile }) => {
                             onClick={(event) => handleListItemClick(event, 4)}
                           >
                             <ListItemIcon>
-                              <PeopleIcon />
+                              <EditIcon />
                             </ListItemIcon>
                             <ListItemText primary="Nhập liệu" />
+                          </ListItem>
+                        </>
+                      );
+                    case 4:
+                      return (
+                        <ListItem
+                          className="list-item"
+                          button
+                          selected={selectedIndex === 4}
+                          onClick={(event) => handleListItemClick(event, 1)}
+                        >
+                          <ListItemIcon>
+                            <EditIcon />
+                          </ListItemIcon>
+                          <ListItemText primary="Nhập liệu" />
+                        </ListItem>
+                      );
+                    default:
+                      return (
+                        <>
+                          <ListItem
+                            className="list-item"
+                            button
+                            selected={selectedIndex === 1}
+                            onClick={(event) => handleListItemClick(event, 1)}
+                          >
+                            <ListItemIcon>
+                              <EqualizerIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="Thống kê" />
+                          </ListItem>
+                          <ListItem
+                            className="list-item"
+                            button
+                            selected={selectedIndex === 2}
+                            onClick={(event) => handleListItemClick(event, 2)}
+                          >
+                            <ListItemIcon>
+                              <LibraryBooksIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="Quản lý" />
+                          </ListItem>
+                          <ListItem
+                            className="list-item"
+                            button
+                            selected={selectedIndex === 3}
+                            onClick={(event) => handleListItemClick(event, 3)}
+                          >
+                            <ListItemIcon>
+                              <PeopleIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="Theo dõi" />
                           </ListItem>
                         </>
                       );

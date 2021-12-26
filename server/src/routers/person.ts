@@ -1,3 +1,4 @@
+import { analyticsController } from "../controllers/analytics";
 import { personController } from "../controllers/person";
 import { Role } from "../entities/user";
 import { permissionUser } from "../middlewares/permission";
@@ -11,5 +12,10 @@ router.post("/create", roleRequire(Role.B1, Role.B2), permissionUser,personContr
 router.put("/update", roleRequire(Role.B1, Role.B2), permissionUser,personController.update);
 router.delete("/delete", roleRequire(Role.B1, Role.B2),  permissionUser,personController.delete);
 router.get("/getByRole", personController.getByRole);
+
+router.post("/analytics/gender", analyticsController.gender);
+router.post("/analytics/age", analyticsController.age);
+//router.post("/analytics/level", analyticsController.level);
+
 
 export default router;

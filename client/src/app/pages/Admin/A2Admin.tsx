@@ -41,8 +41,8 @@ const A2AdminPage = () => {
 	useEffect(() => {
 		districtApi.getByRole().then((res: any) => {
 			if (res.status === 200) {
-				setDistrict(res.data);
-				setData(res.data.map((data: any) => ({code: data.code, name: data.name, status:data.state ? "Đã Hoàn thành" : "Chưa Hoàn thành",})));
+				setDistrict(res.data.result);
+				setData(res.data.result.map((data: any) => ({code: data.code, name: data.name, status:data.state ? "Đã Hoàn thành" : "Chưa Hoàn thành",})));
 			}
 		})
 	}, []);
@@ -69,7 +69,7 @@ const A2AdminPage = () => {
 					console.log(res);
 					setDistrict(res.data);
 
-					setData(res.data.map((data: any) => ({code: data.code, name: data.name, status:data.state ? "Đã Hoàn thành" : "Chưa Hoàn thành",})));
+					setData(res.data.result.map((data: any) => ({code: data.code, name: data.name, status:data.state ? "Đã Hoàn thành" : "Chưa Hoàn thành",})));
 					
 					setWardKey(wardKey + 1);
 					setWard([]);

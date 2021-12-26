@@ -28,9 +28,10 @@ const B1AdminPage = () => {
 	
 	useEffect(() => {
 		villageApi.getByRole().then((res: any) => {
+			console.log(res);
 			if (res.status === 200) {
-				setVillage(res.data);
-				setData(res.data.map((data: any) => ({code: data.code, name: data.name, status:data.state ? "Đã Hoàn thành" : "Chưa Hoàn thành",})));
+				setVillage(res.data.result);
+				setData(res.data.result.map((data: any) => ({code: data.code, name: data.name, status:data.state ? "Đã Hoàn thành" : "Chưa Hoàn thành",})));
 			}
 		})
 	}, []);

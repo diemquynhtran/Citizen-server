@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import moment from "moment";
+import { getRepository, Like } from "typeorm";
 import { Role } from "../entities/user";
 import { User } from "../entities/user";
 
@@ -15,8 +16,16 @@ export const permissionUser = async (
   if (timeStart <= timeNow && timeEnd >timeNow) {
     user.permission = true;
   }
-  else user.permission = false;
-
+  else {
+    user.permission = false;
+    let userCancel = await getRepository(User).find({
+      where: {username: Like(`${user.username}%`)}
+    })
+    let i;
+    for (i=0 ; i< userCancel.length;i++) {
+      userCancel[i].permission = false;
+      }
+    }
   if (user.permission) {
     next();
   }

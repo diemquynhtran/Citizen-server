@@ -24,7 +24,7 @@ export class Person {
   @PrimaryGeneratedColumn()
   id: UUID;
   @Expose()
-  @Column({nullable: true})
+  @Column({nullable: true, unique: true})
   cmnd: string;
   @Column({ nullable: false })
   name: string;

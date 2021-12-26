@@ -21,4 +21,6 @@ export class UserTitleDto {
   createdAt: Date;
   @Expose()
   gender: Gender;
+  @Expose()
+  username: string;
 }

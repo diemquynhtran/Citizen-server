@@ -3,12 +3,7 @@ import React, {useEffect} from "react";
 import { useRole } from "hocs/useRole";
 import { Role } from "settings/role";
 
-import PropTypes from 'prop-types';
-
 import TextField from '@material-ui/core/TextField';
-import Autocomplete from '@material-ui/lab/Autocomplete';
-import MenuItem from '@material-ui/core/MenuItem';
-import InputLabel from '@material-ui/core/InputLabel';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
@@ -392,7 +387,7 @@ const A1SearchPage = () => {
 	};
 	
 	const onChangeSearchBy = (event: unknown, value: any) => {
-		if (value.props.value == 1) {
+		if (value.props.value === 1) {
 			setSearchFieldName("Tên");
 			searchByName = true;
 		} else {

@@ -1,7 +1,9 @@
 import api from ".";
 const baseURL = "/user/ward";
 const postbaseURL = "/user/ward/create"
+
 export const userwardApi = {
+
 	getUserWards: () => {
 	return api.get(`${baseURL}/`);
 	},

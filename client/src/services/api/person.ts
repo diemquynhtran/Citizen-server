@@ -7,5 +7,11 @@ export const personApi = {
 	
 	getByRole: () => {
 		return api.get(`${baseURL}/getByRole`);
-	}
+	},
+	
+	getByReq: (code: any) => {
+		return api.post(`${baseURL}//getByRequest`, code);
+
+	},
+
 };

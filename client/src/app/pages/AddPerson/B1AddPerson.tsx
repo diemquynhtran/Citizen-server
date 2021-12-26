@@ -72,7 +72,7 @@ const B1AddPerson = () => {
 	
 	const { userInfo } = useSelector((state: RootState) => state.user);
 	
-	const tableName = "Dữ liệu đã nhập";
+	const tableName = "Dữ liệu địa phương";
 	
 	const updateData = () => {
 		setData([]);

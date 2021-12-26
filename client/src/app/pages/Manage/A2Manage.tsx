@@ -8,20 +8,25 @@ import { toastService } from "helpers/toast";
 
 import PropTypes from "prop-types";
 
+
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
 import { Button, Form } from "react-bootstrap";
 import { makeStyles } from "@material-ui/core/styles";
 import AddIcon from "@material-ui/icons/Add";
 import Icon from "@material-ui/core/Icon";
+
 import Select from "react-select";
+
 
 import EnhancedDropdownMenu from "components/_shares/EnhancedDropdownMenu";
 import EnhancedStatisticalTable from "components/_shares/EnhancedTable";
 import { provinceApi } from "services/api/province";
 import { userprovinceApi } from "services/api/userProvince";
 import { districtApi } from "services/api/district";
+
 import { userdistrictApi } from "services/api/userDistrict";
+
 import { villageApi } from "services/api/village";
 import { wardApi } from "services/api/ward";
 import { useState } from "react";
@@ -61,6 +66,8 @@ const A2ManagePage = () => {
   const [tableName, setTableName] = React.useState("Quản lý tài khoản");
   
 
+  const [date, setDate] = React.useState([]);
+
   useEffect(() => {
     districtApi.getDistricts().then((res: any) => {
       if (res.status === 200) {
@@ -83,6 +90,7 @@ const A2ManagePage = () => {
       }
     });
   }, []);
+  console.log(province);
 
   const onChangeProvince = (event: unknown, value: any) => {
     if (value != null) {
@@ -169,7 +177,7 @@ const A2ManagePage = () => {
       });
     }
   };
-
+  
   const onChangeWard = (event: unknown, value: any) => {
     if (value != null) {
       setTableName(value.name);
@@ -211,6 +219,7 @@ const A2ManagePage = () => {
       left: "95%",
     },
   }));
+
   const [infodistrict, setInfodistrict] = useState({
     name: "",
   });
@@ -228,6 +237,7 @@ const A2ManagePage = () => {
   const [accShow, setAccShow] = useState(false);
   const handleCloseKey = () => setKeyShow(false);
   const handleCloseAcc = () => setAccShow(false);
+
   const onchangeInput = (e: React.FormEvent<HTMLInputElement>) => {
     const newValue = e.currentTarget.value;
   };

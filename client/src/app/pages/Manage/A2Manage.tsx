@@ -69,8 +69,7 @@ const A2ManagePage = () => {
   useEffect(() => {
     districtApi.getDistricts().then((res: any) => {
       if (res.status === 200) {
-        setDistrict(res.data);
-
+        setProvince(res.data);
         setData(
           res.data.map((data: any) => ({
             code: data.code,

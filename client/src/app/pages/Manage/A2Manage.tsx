@@ -4,7 +4,7 @@ import { useRole } from "hocs/useRole";
 import { Role } from "settings/role";
 import { useSelector } from "react-redux";
 import { RootState } from "redux/store";
-
+import { toastService } from "helpers/toast";
 
 import PropTypes from "prop-types";
 
@@ -14,11 +14,14 @@ import { Button, Form } from "react-bootstrap";
 import { makeStyles } from "@material-ui/core/styles";
 import AddIcon from "@material-ui/icons/Add";
 import Icon from "@material-ui/core/Icon";
+import Select from "react-select";
 
 import EnhancedDropdownMenu from "components/_shares/EnhancedDropdownMenu";
 import EnhancedStatisticalTable from "components/_shares/EnhancedTable";
 import { provinceApi } from "services/api/province";
+import { userprovinceApi } from "services/api/userProvince";
 import { districtApi } from "services/api/district";
+import { userdistrictApi } from "services/api/userDistrict";
 import { villageApi } from "services/api/village";
 import { wardApi } from "services/api/ward";
 import { useState } from "react";
@@ -29,12 +32,12 @@ import A2AddAccPage from "../AddAccount/A2AddAcc";
 import { userInfo } from "os";
 
 const head = [
-  { id: 1, label: "Mã tỉnh" },
-  { id: 2, label: "Tên tỉnh" },
-  { id: 3, label: "Trạng thái" },
-  // { id: 4, label: "Ngày bắt đầu" },
-  // { id: 5, label: "Ngày hết hạn" },
-  // { id: 6, label: "Trạng thái" }, 
+  { id: 1, label: "Mã quận/huyện" },
+  { id: 2, label: "Tên quận/huyện" },
+  { id: 3, label: "Tài khoản" },
+  { id: 4, label: "Ngày bắt đầu" },
+  { id: 5, label: "Ngày hết hạn" },
+  { id: 6, label: "Trạng thái" },
 ];
 const A2ManagePage = () => {
   useRole(Role.A2);
@@ -57,26 +60,29 @@ const A2ManagePage = () => {
 
   const [data, setData] = React.useState([]);
   const [tableName, setTableName] = React.useState("Quản lý tài khoản");
-  const [date, setDate] = React.useState([]);
 
   useEffect(() => {
-    provinceApi.getProvinces().then((res: any) => {
+    districtApi.getDistricts().then((res: any) => {
       if (res.status === 200) {
-        setProvince(res.data);
+        setDistrict(res.data);
         setData(
           res.data.map((data: any) => ({
             code: data.code,
             name: data.name,
             account: data.code,
-            // start: data.admin.startTime || " ",
-            // end: data.admin.endTime || " ",
-            // status: data.admin.permission ? "Active" : "Inactive",
+            start: data.admin == null ? "" : data.admin.startTime,
+            end: data.admin == null ? "" : data.admin.endTime,
+            status:
+              data.admin == null
+                ? "Inactive"
+                : data.admin.permission
+                ? "Active"
+                : "Inactive",
           }))
         );
       }
     });
   }, []);
-  console.log(province);
 
   const onChangeProvince = (event: unknown, value: any) => {
     if (value != null) {
@@ -93,10 +99,18 @@ const A2ManagePage = () => {
           setWard([]);
 
           setData(
-            res.data.result.map((data: any) => ({
+            res.data.map((data: any) => ({
               code: data.code,
               name: data.name,
-              status: data.status,
+              account: data.code,
+              start: data.admin == null ? "" : data.admin.startTime,
+              end: data.admin == null ? "" : data.admin.endTime,
+              status:
+                data.admin == null
+                  ? "Inactive"
+                  : data.admin.permission
+                  ? "Active"
+                  : "Inactive",
             }))
           );
         }
@@ -110,7 +124,15 @@ const A2ManagePage = () => {
             res.data.map((data: any) => ({
               code: data.code,
               name: data.name,
-              status: data.status,
+              account: data.code,
+              start: data.admin == null ? "" : data.admin.startTime,
+              end: data.admin == null ? "" : data.admin.endTime,
+              status:
+                data.admin == null
+                  ? "Inactive"
+                  : data.admin.permission
+                  ? "Active"
+                  : "Inactive",
             }))
           );
 
@@ -136,10 +158,18 @@ const A2ManagePage = () => {
           setWard(res.data.result);
 
           setData(
-            res.data.result.map((data: any) => ({
+            res.data.map((data: any) => ({
               code: data.code,
               name: data.name,
-              status: data.status,
+              account: data.code,
+              start: data.admin == null ? "" : data.admin.startTime,
+              end: data.admin == null ? "" : data.admin.endTime,
+              status:
+                data.admin == null
+                  ? "Inactive"
+                  : data.admin.permission
+                  ? "Active"
+                  : "Inactive",
             }))
           );
         }
@@ -150,10 +180,18 @@ const A2ManagePage = () => {
           setTableName(provinceName);
           setDistrict(res.data.result);
           setData(
-            res.data.result.map((data: any) => ({
+            res.data.map((data: any) => ({
               code: data.code,
               name: data.name,
-              status: data.status,
+              account: data.code,
+              start: data.admin == null ? "" : data.admin.startTime,
+              end: data.admin == null ? "" : data.admin.endTime,
+              status:
+                data.admin == null
+                  ? "Inactive"
+                  : data.admin.permission
+                  ? "Active"
+                  : "Inactive",
             }))
           );
 
@@ -173,10 +211,18 @@ const A2ManagePage = () => {
           setWardName(value.name);
           setVillage(res.data.result);
           setData(
-            res.data.result.map((data: any) => ({
+            res.data.map((data: any) => ({
               code: data.code,
               name: data.name,
-              status: data.status,
+              account: data.code,
+              start: data.admin == null ? "" : data.admin.startTime,
+              end: data.admin == null ? "" : data.admin.endTime,
+              status:
+                data.admin == null
+                  ? "Inactive"
+                  : data.admin.permission
+                  ? "Active"
+                  : "Inactive",
             }))
           );
         }
@@ -187,10 +233,18 @@ const A2ManagePage = () => {
           setTableName(districtName);
           setWard(res.data.result);
           setData(
-            res.data.result.map((data: any) => ({
+            res.data.map((data: any) => ({
               code: data.code,
               name: data.name,
-              status: data.status,
+              account: data.code,
+              start: data.admin == null ? "" : data.admin.startTime,
+              end: data.admin == null ? "" : data.admin.endTime,
+              status:
+                data.admin == null
+                  ? "Inactive"
+                  : data.admin.permission
+                  ? "Active"
+                  : "Inactive",
             }))
           );
         }
@@ -205,8 +259,16 @@ const A2ManagePage = () => {
       left: "95%",
     },
   }));
-  const [infoprovin, setInfoprovin] = useState({
+  const [infodistrict, setInfodistrict] = useState({
     name: "",
+  });
+
+  const [infoacc, setInfoacc] = useState({
+    code: "",
+    name: "",
+    endTime: "",
+    password: "",
+    startTime: "",
   });
 
   const classesButton = useStyles();
@@ -214,33 +276,63 @@ const A2ManagePage = () => {
   const [accShow, setAccShow] = useState(false);
   const handleCloseKey = () => setKeyShow(false);
   const handleCloseAcc = () => setAccShow(false);
-  const handleSubmit = () => {};
   const onchangeInput = (e: React.FormEvent<HTMLInputElement>) => {
     const newValue = e.currentTarget.value;
   };
 
+
   const onSubmitKey = (event: any) => {
     handleCloseKey();
     event.preventDefault();
-    provinceApi.postProvinces(infoprovin).then((res: any) => {
+    userdistrictApi.postUserDistrict(infodistrict).then((res: any) => {
       if (res.status === 200) {
-        provinceApi.getProvinces().then((res: any) => {
+        districtApi.getDistricts().then((res: any) => {
           if (res.status === 200) {
-            provinceApi.getProvinces().then((res: any) => {
-              if (res.status === 200) {
-                setProvince(res.data);
-                setData(
-                  res.data.map((data: any) => ({
-                    code: data.code,
-                    name: data.name,
-                    account: data.code,
-                    // start: data.admin.startTime || " ",
-                    // end: data.admin.endTime || " ",
-                    // status: data.admin.permission ? "Active" : "Inactive",
-                  }))
-                );
-              }
-            });
+            setDistrict(res.data);
+            setData(
+              res.data.map((data: any) => ({
+                code: data.code,
+                name: data.name,
+                account: data.code,
+                start: data.admin == null ? "" : data.admin.startTime,
+                end: data.admin == null ? "" : data.admin.endTime,
+                status:
+                  data.admin == null
+                    ? "Inactive"
+                    : data.admin.permission
+                    ? "Active"
+                    : "Inactive",
+              }))
+            );
+          }
+        });
+      }
+    });
+  };
+
+  const onSubmitAcc = (event: any) => {
+    event.preventDefault();
+    userdistrictApi.postUserDistrict(infoacc).then((res: any) => {
+      if (res.status === 200) {
+        handleCloseAcc();
+        districtApi.getDistricts().then((res: any) => {
+          if (res.status === 200) {
+            setDistrict(res.data);
+            setData(
+              res.data.map((data: any) => ({
+                code: data.code,
+                name: data.name,
+                account: data.code,
+                start: data.admin == null ? "" : data.admin.startTime,
+                end: data.admin == null ? "" : data.admin.endTime,
+                status:
+                  data.admin == null
+                    ? "Inactive"
+                    : data.admin.permission
+                    ? "Active"
+                    : "Inactive",
+              }))
+            );
           }
         });
       }
@@ -282,12 +374,12 @@ const A2ManagePage = () => {
           <div className="login-form">
             <Form style={{ margin: 10, padding: 10 }}>
               <Form.Group className="mb-3" controlId="formBasicEmail">
-                <Form.Label>Khai báo Tỉnh/Thành phố</Form.Label>
+                <Form.Label>Khai báo Quận/Huyện/Thị xã</Form.Label>
                 <Form.Control
                   type="name"
-                  placeholder="Nhập tên tỉnh/thành phố"
+                  placeholder="Nhập tên quận/huyện/thị xã"
                   onChange={(e) =>
-                    setInfoprovin({ ...infoprovin, name: e.target.value })
+                    setInfodistrict({ ...infodistrict, name: e.target.value })
                   }
                 />
               </Form.Group>
@@ -321,12 +413,64 @@ const A2ManagePage = () => {
             <Modal.Title>Cấp tài khoản</Modal.Title>
           </Modal.Header>
           <div className="login-form">
-            <A2AddAccPage />
+            <Form style={{ margin: 10, padding: 10 }}>
+              <Form.Group className="mb-3" controlId="formBasicPassword">
+                <Form.Label>Quận/Huyện/Thị xã</Form.Label>
+                <Form.Control
+                  type="name"
+                  placeholder="Nhập tên quận/huyện/thị xã"
+                  onChange={(e) =>
+                    setInfoacc({ ...infoacc, name: e.target.value })
+                  }
+                />
+              </Form.Group>
+
+              <Form.Group className="mb-3" controlId="formBasicPassword">
+                <Form.Label>Mã quận/huyện/thị xã</Form.Label>
+                <Form.Control
+                  type="name"
+                  placeholder="Nhập mã"
+                  onChange={(e) => {
+                    setInfoacc({ ...infoacc, code: e.target.value });
+                  }}
+                />
+              </Form.Group>
+
+              <Form.Group className="mb-3" controlId="formBasicPassword">
+                <Form.Label>Cấp mật khẩu</Form.Label>
+                <Form.Control
+                  type="password"
+                  placeholder="Nhập mật khẩu"
+                  onChange={(e) => {
+                    setInfoacc({ ...infoacc, password: e.target.value });
+                  }}
+                />
+              </Form.Group>
+
+              <Form.Group className="mb-3" controlId="formBasicPassword">
+                <Form.Label>Ngày cấp</Form.Label>
+                <Form.Control
+                  type="date"
+                  onChange={(e) =>
+                    setInfoacc({ ...infoacc, startTime: e.target.value })
+                  }
+                />
+              </Form.Group>
+              <Form.Group className="mb-3" controlId="formBasicPassword">
+                <Form.Label>Ngày hết hạn</Form.Label>
+                <Form.Control
+                  type="date"
+                  onChange={(e) =>
+                    setInfoacc({ ...infoacc, endTime: e.target.value })
+                  }
+                />
+              </Form.Group>
+            </Form>
             <Modal.Footer>
               <Button variant="secondary" onClick={handleCloseAcc}>
                 Hủy
               </Button>
-              <Button variant="primary" onClick={handleSubmit}>
+              <Button variant="primary" onClick={onSubmitAcc}>
                 Hoàn thành
               </Button>
             </Modal.Footer>
@@ -336,14 +480,6 @@ const A2ManagePage = () => {
       <Grid container>
         <Box mr={3} mt={1}>
           <Grid item>
-            <Box mb={2}>
-              <EnhancedDropdownMenu
-                options={province}
-                getOptionLabel={(element: any) => element.name}
-                label="Tỉnh/Thành phố"
-                onChange={onChangeProvince}
-              />
-            </Box>
             <Box mb={2}>
               <EnhancedDropdownMenu
                 options={district}

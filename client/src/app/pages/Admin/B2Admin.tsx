@@ -120,7 +120,8 @@ const B2AdminPage = () => {
 							<Button
 							variant="contained"
 							color="primary"
-							onClick={handleClickOpenForm}>
+							onClick={handleClickOpenForm}
+							disabled={disabled}>
 								Thêm người
 							</Button>
 							

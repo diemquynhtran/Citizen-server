@@ -1,47 +1,62 @@
-import { getRepository } from "typeorm";
-import { Person } from "../entities/person";
+import { getRepository, Like } from "typeorm";
+import { Gender, Person } from "../entities/person";
 import { Request, Response } from "express";
 
 
 export const analyticsController = {
     //[POST] person/analytics/gender
     gender: async (req: Request, res: Response) => {
-       try {
-           //console.log(req.params);
-           
-        //const code = req.params._code;
-        const code = req.body.code;        
-        let personRepo = await getRepository(Person).createQueryBuilder("person")
-        //.addSelect("COUNT()","tong")
-        .select("person.gender","gender")
-        .addSelect("IFNULL(COUNT(person.gender),0)", "tong")
-        .where("person.admincode Like :code", {code: `${code}%`})
-        .groupBy("person.gender")
-        .getRawMany()
-        ;
-        //console.log(personRepo);
-        return res.json({
-            status: 200,
-            result: [
-                {
-                    "label":"male",
-                    "count": Number(personRepo[0].tong)
-                },
-                {
-                    "label":"female",
-                    "count":Number(personRepo[1].tong)
-                }
-            ]
-        })
-       }
-       catch (e) {
-           console.log(e);
-           return res.json({
-            status: 400,
-            messenger:"Loi gender"
-        })
-       }
-    },
+        try {
+            //console.log(req.params);
+            
+         //const code = req.params._code;
+         const code = req.body.code; 
+                
+         // let personRepo = await getRepository(Person).createQueryBuilder("person")
+         // //.addSelect("COUNT()","tong")
+         // .select("person.gender","gender")
+         // .addSelect("IFNULL(COUNT(person.gender),0)", "tong")
+         // .where("person.admincode Like :code", {code: `${code}%`})
+         // .groupBy("person.gender")
+         // .getRawMany()
+         // ;
+         
+         let person1 = await getRepository(Person).find({
+             where:[
+                 {admincode: Like(`${code}%`),
+                 gender: Gender.FEMALE}
+               ]
+         })
+         let person2 = await getRepository(Person).find({
+             where:[
+                 {admincode: Like(`${code}%`),
+                 gender: Gender.MALE}
+               ]
+         })
+ 
+         //console.log(personRepo);
+         return res.json({
+             status: 200,
+             result: [
+                 {
+                     "label":"Female",
+                     "count": Number(person1.length)
+                 },
+                 {
+                     "label":"male",
+                     "count":Number(person2.length)
+                 }
+             ]
+         })
+        }
+        catch (e) {
+            console.log(e);
+            return res.json({
+             status: 400,
+             messenger:"Loi gender"
+         })
+        }
+     },
     level: async (req: Request, res: Response) => {
         try {
          const code = req.body.code;

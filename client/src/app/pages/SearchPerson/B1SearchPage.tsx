@@ -204,42 +204,6 @@ const B1SearchPage = () => {
 		<Box mx="auto">
 			<Grid container spacing={3}>
 				<Grid container xs={12}>
-					<Grid item xs={3}>
-						<Box p={2}>
-							<EnhancedDropdownMenu
-							options={province}
-							getOptionLabel={(element: any) => element.name}
-							label="Tỉnh/Thành phố"
-							onChange={onChangeProvince}
-							/>
-						</Box>
-					</Grid>
-					
-					<Grid item xs={3}>
-						<Box p={2}>
-							<EnhancedDropdownMenu
-							options={district}
-							getOptionLabel={(element: any) => element.name}
-							label="Quận/Huyện"
-							onChange={onChangeDistrict}
-							key={districtKey}
-							/>
-						</Box>
-					</Grid>
-					
-					<Grid item xs={3}>
-						<Box p={2}>
-							<EnhancedDropdownMenu
-							options={ward}
-							getOptionLabel={(element: any) => element.name}
-							label="Phường/Xã"
-							onChange={onChangeWard}
-							key={wardKey}
-							/>
-						</Box>
-					</Grid>
-					
-					<Grid item xs={3}>
 						<Box p={2}>
 							<EnhancedDropdownMenu
 							options={village}
@@ -249,7 +213,6 @@ const B1SearchPage = () => {
 							key={villageKey}
 							/>
 						</Box>
-					</Grid>
 				</Grid>
 				
 				<Grid container xs={12}>

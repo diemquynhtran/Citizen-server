@@ -162,13 +162,16 @@ export const userController = {
       if(checkProvince.length == 0) {
         await getRepository(Province).update({ code: province }, { state: true });
       }
-      let checkVillage = await getRepository(Ward).find({
+      let checkVillage = await getRepository(Village).find({
         code: Like(`${code}%`)
       });
       let i=0;
       for (i=0;i<checkVillage.length;i++) {
         //checkVillage[i].state = true;
-        await getRepository(Village).update({code: checkVillage[i].code}, {state: true});
+        checkVillage[i].state = false;
+        let a = await getRepository(Village).save(checkVillage[i]);
+        console.log(a);
+        
       }
       
       if (result == null) {

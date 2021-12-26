@@ -51,15 +51,25 @@ export const personController = {
             ],
                 where: {admincode: Like(`${user.username}%`)}
             });
-            console.log(result);
-
-
+            
             if (result) {
-                return res.json({
-                    status: 200,
-                    messenger: " ",
-                    result: result
-                })
+                if(user.role==3) {
+                    let state = await getRepository(Ward).find({code: user.username});
+                    return res.json({
+                        status: 200,
+                        state: state[0].state ,
+                        result: result,
+                    })
+                }
+                else {
+                    let state = await getRepository(Village).find({code: user.username});
+                    return res.json({
+                        status: 200,
+                        state: state[0].state ,
+                        result: result,
+                    })
+                }
+                
             }
             else {
                 return res.json({

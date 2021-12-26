@@ -10,20 +10,17 @@ import { Ward} from "../entities/ward";
 export const villageController = {
   //[GET] /village
   getAllvillages: async (req: Request, res: Response) => {
-    const body = req.body;
+    const user = res.locals.user;
     const villageRepo = getRepository(Village);
     const villages = await villageRepo.find({
-      where: {},
+      where: {code: Like(`${user.username}%`)},
       relations: ["admin"],
     });
     let result = plainToClass(VillageTitle, villages, {
       excludeExtraneousValues: true,
     });
-    return res.json({
-      status: 200,
-      messenger: "",
-      result: result
-    })
+    res.status(200);
+    return res.send(result);
   },
 
   //[GET] /village/getByA3

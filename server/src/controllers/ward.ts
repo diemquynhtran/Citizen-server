@@ -11,10 +11,10 @@ import { District } from "../entities/district";
 export const wardController = {
   //[GET] /ward
   getAllwards: async (req: Request, res: Response) => {
-    const body = req.body;
+    const user = res.locals.user;
     const wardRepo = getRepository(Ward);
     const wards = await wardRepo.find({
-      where: {},
+      where: {code: Like(`${user.username}%`)},
       relations: ["admin"],
     });
     console.log(wards);
@@ -22,11 +22,8 @@ export const wardController = {
     let result = plainToClass(WardTitle, wards, {
       excludeExtraneousValues: true,
     });
-    return res.json({
-      status: 200,
-      messenger: "",
-      result: result
-    })
+    res.status(200);
+    return res.send(result);
   },
 
   //[GET] /ward/getByA3

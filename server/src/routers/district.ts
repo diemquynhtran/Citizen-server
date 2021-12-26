@@ -6,11 +6,11 @@ import { roleRequire } from "../middlewares/role";
 const express = require("express");
 const router = express.Router();
 
-router.get("/", districtController.getAllDistricts);
+router.get("/", districtController.getDistrictUser);
 router.get("/getByRole", districtController.getDistrictsByRole);
 router.post("/getByProvince", districtController.getByProvince);
 
-router.post("/create",roleRequire(Role.A2),permissionUser, districtController.create);
-router.put("/update",roleRequire(Role.A2),permissionUser, districtController.update);
-router.delete("/delete",roleRequire(Role.A2),permissionUser, districtController.delete);
+router.post("/create",permissionUser, districtController.create);
+router.put("/update",permissionUser, districtController.update);
+router.delete("/delete",permissionUser, districtController.delete);
 export default router;

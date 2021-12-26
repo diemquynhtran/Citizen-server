@@ -68,6 +68,7 @@ const A1AdminPage = () => {
 					setWardKey(wardKey + 1);
 					setWard([]);
 					
+
 					setData(res.data.result.map((data: any) => ({code: data.code, name: data.name, status:data.state ? "Đã Hoàn thành" : "Chưa Hoàn thành",})));
 				}
 			});
@@ -107,6 +108,7 @@ const A1AdminPage = () => {
 				if (res.status === 200) {
 					setTableName(provinceName);
 					setDistrict(res.data.result);
+
 					setData(res.data.result.map((data: any) => ({code: data.code, name: data.name, status:data.state ? "Đã Hoàn thành" : "Chưa Hoàn thành",})));
 					
 					setWardKey(wardKey + 1);
@@ -126,6 +128,7 @@ const A1AdminPage = () => {
 					setVillage(res.data.result);
 					
 					setData(res.data.result.map((data: any) => ({code: data.code, name: data.name, status:data.state ? "Đã Hoàn thành" : "Chưa Hoàn thành",})));
+
 				}
 			});
 		} else {
@@ -133,6 +136,7 @@ const A1AdminPage = () => {
 				if (res.status === 200) {
 					setTableName(districtName);
 					setWard(res.data.result);
+					
 					setData(res.data.result.map((data: any) => ({code: data.code, name: data.name, status:data.state ? "Đã Hoàn thành" : "Chưa Hoàn thành",})));
 				}
 			});
@@ -185,6 +189,7 @@ const A1AdminPage = () => {
 						tableName={tableName}
 						rows={data}
 						head={head}
+						hasButtons={false}
 						/>
 					</Box>
 				</Grid>

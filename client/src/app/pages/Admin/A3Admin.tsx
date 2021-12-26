@@ -82,6 +82,7 @@ const A3AdminPage = () => {
 						tableName={tableName}
 						rows={data}
 						head={head}
+						hasButtons={false}
 						/>
 					</Box>
 				</Grid>

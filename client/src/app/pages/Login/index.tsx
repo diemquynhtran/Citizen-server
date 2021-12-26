@@ -56,7 +56,7 @@ const LoginPage: React.FC = () => {
               onChange={(e) =>
                 setInfoLogin({ ...infoLogin, password: e.target.value })
               }
-            />
+            /> 
           </Form.Group>
           <Form.Group className="mb-3" controlId="formBasicCheckbox">
             <Form.Check type="checkbox" label="Check me out" />

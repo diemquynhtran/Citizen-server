@@ -67,12 +67,6 @@ const otherAddress = (data: any) => {
 const B2AdminPage = () => {
 	const [formOpen, setFormOpen] = React.useState(false);
 	const [alertOpen, setAlertOpen] = React.useState(false);
-
-
-
-
-const B2AdminPage = () => {
-	const [formOpen, setFormOpen] = React.useState(false);
 	
 	const [disabled, setDisabled] = React.useState(false);
 	const [data, setData] = React.useState([]);
@@ -96,8 +90,6 @@ const B2AdminPage = () => {
 				})));
 			}}
 		)
-		
-		console.log(data);
 	};
 	
 	useEffect(() => {updateData();}, [])
@@ -115,8 +107,7 @@ const B2AdminPage = () => {
 		setFormOpen(false);
 		updateData();
 	};
-	
-D
+
 	const handleCloseAlert = () => {
 		setAlertOpen(false);
 	};

@@ -1,18 +1,17 @@
 import { Hidden, Drawer, Box, List } from "@material-ui/core";
-import Divider from "@material-ui/core/Divider";
+import EditIcon from "@material-ui/icons/Edit";
 import { ListItem, ListItemIcon, ListItemText } from "@material-ui/core";
 import PeopleIcon from "@material-ui/icons/People";
 import LibraryBooksIcon from "@material-ui/icons/LibraryBooks";
 import EqualizerIcon from "@material-ui/icons/Equalizer";
+import AddIcon from '@material-ui/icons/Add';
 import React, { useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 import "./style.scss";
 import { useStyles } from "./useStyles";
 import SideBarItem from "./SideBarItem";
-import { history } from "helpers/history";
 import { useSelector } from "react-redux";
 import { RootState } from "redux/store";
-import { Role } from "settings/role";
 
 interface Props {
   onMobileClose: () => void;
@@ -23,6 +22,19 @@ const AdminSideBar: React.FC<Props> = ({ onMobileClose, openMobile }) => {
   const [selectedIndex, setSelectedIndex] = React.useState(1);
 
   const { userInfo } = useSelector((state: RootState) => state.user);
+
+  let userrole = userInfo?.role;
+  var role = "";
+  if (userrole === 0) {
+    role = "A1";
+  } else if (userrole === 1) {
+    role = "A2";
+  } else if (userrole === 2) {
+    role = "A3";
+  } else if (userrole === 3) {
+    role = "B1";
+  }
+
   const handleListItemClick = (event: any, index: any) => {
     setSelectedIndex(index);
   };
@@ -53,13 +65,6 @@ const AdminSideBar: React.FC<Props> = ({ onMobileClose, openMobile }) => {
           variant="persistent"
         >
           <Box height="100%" display="flex" flexDirection="column">
-            {/* <Box
-        alignItems="center"
-        display="flex"
-        flexDirection="column"
-        p={2}
-      ></Box> */}
-            {/* <hr className="divider-line" /> */}
             <Box p={2} padding="0">
               <List
                 component="nav"
@@ -68,67 +73,150 @@ const AdminSideBar: React.FC<Props> = ({ onMobileClose, openMobile }) => {
               >
                 {(() => {
                   switch (userInfo?.role) {
-                    case 4:
-                      return (
-                        <ListItem
-                          className="list-item"
-                          button
-                          selected={selectedIndex === 3}
-                          onClick={(event) => handleListItemClick(event, 3)}
-                        >
-                          <ListItemIcon>
-                            <PeopleIcon />
-                          </ListItemIcon>
-                          <ListItemText primary="Dân số" />
-                        </ListItem>
-                      );
-                    default:
+                    case 3:
                       return (
                         <>
-                          <ListItem
-                            className="list-item"
-                            button
-                            selected={selectedIndex === 1}
-                            onClick={(event) => handleListItemClick(event, 1)}
+                          <Link
+                            to={"/admin/" + role}
+                            style={{ textDecoration: "none", color: "black" }}
                           >
-                            <ListItemIcon>
-                              <EqualizerIcon />
-                            </ListItemIcon>
-                            <ListItemText primary="Thống kê" />
-                          </ListItem>
-                          <ListItem
-                            className="list-item"
-                            button
-                            selected={selectedIndex === 2}
-                            onClick={(event) => handleListItemClick(event, 2)}
+                            <ListItem
+                              className="list-item"
+                              button
+                              selected={selectedIndex === 1}
+                              onClick={(event) => handleListItemClick(event, 1)}
+                            >
+                              <ListItemIcon>
+                                <EqualizerIcon />
+                              </ListItemIcon>
+                              <ListItemText primary="Thống kê" />
+                            </ListItem>
+                          </Link>
+
+                          <Link
+                            to={"/manage/" + role}
+                            style={{ textDecoration: "none", color: "black" }}
                           >
-                            <ListItemIcon>
-                              <LibraryBooksIcon />
-                            </ListItemIcon>
-                            <ListItemText primary="Quản lý" />
-                          </ListItem>
-                          <ListItem
-                            className="list-item"
-                            button
-                            selected={selectedIndex === 3}
-                            onClick={(event) => handleListItemClick(event, 3)}
+                            <ListItem
+                              className="list-item"
+                              button
+                              selected={selectedIndex === 2}
+                              onClick={(event) => handleListItemClick(event, 2)}
+                            >
+                              <ListItemIcon>
+                                <LibraryBooksIcon />
+                              </ListItemIcon>
+                              <ListItemText primary="Quản lý" />
+                            </ListItem>
+                          </Link>
+
+                          <Link
+                            to={"/searchperson/" + role}
+                            style={{ textDecoration: "none", color: "black" }}
                           >
-                            <ListItemIcon>
-                              <PeopleIcon />
-                            </ListItemIcon>
-                            <ListItemText primary="Theo dõi" />
-                          </ListItem>
+                            <ListItem
+                              className="list-item"
+                              button
+                              selected={selectedIndex === 3}
+                              onClick={(event) => handleListItemClick(event, 3)}
+                            >
+                              <ListItemIcon>
+                                <PeopleIcon />
+                              </ListItemIcon>
+                              <ListItemText primary="Theo dõi" />
+                            </ListItem>
+                          </Link>
+
+                          <Link
+                            to="/addperson"
+                            style={{ textDecoration: "none", color: "black" }}
+                          >
+                            <ListItem
+                              className="list-item"
+                              button
+                              selected={selectedIndex === 4}
+                              onClick={(event) => handleListItemClick(event, 4)}
+                            >
+                              <ListItemIcon>
+                                <EditIcon />
+                              </ListItemIcon>
+                              <ListItemText primary="Nhập liệu" />
+                            </ListItem>
+                          </Link>
+                        </>
+                      );
+                    case 4:
+                      return (
+                        <Link
+                          to="admin/b2"
+                          style={{ textDecoration: "none", color: "black" }}
+                        >
                           <ListItem
                             className="list-item"
                             button
                             selected={selectedIndex === 4}
-                            onClick={(event) => handleListItemClick(event, 4)}
+                            onClick={(event) => handleListItemClick(event, 1)}
                           >
                             <ListItemIcon>
-                              <PeopleIcon />
+                              <EditIcon />
                             </ListItemIcon>
                             <ListItemText primary="Nhập liệu" />
                           </ListItem>
+                        </Link>
+                      );
+                    default:
+                      return (
+                        <>
+                          <Link
+                            to={"/admin/" + role}
+                            style={{ textDecoration: "none", color: "black" }}
+                          >
+                            <ListItem
+                              className="list-item"
+                              button
+                              selected={selectedIndex === 1}
+                              onClick={(event) => handleListItemClick(event, 1)}
+                            >
+                              <ListItemIcon>
+                                <EqualizerIcon />
+                              </ListItemIcon>
+                              <ListItemText primary="Thống kê" />
+                            </ListItem>
+                          </Link>
+
+                          <Link
+                            to={"/manage/" + role}
+                            style={{ textDecoration: "none", color: "black" }}
+                          >
+                            <ListItem
+                              className="list-item"
+                              button
+                              selected={selectedIndex === 2}
+                              onClick={(event) => handleListItemClick(event, 2)}
+                            >
+                              <ListItemIcon>
+                                <LibraryBooksIcon />
+                              </ListItemIcon>
+                              <ListItemText primary="Quản lý" />
+                            </ListItem>
+                          </Link>
+
+                          <Link
+                            to={"/searchperson/" + role}
+                            style={{ textDecoration: "none", color: "black" }}
+                          >
+                            <ListItem
+                              className="list-item"
+                              button
+                              selected={selectedIndex === 3}
+                              onClick={(event) => handleListItemClick(event, 3)}
+                            >
+                              <ListItemIcon>
+                                <PeopleIcon />
+                              </ListItemIcon>
+                              <ListItemText primary="Theo dõi" />
+                            </ListItem>
+                          </Link>
                         </>
                       );
                   }

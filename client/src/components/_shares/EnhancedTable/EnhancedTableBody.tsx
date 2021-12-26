@@ -14,10 +14,13 @@ import DeleteIcon from "@material-ui/icons/Delete";
 
 import { useStylesTable } from "./useStyles";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
+
 interface Props {
   head: any;
   rows: any;
+  hasButtons?: boolean;
 }
+
 
 const EnhancedTableHead: React.FC<Props> = ({ head }) => {
   return (
@@ -35,7 +38,7 @@ const EnhancedTableHead: React.FC<Props> = ({ head }) => {
   );
 };
 
-const EnhancedTableBody: React.FC<Props> = ({ head, rows }) => {
+const EnhancedTableBody: React.FC<Props> = ({ head, rows, hasButtons }) => {
   const classes = useStylesTable();
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
@@ -84,8 +87,8 @@ const EnhancedTableBody: React.FC<Props> = ({ head, rows }) => {
                     {Object.values(row).map((key: any) => {
                       return <TableCell>{key}</TableCell>;
                     })}
-
-                    <TableCell padding="checkbox">
+					{ hasButtons
+                    ? <TableCell padding="checkbox">
                       <IconButton aria-label="delete" size="small">
                         <EditIcon />
                       </IconButton>
@@ -93,6 +96,7 @@ const EnhancedTableBody: React.FC<Props> = ({ head, rows }) => {
                         <DeleteIcon />
                       </IconButton>
                     </TableCell>
+					: <TableCell padding="checkbox"></TableCell>}
                   </StyledTableRow>
                 );
               })}

@@ -26,5 +26,7 @@ router.post("/ward/create",roleRequire(Role.A3), permissionUser,userwardControll
 router.get("/village", roleRequire(Role.A1, Role.A2, Role.A3, Role.B1), userVillageController.get);
 router.post("/village/create",roleRequire(Role.B1), permissionUser,userVillageController.create);
 
+router.post("/confirmComplete", permissionUser, roleRequire(Role.B1), userController.comfirmComplete);
+
 
 export default router;

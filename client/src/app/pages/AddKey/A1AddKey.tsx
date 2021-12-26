@@ -8,6 +8,7 @@ import { districtApi } from "services/api/district";
 import { wardApi } from "services/api/ward";
 import { Modal } from "react-bootstrap";
 import { InputGroup } from "react-bootstrap";
+import { authApi } from "services/api/auth";
 const A1AddKeyPage: React.FC = () => {
   useRole(Role.A1);
 
@@ -15,6 +16,11 @@ const A1AddKeyPage: React.FC = () => {
   const [ward, setWard] = React.useState([]);
   const [data, setData] = React.useState([]);
   const [tableName, setTableName] = React.useState("Toàn quốc");
+  const [postprovince, setPostProvince] = React.useState([]);
+  
+  const [infoprovin, setInfoprovin] = useState({
+    name: "",
+  });
 
   useEffect(() => {
     provinceApi.getProvinces().then((res: any) => {
@@ -31,29 +37,7 @@ const A1AddKeyPage: React.FC = () => {
     });
   }, []);
 
-  const onChangeProvince = (event: unknown, value: any) => {
-    if (value != null) {
-      setTableName(value.name);
-      districtApi.getByProvince(value.code).then((res: any) => {
-        if (res.status === 200) {
-          setData(
-            res.data.result.map((data: any) => ({
-              code: data.code,
-              name: data.name,
-              status: data.status,
-            }))
-          );
-        }
-      });
-    }
-  };
-  const onChange = (event: unknown) => {};
-  const [show, setShow] = useState(false);
-
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-
-  let codeNew:any = data.length + 1;
+  let codeNew: any = data.length + 1;
   codeNew = Number(codeNew) < 10 ? `0${codeNew}` : codeNew;
 
   return (
@@ -62,9 +46,12 @@ const A1AddKeyPage: React.FC = () => {
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Label>Khai báo Tỉnh/Thành phố</Form.Label>
           <Form.Control
-              type="name"
-              placeholder="Nhập tên tỉnh/thành phố"
-        />   
+            type="name"
+            placeholder="Nhập tên tỉnh/thành phố"
+            onChange={(e) =>
+              setInfoprovin({ ...infoprovin, name: e.target.value })
+            }
+          />
         </Form.Group>
 
         <Form.Group className="mb-3" controlId="formBasicPassword">

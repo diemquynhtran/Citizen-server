@@ -99,7 +99,7 @@ const B1AddPerson = () => {
 	
 	useEffect(() => {
 		updateData();
-	}, [])
+	}, []);
 	
 	const handleClickOpenForm = () => {
 		setFormOpen(true);
@@ -130,6 +130,7 @@ const B1AddPerson = () => {
 				}
 			}
 		})
+
 		setAlertOpen(false);
 	};
 	

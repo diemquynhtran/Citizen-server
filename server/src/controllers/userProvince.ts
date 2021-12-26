@@ -15,6 +15,7 @@ export const userProvinceController = {
     //[POST] /user/province/create
     create: async (req: Request, res: Response) => {
         try {
+            console.log(req.body);
             let timeNow = moment();
             let {code, name, password, endTime, startTime} = req.body;
             if (!code || !name || !password) {

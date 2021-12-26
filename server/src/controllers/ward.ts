@@ -22,11 +22,8 @@ export const wardController = {
     let result = plainToClass(WardTitle, wards, {
       excludeExtraneousValues: true,
     });
-    return res.json({
-      status: 200,
-      messenger: "",
-      result: result
-    })
+    res.status(200);
+    return res.send(result);
   },
 
   //[GET] /ward/getByA3

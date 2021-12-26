@@ -19,11 +19,8 @@ export const villageController = {
     let result = plainToClass(VillageTitle, villages, {
       excludeExtraneousValues: true,
     });
-    return res.json({
-      status: 200,
-      messenger: "",
-      result: result
-    })
+    res.status(200);
+    return res.send(result);
   },
 
   //[GET] /village/getByA3

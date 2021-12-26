@@ -15,7 +15,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import AddIcon from "@material-ui/icons/Add";
 import Icon from "@material-ui/core/Icon";
 import Select from "react-select";
-
+import { userwardApi } from "services/api/userWard";
 import EnhancedDropdownMenu from "components/_shares/EnhancedDropdownMenu";
 import EnhancedStatisticalTable from "components/_shares/EnhancedTable";
 import { provinceApi } from "services/api/province";
@@ -54,6 +54,7 @@ const A3ManagePage = () => {
   const [provinceName, setProvinceName] = React.useState("");
   const [districtName, setDistrictName] = React.useState("");
   const [wardName, setWardName] = React.useState("");
+ 
 
   const [districtKey, setDistrictKey] = React.useState(0);
   const [wardKey, setWardKey] = React.useState(0);
@@ -62,7 +63,7 @@ const A3ManagePage = () => {
   const [tableName, setTableName] = React.useState("Quản lý tài khoản");
 
   useEffect(() => {
-    villageApi.getVillages().then((res: any) => {
+    wardApi.getWards().then((res: any) => {
       if (res.status === 200) {
         setProvince(res.data);
         setData(
@@ -241,9 +242,9 @@ const A3ManagePage = () => {
   const onSubmitKey = (event: any) => {
     handleCloseKey();
     event.preventDefault();
-    villageApi.postVillage(infodistrict).then((res: any) => {
+    wardApi.postWard(infodistrict).then((res: any) => {
       if (res.status === 200) {
-        villageApi.getVillages().then((res: any) => {
+        wardApi.getWards().then((res: any) => {
           if (res.status === 200) {
             setProvince(res.data);
             setData(
@@ -275,10 +276,10 @@ const A3ManagePage = () => {
 
   const onSubmitAcc = (event: any) => {
     event.preventDefault();
-    uservillageApi.postUserVillage(infoacc).then((res: any) => {
+    userwardApi.postUserWard(infoacc).then((res: any) => {
       if (res.status === 200) {
         handleCloseAcc();
-        villageApi.getVillages().then((res: any) => {
+        wardApi.getWards().then((res: any) => {
           if (res.status === 200) {
             setProvince(res.data);
             setData(
@@ -348,7 +349,7 @@ const A3ManagePage = () => {
                 <Form.Control
                   type="name"
                   placeholder="Nhập tên phường/xã/thị trấn"
-                  onChange={(e) =>
+                  onChange={(e:any) =>
                     setInfodistrict({ ...infodistrict, name: e.target.value })
                   }
                 />
@@ -389,7 +390,7 @@ const A3ManagePage = () => {
                 <Form.Control
                   type="name"
                   placeholder="Nhập tên phường/xã/thị trấn"
-                  onChange={(e) =>
+                  onChange={(e:any) =>
                     setInfoacc({ ...infoacc, name: e.target.value })
                   }
                 />
@@ -400,7 +401,7 @@ const A3ManagePage = () => {
                 <Form.Control
                   type="name"
                   placeholder="Nhập mã"
-                  onChange={(e) => {
+                  onChange={(e:any) => {
                     setInfoacc({ ...infoacc, code: e.target.value });
                   }}
                 />
@@ -411,7 +412,7 @@ const A3ManagePage = () => {
                 <Form.Control
                   type="password"
                   placeholder="Nhập mật khẩu"
-                  onChange={(e) => {
+                  onChange={(e:any) => {
                     setInfoacc({ ...infoacc, password: e.target.value });
                   }}
                 />
@@ -421,7 +422,7 @@ const A3ManagePage = () => {
                 <Form.Label>Ngày cấp</Form.Label>
                 <Form.Control
                   type="date"
-                  onChange={(e) =>
+                  onChange={(e:any) =>
                     setInfoacc({ ...infoacc, startTime: e.target.value })
                   }
                 />
@@ -430,7 +431,7 @@ const A3ManagePage = () => {
                 <Form.Label>Ngày hết hạn</Form.Label>
                 <Form.Control
                   type="date"
-                  onChange={(e) =>
+                  onChange={(e:any) =>
                     setInfoacc({ ...infoacc, endTime: e.target.value })
                   }
                 />

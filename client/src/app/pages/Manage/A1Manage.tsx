@@ -350,7 +350,7 @@ const A1ManagePage = () => {
                 <Form.Control
                   type="name"
                   placeholder="Nhập tên tỉnh/thành phố"
-                  onChange={(e) =>
+                  onChange={(e:any) =>
                     setInfoprovin({ ...infoprovin, name: e.target.value })
                   }
                 />
@@ -391,7 +391,7 @@ const A1ManagePage = () => {
                 <Form.Control
                   type="name"
                   placeholder="Nhập tên tỉnh/thành phố"
-                  onChange={(e) =>
+                  onChange={(e:any) =>
                     setInfoacc({ ...infoacc, name: e.target.value })
                   }
                 />
@@ -402,7 +402,7 @@ const A1ManagePage = () => {
                 <Form.Control
                   type="name"
                   placeholder="Nhập mã"
-                  onChange={(e) => {
+                  onChange={(e:any) => {
                     setInfoacc({ ...infoacc, code: e.target.value });
                   }}
                 />
@@ -413,7 +413,7 @@ const A1ManagePage = () => {
                 <Form.Control
                   type="password"
                   placeholder="Nhập mật khẩu"
-                  onChange={(e) => {
+                  onChange={(e:any) => {
                     setInfoacc({ ...infoacc, password: e.target.value });
                   }}
                 />
@@ -423,7 +423,7 @@ const A1ManagePage = () => {
                 <Form.Label>Ngày cấp</Form.Label>
                 <Form.Control
                   type="date"
-                  onChange={(e) =>
+                  onChange={(e:any) =>
                     setInfoacc({ ...infoacc, startTime: e.target.value })
                   }
                 />
@@ -432,7 +432,7 @@ const A1ManagePage = () => {
                 <Form.Label>Ngày hết hạn</Form.Label>
                 <Form.Control
                   type="date"
-                  onChange={(e) =>
+                  onChange={(e:any) =>
                     setInfoacc({ ...infoacc, endTime: e.target.value })
                   }
                 />

@@ -14,12 +14,12 @@ import { provinceApi } from "services/api/province";
 import { districtApi } from "services/api/district";
 import { wardApi } from "services/api/ward";
 import { villageApi } from "services/api/village";
-
+import { personApi } from "services/api/person";
 
 const head = [
 	{id: 1, label:"Mã"},
 	{id: 2, label:"Tên"},
-	{id: 3, label:"Đã hoàn thành?"},
+	{id: 3, label:"Tình trạng Điều tra"},
 ]
 
 const A1AdminPage = () => {
@@ -49,7 +49,7 @@ const A1AdminPage = () => {
 		provinceApi.getProvinces().then((res: any) => {
 			if (res.status === 200) {
 				setProvince(res.data);
-				setData(res.data.map((data: any) => ({code: data.code, name: data.name, status:data.state ? "Đã Hoàn thành" : "Chưa hoàn thành",})));
+				setData(res.data.map((data: any) => ({code: data.code, name: data.name, status:data.state ? "Đã Hoàn thành" : "Chưa Hoàn thành",})));
 			}
 		})
 	}, []);
@@ -68,7 +68,8 @@ const A1AdminPage = () => {
 					setWardKey(wardKey + 1);
 					setWard([]);
 					
-					setData(res.data.result.map((data: any) => ({code: data.code, name: data.name, status:data.state ? "Đã Hoàn thành" : "Chưa hoàn thành",})));
+
+					setData(res.data.result.map((data: any) => ({code: data.code, name: data.name, status:data.state ? "Đã Hoàn thành" : "Chưa Hoàn thành",})));
 				}
 			});
 		} else {
@@ -76,7 +77,7 @@ const A1AdminPage = () => {
 			provinceApi.getProvinces().then((res: any) => {
 				if (res.status === 200) {
 					setProvince(res.data);
-					setData(res.data.map((data: any) => ({code: data.code, name: data.name, status:data.state ? "Đã Hoàn thành" : "Chưa hoàn thành",})));
+					setData(res.data.map((data: any) => ({code: data.code, name: data.name, status:data.state ? "Đã Hoàn thành" : "Chưa Hoàn thành",})));
 					
 					setDistrictKey(districtKey + 1);
 					setDistrict([]);
@@ -99,7 +100,7 @@ const A1AdminPage = () => {
 					setWardKey(wardKey + 1);
 					setWard(res.data.result);
 					
-					setData(res.data.result.map((data: any) => ({code: data.code, name: data.name, status:data.state,})));
+					setData(res.data.result.map((data: any) => ({code: data.code, name: data.name, status:data.state ? "Đã Hoàn thành" : "Chưa Hoàn thành",})));
 				}
 			});
 		} else {
@@ -107,7 +108,8 @@ const A1AdminPage = () => {
 				if (res.status === 200) {
 					setTableName(provinceName);
 					setDistrict(res.data.result);
-					setData(res.data.result.map((data: any) => ({code: data.code, name: data.name, status:data.state,})));
+
+					setData(res.data.result.map((data: any) => ({code: data.code, name: data.name, status:data.state ? "Đã Hoàn thành" : "Chưa Hoàn thành",})));
 					
 					setWardKey(wardKey + 1);
 					setWard([]);
@@ -124,7 +126,9 @@ const A1AdminPage = () => {
 					setWardID(value.code);
 					setWardName(value.name);
 					setVillage(res.data.result);
-					setData(res.data.result.map((data: any) => ({code: data.code, name: data.name, status:data.state,})));
+					
+					setData(res.data.result.map((data: any) => ({code: data.code, name: data.name, status:data.state ? "Đã Hoàn thành" : "Chưa Hoàn thành",})));
+
 				}
 			});
 		} else {
@@ -132,7 +136,8 @@ const A1AdminPage = () => {
 				if (res.status === 200) {
 					setTableName(districtName);
 					setWard(res.data.result);
-					setData(res.data.result.map((data: any) => ({code: data.code, name: data.name, status:data.state,})));
+					
+					setData(res.data.result.map((data: any) => ({code: data.code, name: data.name, status:data.state ? "Đã Hoàn thành" : "Chưa Hoàn thành",})));
 				}
 			});
 		}

@@ -1,5 +1,8 @@
 import React, {useEffect} from "react";
 
+import { useSelector } from "react-redux";
+import { RootState } from "redux/store";
+
 import Box from '@material-ui/core/Box';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
@@ -16,6 +19,8 @@ import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import PersonForm from "components/form/PersonForm"
 import EnhancedStatisticalTable from "components/_shares/EnhancedTable";
 import { personApi } from "services/api/person";
+import { userApi } from "services/api/user";
+import { toastService } from "helpers/toast";
 
 const head = [
 	{id: 1, label:"Số CMND/CCCD"},
@@ -62,6 +67,14 @@ const otherAddress = (data: any) => {
 const B2AdminPage = () => {
 	const [formOpen, setFormOpen] = React.useState(false);
 	const [alertOpen, setAlertOpen] = React.useState(false);
+
+
+
+
+const B2AdminPage = () => {
+	const [formOpen, setFormOpen] = React.useState(false);
+	
+	const [disabled, setDisabled] = React.useState(false);
 	const [data, setData] = React.useState([]);
 	
 	const tableName = "Dữ liệu đã nhập";
@@ -93,24 +106,25 @@ const B2AdminPage = () => {
 		setFormOpen(true);
 	};
 	
+
 	const handleClickOpenAlert = () => {
 		setAlertOpen(true);
 	};
-	
+
 	const handleCloseForm = () => {
 		setFormOpen(false);
 		updateData();
 	};
 	
+D
 	const handleCloseAlert = () => {
 		setAlertOpen(false);
 	};
 	
 	const handleConfirmCompletion = () => {
-		
 		setAlertOpen(false);
 	};
-	
+
 	return (
 		<Box mx="auto" mt={3}>
 			<Grid container spacing={3}>
@@ -151,7 +165,7 @@ const B2AdminPage = () => {
 								</DialogTitle>
 								
 								<Box mx="auto">
-									<PersonForm />
+									<PersonForm onClick={handleCloseForm} />
 								</Box>
 							</Dialog>
 						</Box>

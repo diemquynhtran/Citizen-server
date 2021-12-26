@@ -4,6 +4,7 @@ import { getRepository, Like } from "typeorm";
 import { Province } from "../entities/province";
 import { Ward } from "../entities/ward";
 import { District } from "../entities/district";
+import { Village } from "../entities/village";
 
 export const userController = {
 
@@ -160,6 +161,14 @@ export const userController = {
       })
       if(checkProvince.length == 0) {
         await getRepository(Province).update({ code: province }, { state: true });
+      }
+      let checkVillage = await getRepository(Ward).find({
+        code: Like(`${code}%`)
+      });
+      let i=0;
+      for (i=0;i<checkVillage.length;i++) {
+        //checkVillage[i].state = true;
+        await getRepository(Village).update({code: checkVillage[i].code}, {state: true});
       }
       
       if (result == null) {

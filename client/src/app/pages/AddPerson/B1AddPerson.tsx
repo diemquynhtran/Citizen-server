@@ -1,4 +1,6 @@
 import React, {useEffect} from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "redux/store";
 
 import Box from '@material-ui/core/Box';
 import Paper from '@material-ui/core/Paper';
@@ -16,6 +18,8 @@ import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import PersonForm from "components/form/PersonForm"
 import EnhancedStatisticalTable from "components/_shares/EnhancedTable";
 import { personApi } from "services/api/person";
+import { userApi } from "services/api/user";
+import { toastService } from "helpers/toast";
 
 const head = [
 	{id: 1, label:"Số CMND/CCCD"},
@@ -40,7 +44,7 @@ const hometownAddress = (data: any) => {
 }
 
 const defaultAddress = (data: any) => {
-	let detail = data.defaultAddress.village == null ? "" : data.defaultAddress.village.name;
+	let detail = data.defaultAddress.detail == null ? "" : data.defaultAddress.detail;
 	let village = data.defaultAddress.village == null ? "" : data.defaultAddress.village.name;
 	let ward = data.defaultAddress.ward == null ? "" : data.defaultAddress.ward.name;
 	let district = data.defaultAddress.district == null ? "" : data.defaultAddress.district.name;
@@ -50,7 +54,7 @@ const defaultAddress = (data: any) => {
 }
 
 const otherAddress = (data: any) => {
-	let detail = data.otherAddress.village == null ? "" : data.otherAddress.village.name;
+	let detail = data.otherAddress.detail == null ? "" : data.otherAddress.detail;
 	let village = data.otherAddress.village == null ? "" : data.otherAddress.village.name;
 	let ward = data.otherAddress.ward == null ? "" : data.otherAddress.ward.name;
 	let district = data.otherAddress.district == null ? "" : data.otherAddress.district.name;
@@ -62,11 +66,17 @@ const otherAddress = (data: any) => {
 const B1AddPerson = () => {
 	const [formOpen, setFormOpen] = React.useState(false);
 	const [alertOpen, setAlertOpen] = React.useState(false);
+	
+	const [disabled, setDisabled] = React.useState(false);
 	const [data, setData] = React.useState([]);
+	
+	const { userInfo } = useSelector((state: RootState) => state.user);
 	
 	const tableName = "Dữ liệu đã nhập";
 	
 	const updateData = () => {
+		setData([]);
+		
 		personApi.getByRole().then((res: any) => {
 			if(res.status === 200) {	
 				setData(res.data.result.map((data: any) => ({
@@ -87,7 +97,9 @@ const B1AddPerson = () => {
 		console.log(data);
 	};
 	
-	useEffect(() => {updateData();}, [])
+	useEffect(() => {
+		updateData();
+	}, []);
 	
 	const handleClickOpenForm = () => {
 		setFormOpen(true);
@@ -106,8 +118,19 @@ const B1AddPerson = () => {
 		setAlertOpen(false);
 	};
 	
-	const handleConfirmCompletion = () => {
-		
+	const handleConfirmCompletion = () => {	
+		userApi.confirmComplete(userInfo == null ? "" : userInfo.username).then((res: any) => {
+			console.log(res);
+			if (res.status === 200) {
+				if (res.data.status === 200) {
+					toastService.success("Xác nhận thành công");
+					setDisabled(true);
+				} else {
+					toastService.error("Có lỗi xảy ra");
+				}
+			}
+		})
+
 		setAlertOpen(false);
 	};
 	
@@ -120,7 +143,8 @@ const B1AddPerson = () => {
 							<Button
 							variant="contained"
 							color="primary"
-							onClick={handleClickOpenForm}>
+							onClick={handleClickOpenForm}
+							disabled={disabled}>
 								Thêm người
 							</Button>
 							
@@ -150,7 +174,7 @@ const B1AddPerson = () => {
 								</DialogTitle>
 								
 								<Box mx="auto">
-									<PersonForm />
+									<PersonForm onClick={handleCloseForm} />
 								</Box>
 							</Dialog>
 						</Box>
@@ -160,7 +184,11 @@ const B1AddPerson = () => {
 					
 					<Grid item xs={2}>
 						<Box p={2}>
-							<Button variant="contained" color="primary" onClick={handleClickOpenAlert}>
+							<Button
+							variant="contained"
+							color="primary"
+							onClick={handleClickOpenAlert}
+							disabled={disabled}>
 								Hoàn thành
 							</Button>
 							<Dialog

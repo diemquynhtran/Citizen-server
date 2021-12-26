@@ -12,5 +12,5 @@ export class DistrictTitle {
   @Expose()
   state: Boolean;
   @Expose()
-  province: Province
+  province: Province;
 }

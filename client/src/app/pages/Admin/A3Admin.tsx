@@ -25,6 +25,7 @@ const head = [
 ];
 
 const A3AdminPage = () => {
+<<<<<<< HEAD
   useRole(Role.A3);
 
   const [ward, setWard] = React.useState([]);
@@ -154,6 +155,7 @@ const A3AdminPage = () => {
       </Grid>
     </Box>
   );
+
 };
 
 export default A3AdminPage;

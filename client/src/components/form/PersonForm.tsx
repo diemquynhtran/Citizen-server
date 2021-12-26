@@ -639,12 +639,15 @@ const PersonForm = () => {
 		}
 	};
 
-	const onChangeNameField = (e: any) => {
+	 const onChangeNameField = (e: any) => {
 		const { name, value } = e.target;
+		
 		setFormValue({
 			...formValue,
 			name: value,
 		});
+		
+		console.log(formValue.name);
 	};
 	
 	const onChangeUIDField = (e: any) => {
@@ -701,6 +704,8 @@ const PersonForm = () => {
 			detail: value,
 		});
 		
+		console.log(defaultValue.detail);
+		
 		setFormValue({
 			...formValue,
 			defaultAddress: defaultValue,
@@ -723,9 +728,12 @@ const PersonForm = () => {
 
 	const handleSubmit = (event: any) => {
 		event.preventDefault();
+		//console.log(formValue);
 		
 		personApi.createPerson(formValue).then((res: any) => {
+			console.log(res);
 			if (res.status === 200) {
+				
 				if (res.data.status === 200) {
 					toastService.success("Nhập liệu thành công");
 				} else {

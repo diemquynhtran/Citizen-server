@@ -6,7 +6,7 @@ export const userprovinceApi = {
     return api.get(`${getbaseURL}/`);
   },
 
-  postUserProvinces: (infoprovin:any) => {
-    return api.post(`${postbaseURL}/`,infoprovin);
+  postUserProvinces: (infoacc:any) => {
+    return api.post(`${postbaseURL}/`,infoacc);
   },
 };

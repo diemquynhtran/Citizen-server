@@ -37,7 +37,6 @@ const AutocompleteDropdown: React.FC<Props> = ({
 }) => {
   const classes = useStyles();
   return (
-  
     <Autocomplete
       id="combo-box-demo"
       className={clsx(classes.root, className)}

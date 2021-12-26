@@ -17,6 +17,10 @@ const A1AddKeyPage: React.FC = () => {
   const [data, setData] = React.useState([]);
   const [tableName, setTableName] = React.useState("Toàn quốc");
   const [postprovince, setPostProvince] = React.useState([]);
+  
+  const [infoprovin, setInfoprovin] = useState({
+    name: "",
+  });
 
   useEffect(() => {
     provinceApi.getProvinces().then((res: any) => {
@@ -44,7 +48,9 @@ const A1AddKeyPage: React.FC = () => {
           <Form.Control
             type="name"
             placeholder="Nhập tên tỉnh/thành phố"
-            
+            onChange={(e) =>
+              setInfoprovin({ ...infoprovin, name: e.target.value })
+            }
           />
         </Form.Group>
 

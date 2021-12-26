@@ -42,7 +42,7 @@ const A2AdminPage = () => {
 		districtApi.getByRole().then((res: any) => {
 			if (res.status === 200) {
 				setDistrict(res.data);
-				setData(res.data.map((data: any) => ({code: data.code, name: data.name, status:data.status,})));
+				setData(res.data.map((data: any) => ({code: data.code, name: data.name, status:data.state ? "Đã Hoàn thành" : "Chưa hoàn thành",})));
 			}
 		})
 	}, []);
@@ -58,7 +58,7 @@ const A2AdminPage = () => {
 					setWardKey(wardKey + 1);
 					setWard(res.data.result);
 					
-					setData(res.data.result.map((data: any) => ({code: data.code, name: data.name, status:data.status,})));
+					setData(res.data.result.map((data: any) => ({code: data.code, name: data.name, status:data.state ? "Đã Hoàn thành" : "Chưa hoàn thành",})));
 				}
 			});
 		} else {
@@ -67,7 +67,7 @@ const A2AdminPage = () => {
 					//setTableName(provinceName);
 					console.log(res);
 					setDistrict(res.data);
-					setData(res.data.map((data: any) => ({code: data.code, name: data.name, status:data.status,})));
+					setData(res.data.map((data: any) => ({code: data.code, name: data.name, status:data.state ? "Đã Hoàn thành" : "Chưa hoàn thành",})));
 					
 					setWardKey(wardKey + 1);
 					setWard([]);
@@ -84,7 +84,7 @@ const A2AdminPage = () => {
 					setWardID(value.code);
 					setWardName(value.name);
 					setVillage(res.data.result);
-					setData(res.data.result.map((data: any) => ({code: data.code, name: data.name, status:data.status,})));
+					setData(res.data.result.map((data: any) => ({code: data.code, name: data.name, status:data.state ? "Đã Hoàn thành" : "Chưa hoàn thành",})));
 				}
 			});
 		} else {
@@ -92,7 +92,7 @@ const A2AdminPage = () => {
 				if (res.status === 200) {
 					setTableName(districtName);
 					setWard(res.data.result);
-					setData(res.data.result.map((data: any) => ({code: data.code, name: data.name, status:data.status,})));
+					setData(res.data.result.map((data: any) => ({code: data.code, name: data.name, status:data.state ? "Đã Hoàn thành" : "Chưa hoàn thành",})));
 				}
 			});
 		}
@@ -133,6 +133,7 @@ const A2AdminPage = () => {
 						tableName={tableName}
 						rows={data}
 						head={head}
+						hasButtons={false}
 						/>
 					</Box>
 				</Grid>

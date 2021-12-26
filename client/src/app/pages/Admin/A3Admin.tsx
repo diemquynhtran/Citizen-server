@@ -36,7 +36,7 @@ const A3AdminPage = () => {
 		wardApi.getByRole().then((res: any) => {
 			if (res.status === 200) {
 				setWard(res.data);
-				setData(res.data.map((data: any) => ({code: data.code, name: data.name, status:data.status,})));
+				setData(res.data.map((data: any) => ({code: data.code, name: data.name, status:data.state ? "Đã Hoàn thành" : "Chưa hoàn thành",})));
 			}
 		})
 	}, []);
@@ -49,14 +49,14 @@ const A3AdminPage = () => {
 					setWardID(value.code);
 					setWardName(value.name);
 					setVillage(res.data.result);
-					setData(res.data.result.map((data: any) => ({code: data.code, name: data.name, status:data.status,})));
+					setData(res.data.result.map((data: any) => ({code: data.code, name: data.name, status:data.state ? "Đã Hoàn thành" : "Chưa hoàn thành",})));
 				}
 			});
 		} else {
 			wardApi.getByRole().then((res: any) => {
 				if (res.status === 200) {
 					setWard(res.data);
-					setData(res.data.map((data: any) => ({code: data.code, name: data.name, status:data.status,})));
+					setData(res.data.map((data: any) => ({code: data.code, name: data.name, status:data.state ? "Đã Hoàn thành" : "Chưa hoàn thành",})));
 				}
 			});
 		}
@@ -82,6 +82,7 @@ const A3AdminPage = () => {
 						tableName={tableName}
 						rows={data}
 						head={head}
+						hasButtons={false}
 						/>
 					</Box>
 				</Grid>

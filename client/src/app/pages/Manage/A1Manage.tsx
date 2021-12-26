@@ -4,6 +4,7 @@ import { useRole } from "hocs/useRole";
 import { Role } from "settings/role";
 import { useSelector } from "react-redux";
 import { RootState } from "redux/store";
+import { toastService } from "helpers/toast";
 
 import PropTypes from "prop-types";
 
@@ -13,10 +14,12 @@ import { Button, Form } from "react-bootstrap";
 import { makeStyles } from "@material-ui/core/styles";
 import AddIcon from "@material-ui/icons/Add";
 import Icon from "@material-ui/core/Icon";
+import Select from "react-select";
 
 import EnhancedDropdownMenu from "components/_shares/EnhancedDropdownMenu";
 import EnhancedStatisticalTable from "components/_shares/EnhancedTable";
 import { provinceApi } from "services/api/province";
+import { userprovinceApi } from "services/api/userProvince";
 import { districtApi } from "services/api/district";
 import { villageApi } from "services/api/village";
 import { wardApi } from "services/api/ward";
@@ -30,10 +33,10 @@ import { userInfo } from "os";
 const head = [
   { id: 1, label: "Mã tỉnh" },
   { id: 2, label: "Tên tỉnh" },
-  { id: 3, label: "Trạng thái" },
-  // { id: 4, label: "Ngày bắt đầu" },
-  // { id: 5, label: "Ngày hết hạn" },
-  // { id: 6, label: "Trạng thái" }, 
+  { id: 3, label: "Tài khoản" },
+  { id: 4, label: "Ngày bắt đầu" },
+  { id: 5, label: "Ngày hết hạn" },
+  { id: 6, label: "Trạng thái" },
 ];
 const A1ManagePage = () => {
   useRole(Role.A1);
@@ -56,26 +59,49 @@ const A1ManagePage = () => {
 
   const [data, setData] = React.useState([]);
   const [tableName, setTableName] = React.useState("Quản lý tài khoản");
-  const [date, setDate] = React.useState([]);
+
+  const [inferiors, setInferiors] = useState([]);
+  var ops: any = [];
 
   useEffect(() => {
     provinceApi.getProvinces().then((res: any) => {
       if (res.status === 200) {
         setProvince(res.data);
+        for (let i = 0; i < res.data.length; i++) {
+          ops.push({
+            value: res.data[i].code,
+            label: res.data[i].name,
+          });
+        }
+        // setInferiors([
+        //   { value: "Lạng Sơn", label: "Lạng Sơn", id: "10" },
+        //   { value: "Hà Nội", label: "Hà Nội", id: "01" },
+        //   { value: "Thanh Hóa", label: "Thanh Hóa", id: "28" },
+        //   {
+        //     value: "Thành phố Hồ Chí Minh",
+        //     label: "Thành phố Hồ Chí Minh",
+        //     id: "02",
+        //   },
+        //   { value: "Hải Phòng", label: "Hải Phòng", id: "03" },
+        // ]);
         setData(
           res.data.map((data: any) => ({
             code: data.code,
             name: data.name,
             account: data.code,
-            // start: data.admin.startTime || " ",
-            // end: data.admin.endTime || " ",
-            // status: data.admin.permission ? "Active" : "Inactive",
+            start: data.admin == null ? "" : data.admin.startTime,
+            end: data.admin == null ? "" : data.admin.endTime,
+            status:
+              data.admin == null
+                ? "Inactive"
+                : data.admin.permission
+                ? "Active"
+                : "Inactive",
           }))
         );
       }
     });
   }, []);
-  console.log(province);
 
   const onChangeProvince = (event: unknown, value: any) => {
     if (value != null) {
@@ -208,12 +234,19 @@ const A1ManagePage = () => {
     name: "",
   });
 
+  const [infoacc, setInfoacc] = useState({
+    code: "",
+    name: "",
+    endTime: "",
+    password: "",
+    startTime: "",
+  });
+
   const classesButton = useStyles();
   const [keyShow, setKeyShow] = useState(false);
   const [accShow, setAccShow] = useState(false);
   const handleCloseKey = () => setKeyShow(false);
   const handleCloseAcc = () => setAccShow(false);
-  const handleSubmit = () => {};
   const onchangeInput = (e: React.FormEvent<HTMLInputElement>) => {
     const newValue = e.currentTarget.value;
   };
@@ -225,22 +258,52 @@ const A1ManagePage = () => {
       if (res.status === 200) {
         provinceApi.getProvinces().then((res: any) => {
           if (res.status === 200) {
-            provinceApi.getProvinces().then((res: any) => {
-              if (res.status === 200) {
-                setProvince(res.data);
-                setData(
-                  res.data.map((data: any) => ({
-                    code: data.code,
-                    name: data.name,
-                    account: data.code,
-                    // start: data.admin.startTime || " ",
-                    // end: data.admin.endTime || " ",
-                    // status: data.admin.permission ? "Active" : "Inactive",
-                  }))
-                );
-              }
-            });
+            setProvince(res.data);
+            setData(
+              res.data.map((data: any) => ({
+                code: data.code,
+                name: data.name,
+                account: data.code,
+                start: data.admin == null ? "" : data.admin.startTime,
+                end: data.admin == null ? "" : data.admin.endTime,
+                status:
+                  data.admin == null
+                    ? "Inactive"
+                    : data.admin.permission
+                    ? "Active"
+                    : "Inactive",
+              }))
+            );
           }
+        });
+      }
+    });
+  };
+
+  const onSubmitAcc = (event: any) => {
+    event.preventDefault();
+    userprovinceApi.postUserProvinces(infoacc).then((res: any) => {
+      if (res.status === 200) {
+        handleCloseAcc();
+        provinceApi.getProvinces().then((res: any) => {
+          if (res.status === 200) {
+            setProvince(res.data);
+            setData(
+              res.data.map((data: any) => ({
+                code: data.code,
+                name: data.name,
+                account: data.code,
+                start: data.admin == null ? "" : data.admin.startTime,
+                end: data.admin == null ? "" : data.admin.endTime,
+                status:
+                  data.admin == null
+                    ? "Inactive"
+                    : data.admin.permission
+                    ? "Active"
+                    : "Inactive",
+              }))
+            );
+          } 
         });
       }
     });
@@ -320,12 +383,69 @@ const A1ManagePage = () => {
             <Modal.Title>Cấp tài khoản</Modal.Title>
           </Modal.Header>
           <div className="login-form">
-            <A1AddAccPage />
+            <Form style={{ margin: 10, padding: 10 }}>
+              <Form.Group className="mb-3" controlId="formBasicPassword">
+                <Form.Label>Tỉnh/Thành phố</Form.Label>
+                <Form.Control
+                  type="name"
+                  placeholder="Nhập tên tỉnh/thành phố"
+                  onChange={(e) =>
+                    setInfoacc({ ...infoacc, name: e.target.value })
+                  }
+                />
+                {/* <Select
+                  placeholder="Tên tài khoản"
+                  options={inferiors}
+                  // onChange={handleSelect}
+                /> */}
+              </Form.Group>
+
+              <Form.Group className="mb-3" controlId="formBasicPassword">
+                <Form.Label>Mã tỉnh/thành phố</Form.Label>
+                <Form.Control
+                  type="name"
+                  placeholder="Nhập mã"
+                  onChange={(e) => {
+                    setInfoacc({ ...infoacc, code: e.target.value });
+                  }}
+                />
+              </Form.Group>
+
+              <Form.Group className="mb-3" controlId="formBasicPassword">
+                <Form.Label>Cấp mật khẩu</Form.Label>
+                <Form.Control
+                  type="password"
+                  placeholder="Nhập mật khẩu"
+                  onChange={(e) => {
+                    setInfoacc({ ...infoacc, password: e.target.value });
+                  }}
+                />
+              </Form.Group>
+
+              <Form.Group className="mb-3" controlId="formBasicPassword">
+                <Form.Label>Ngày cấp</Form.Label>
+                <Form.Control
+                  type="date"
+                  onChange={(e) =>
+                    setInfoacc({ ...infoacc, startTime: e.target.value })
+                  }
+                />
+              </Form.Group>
+              <Form.Group className="mb-3" controlId="formBasicPassword">
+                <Form.Label>Ngày hết hạn</Form.Label>
+                <Form.Control
+                  type="date"
+                  onChange={(e) =>
+                    setInfoacc({ ...infoacc, endTime: e.target.value })
+                  }
+                />
+              </Form.Group>
+            </Form>
             <Modal.Footer>
               <Button variant="secondary" onClick={handleCloseAcc}>
                 Hủy
               </Button>
-              <Button variant="primary" onClick={handleSubmit}>
+              <Button variant="primary" onClick={onSubmitAcc}>
                 Hoàn thành
               </Button>
             </Modal.Footer>

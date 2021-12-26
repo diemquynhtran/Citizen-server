@@ -28,6 +28,7 @@ import { useState } from "react";
 import { Modal } from "react-bootstrap";
 import { InputGroup } from "react-bootstrap";
 import { userInfo } from "os";
+import moment from "moment";
 
 const head = [
   { id: 1, label: "Mã quận/huyện" },
@@ -58,6 +59,7 @@ const A2ManagePage = () => {
 
   const [data, setData] = React.useState([]);
   const [tableName, setTableName] = React.useState("Quản lý tài khoản");
+  
 
   useEffect(() => {
     districtApi.getDistricts().then((res: any) => {
@@ -68,8 +70,8 @@ const A2ManagePage = () => {
             code: data.code,
             name: data.name,
             account: data.code,
-            start: data.admin == null ? "" : data.admin.startTime,
-            end: data.admin == null ? "" : data.admin.endTime,
+            start: data.admin == null ? "" : moment(data.admin.startTime).format("DD/MM/YY"),
+            end: data.admin == null ? "" : moment(data.admin.endTime).format("DD/MM/YY"),
             status:
               data.admin == null
                 ? "Inactive"

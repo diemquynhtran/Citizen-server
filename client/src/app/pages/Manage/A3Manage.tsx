@@ -29,6 +29,7 @@ import { useState } from "react";
 import { Modal } from "react-bootstrap";
 import { InputGroup } from "react-bootstrap";
 import { userInfo } from "os";
+import moment from "moment";
 
 const head = [
   { id: 1, label: "Mã phường/xã/thị trấn" },
@@ -40,7 +41,7 @@ const head = [
 ];
 const A3ManagePage = () => {
   useRole(Role.A3);
-  const {userInfo } = useSelector((state: RootState) => state.user);
+  const { userInfo } = useSelector((state: RootState) => state.user);
   const [province, setProvince] = React.useState([]);
   const [district, setDistrict] = React.useState([]);
   const [ward, setWard] = React.useState([]);
@@ -69,8 +70,14 @@ const A3ManagePage = () => {
             code: data.code,
             name: data.name,
             account: data.code,
-            start: data.admin == null ? "" : data.admin.startTime,
-            end: data.admin == null ? "" : data.admin.endTime,
+            start:
+              data.admin == null
+                ? ""
+                : moment(data.admin.startTime).format("DD/MM/YY"),
+            end:
+              data.admin == null
+                ? ""
+                : moment(data.admin.endTime).format("DD/MM/YY"),
             status:
               data.admin == null
                 ? "Inactive"
@@ -244,8 +251,14 @@ const A3ManagePage = () => {
                 code: data.code,
                 name: data.name,
                 account: data.code,
-                start: data.admin == null ? "" : data.admin.startTime,
-                end: data.admin == null ? "" : data.admin.endTime,
+                start:
+                  data.admin == null
+                    ? ""
+                    : moment(data.admin.startTime).format("DD/MM/YY"),
+                end:
+                  data.admin == null
+                    ? ""
+                    : moment(data.admin.endTime).format("DD/MM/YY"),
                 status:
                   data.admin == null
                     ? "Inactive"
@@ -273,8 +286,14 @@ const A3ManagePage = () => {
                 code: data.code,
                 name: data.name,
                 account: data.code,
-                start: data.admin == null ? "" : data.admin.startTime,
-                end: data.admin == null ? "" : data.admin.endTime,
+                start:
+                  data.admin == null
+                    ? ""
+                    : moment(data.admin.startTime).format("DD/MM/YY"),
+                end:
+                  data.admin == null
+                    ? ""
+                    : moment(data.admin.endTime).format("DD/MM/YY"),
                 status:
                   data.admin == null
                     ? "Inactive"
@@ -283,7 +302,7 @@ const A3ManagePage = () => {
                     : "Inactive",
               }))
             );
-          } 
+          }
         });
       }
     });

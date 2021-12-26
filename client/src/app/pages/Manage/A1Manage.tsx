@@ -29,6 +29,7 @@ import { InputGroup } from "react-bootstrap";
 import A1AddKeyPage from "../AddKey/A1AddKey";
 import A1AddAccPage from "../AddAccount/A1AddAcc";
 import { userInfo } from "os";
+import moment from "moment";
 
 const head = [
   { id: 1, label: "Mã tỉnh" },
@@ -72,8 +73,14 @@ const A1ManagePage = () => {
             code: data.code,
             name: data.name,
             account: data.code,
-            start: data.admin == null ? "" : data.admin.startTime,
-            end: data.admin == null ? "" : data.admin.endTime,
+            start:
+              data.admin == null
+                ? ""
+                : moment(data.admin.startTime).format("DD/MM/YY"),
+            end:
+              data.admin == null
+                ? ""
+                : moment(data.admin.endTime).format("DD/MM/YY"),
             status:
               data.admin == null
                 ? "Inactive"
@@ -247,8 +254,14 @@ const A1ManagePage = () => {
                 code: data.code,
                 name: data.name,
                 account: data.code,
-                start: data.admin == null ? "" : data.admin.startTime,
-                end: data.admin == null ? "" : data.admin.endTime,
+                start:
+                  data.admin == null
+                    ? ""
+                    : moment(data.admin.startTime).format("DD/MM/YY"),
+                end:
+                  data.admin == null
+                    ? ""
+                    : moment(data.admin.endTime).format("DD/MM/YY"),
                 status:
                   data.admin == null
                     ? "Inactive"
@@ -276,8 +289,14 @@ const A1ManagePage = () => {
                 code: data.code,
                 name: data.name,
                 account: data.code,
-                start: data.admin == null ? "" : data.admin.startTime,
-                end: data.admin == null ? "" : data.admin.endTime,
+                start:
+                  data.admin == null
+                    ? ""
+                    : moment(data.admin.startTime).format("DD/MM/YY"),
+                end:
+                  data.admin == null
+                    ? ""
+                    : moment(data.admin.endTime).format("DD/MM/YY"),
                 status:
                   data.admin == null
                     ? "Inactive"
@@ -286,7 +305,7 @@ const A1ManagePage = () => {
                     : "Inactive",
               }))
             );
-          } 
+          }
         });
       }
     });
@@ -376,11 +395,6 @@ const A1ManagePage = () => {
                     setInfoacc({ ...infoacc, name: e.target.value })
                   }
                 />
-                {/* <Select
-                  placeholder="Tên tài khoản"
-                  options={inferiors}
-                  // onChange={handleSelect}
-                /> */}
               </Form.Group>
 
               <Form.Group className="mb-3" controlId="formBasicPassword">

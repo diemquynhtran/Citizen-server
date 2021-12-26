@@ -14,8 +14,8 @@ router.delete("/delete", roleRequire(Role.B1, Role.B2),  permissionUser,personCo
 router.get("/getByRole", personController.getByRole);
 router.post("/getByRequest", personController.getByRequest);
 
-// router.get(":id/analytics/gender", analyticsController.gender);
-// router.get(":id/analytics/age", analyticsController.age);
+// router.get("/analytics/gender/:id", analyticsController.gender);
+// router.get("/analytics/age/:id", analyticsController.age);
 
 router.post("/analytics/gender", analyticsController.gender);
 router.post("/analytics/age", analyticsController.age);

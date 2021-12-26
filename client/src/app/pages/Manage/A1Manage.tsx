@@ -29,6 +29,7 @@ import { InputGroup } from "react-bootstrap";
 import A1AddKeyPage from "../AddKey/A1AddKey";
 import A1AddAccPage from "../AddAccount/A1AddAcc";
 import { userInfo } from "os";
+import moment from "moment";
 
 const head = [
   { id: 1, label: "Mã tỉnh" },
@@ -72,8 +73,14 @@ const A1ManagePage = () => {
             code: data.code,
             name: data.name,
             account: data.code,
-            start: data.admin == null ? "" : data.admin.startTime,
-            end: data.admin == null ? "" : data.admin.endTime,
+            start:
+              data.admin == null
+                ? ""
+                : moment(data.admin.startTime).format("DD/MM/YY"),
+            end:
+              data.admin == null
+                ? ""
+                : moment(data.admin.endTime).format("DD/MM/YY"),
             status:
               data.admin == null
                 ? "Inactive"
@@ -247,8 +254,14 @@ const A1ManagePage = () => {
                 code: data.code,
                 name: data.name,
                 account: data.code,
-                start: data.admin == null ? "" : data.admin.startTime,
-                end: data.admin == null ? "" : data.admin.endTime,
+                start:
+                  data.admin == null
+                    ? ""
+                    : moment(data.admin.startTime).format("DD/MM/YY"),
+                end:
+                  data.admin == null
+                    ? ""
+                    : moment(data.admin.endTime).format("DD/MM/YY"),
                 status:
                   data.admin == null
                     ? "Inactive"
@@ -276,8 +289,14 @@ const A1ManagePage = () => {
                 code: data.code,
                 name: data.name,
                 account: data.code,
-                start: data.admin == null ? "" : data.admin.startTime,
-                end: data.admin == null ? "" : data.admin.endTime,
+                start:
+                  data.admin == null
+                    ? ""
+                    : moment(data.admin.startTime).format("DD/MM/YY"),
+                end:
+                  data.admin == null
+                    ? ""
+                    : moment(data.admin.endTime).format("DD/MM/YY"),
                 status:
                   data.admin == null
                     ? "Inactive"
@@ -286,7 +305,7 @@ const A1ManagePage = () => {
                     : "Inactive",
               }))
             );
-          } 
+          }
         });
       }
     });
@@ -331,7 +350,7 @@ const A1ManagePage = () => {
                 <Form.Control
                   type="name"
                   placeholder="Nhập tên tỉnh/thành phố"
-                  onChange={(e) =>
+                  onChange={(e:any) =>
                     setInfoprovin({ ...infoprovin, name: e.target.value })
                   }
                 />
@@ -372,15 +391,10 @@ const A1ManagePage = () => {
                 <Form.Control
                   type="name"
                   placeholder="Nhập tên tỉnh/thành phố"
-                  onChange={(e) =>
+                  onChange={(e:any) =>
                     setInfoacc({ ...infoacc, name: e.target.value })
                   }
                 />
-                {/* <Select
-                  placeholder="Tên tài khoản"
-                  options={inferiors}
-                  // onChange={handleSelect}
-                /> */}
               </Form.Group>
 
               <Form.Group className="mb-3" controlId="formBasicPassword">
@@ -388,7 +402,7 @@ const A1ManagePage = () => {
                 <Form.Control
                   type="name"
                   placeholder="Nhập mã"
-                  onChange={(e) => {
+                  onChange={(e:any) => {
                     setInfoacc({ ...infoacc, code: e.target.value });
                   }}
                 />
@@ -399,7 +413,7 @@ const A1ManagePage = () => {
                 <Form.Control
                   type="password"
                   placeholder="Nhập mật khẩu"
-                  onChange={(e) => {
+                  onChange={(e:any) => {
                     setInfoacc({ ...infoacc, password: e.target.value });
                   }}
                 />
@@ -409,7 +423,7 @@ const A1ManagePage = () => {
                 <Form.Label>Ngày cấp</Form.Label>
                 <Form.Control
                   type="date"
-                  onChange={(e) =>
+                  onChange={(e:any) =>
                     setInfoacc({ ...infoacc, startTime: e.target.value })
                   }
                 />
@@ -418,7 +432,7 @@ const A1ManagePage = () => {
                 <Form.Label>Ngày hết hạn</Form.Label>
                 <Form.Control
                   type="date"
-                  onChange={(e) =>
+                  onChange={(e:any) =>
                     setInfoacc({ ...infoacc, endTime: e.target.value })
                   }
                 />

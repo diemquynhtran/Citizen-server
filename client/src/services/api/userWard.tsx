@@ -1,20 +1,20 @@
 import api from ".";
-const baseURL = "/ward";
-const postbaseURL = "/ward/create"
+const baseURL = "/user/ward";
+const postbaseURL = "/user/ward/create"
 export const wardApi = {
-	getWards: () => {
+	getUserWards: () => {
 	return api.get(`${baseURL}/`);
 	},
 	
-	getByRole: () => {
+	getByUserRole: () => {
 	return api.get(`${baseURL}/getByA3`);
 	},
 	
-	 getByDistrict: (districtCode: string) => {
+	getByUserDistrict: (districtCode: string) => {
 	return api.post(`${baseURL}/getByDistrict`, {code:districtCode});
 	},
 
-	postWard: (infoward:any) => {
+	postUserWard: (infoward:any) => {
 		return api.post(`${postbaseURL}/`,infoward);
 	  },
 };

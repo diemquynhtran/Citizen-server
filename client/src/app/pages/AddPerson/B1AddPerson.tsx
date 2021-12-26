@@ -72,7 +72,7 @@ const B1AddPerson = () => {
 	
 	const { userInfo } = useSelector((state: RootState) => state.user);
 	
-	const tableName = "Dữ liệu đã nhập";
+	const tableName = "Dữ liệu địa phương";
 	
 	const updateData = () => {
 		setData([]);
@@ -99,7 +99,7 @@ const B1AddPerson = () => {
 	
 	useEffect(() => {
 		updateData();
-	}, [])
+	}, []);
 	
 	const handleClickOpenForm = () => {
 		setFormOpen(true);
@@ -130,6 +130,7 @@ const B1AddPerson = () => {
 				}
 			}
 		})
+
 		setAlertOpen(false);
 	};
 	

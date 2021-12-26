@@ -18,7 +18,7 @@ const TableToolbar: React.FC<Props> = ({ tableName }) => {
   return (
     <Toolbar className={classes.root}>
       <Typography className={classes.title}>
-        <h2>{tableName}</h2>
+        <h2><strong>{tableName}</strong></h2>
       </Typography>
     </Toolbar>
   );

@@ -1,20 +1,20 @@
 import api from ".";
-const baseURL = "/village";
-const postbaseURL = "/village/create"
+const baseURL = "/user/village";
+const postbaseURL = "/user/village/create"
 export const villageApi = {
-	getVillages: () => {
+	getUserVillages: () => {
 	return api.get(`${baseURL}/`);
 	},
 	
-	getByRole: () => {
+	getByUserRole: () => {
 	return api.get(`${baseURL}/getByB1`);
 	},
 	
-	getByWard: (wardCode: string) => {
+	getByUserWard: (wardCode: string) => {
 	return api.post(`${baseURL}/getByWard`, {code:wardCode});
 	},
 
-	postVillage: (infovillage:any) => {
+	postUserVillage: (infovillage:any) => {
 		return api.post(`${postbaseURL}/`,infovillage);
 	  },
 

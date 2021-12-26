@@ -643,12 +643,15 @@ const PersonForm: React.FC<Props> = ({ onClick }) => {
 		}
 	};
 
-	const onChangeNameField = (e: any) => {
+	 const onChangeNameField = (e: any) => {
 		const { name, value } = e.target;
+		
 		setFormValue({
 			...formValue,
 			name: value,
 		});
+		
+		console.log(formValue.name);
 	};
 	
 	const onChangeUIDField = (e: any) => {
@@ -705,6 +708,8 @@ const PersonForm: React.FC<Props> = ({ onClick }) => {
 			detail: value,
 		});
 		
+		console.log(defaultValue.detail);
+		
 		setFormValue({
 			...formValue,
 			defaultAddress: defaultValue,
@@ -727,8 +732,11 @@ const PersonForm: React.FC<Props> = ({ onClick }) => {
 
 	const handleSubmit = (event: any) => {
 		event.preventDefault();
+
 		personApi.createPerson(formValue).then((res: any) => {
+			console.log(res);
 			if (res.status === 200) {
+				
 				if (res.data.status === 200) {
 					toastService.success("Nhập liệu thành công");
 					onClick();

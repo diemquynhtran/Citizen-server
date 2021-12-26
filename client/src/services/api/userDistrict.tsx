@@ -1,20 +1,20 @@
 import api from ".";
-const baseURL = "/district";
-const postbaseURL = "/district/create"
+const baseURL = "/user/district";
+const postbaseURL = "/user/district/create"
 export const districtApi = {
-	getDistricts: () => {
+	getUserDistricts: () => {
 	return api.get(`${baseURL}/`);
 	},
 	
-	getByRole: () => {
+	getByUserRole: () => {
 	return api.get(`${baseURL}/getByRole`);
 	},
 
-	getByProvince: (provinceCode: string) => {
+	getByUserProvince: (provinceCode: string) => {
 	return api.post(`${baseURL}/getByProvince`, {code:provinceCode});
 	},
 
-	postDistrict: (infodistrict:any) => {
+	postUserDistrict: (infodistrict:any) => {
 		return api.post(`${postbaseURL}/`,infodistrict);
 	  },
 };

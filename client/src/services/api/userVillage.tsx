@@ -1,7 +1,7 @@
 import api from ".";
 const baseURL = "/user/village";
 const postbaseURL = "/user/village/create"
-export const villageApi = {
+export const uservillageApi = {
 	getUserVillages: () => {
 	return api.get(`${baseURL}/`);
 	},

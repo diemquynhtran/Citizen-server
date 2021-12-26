@@ -1,7 +1,7 @@
 import api from ".";
 const baseURL = "/user/district";
 const postbaseURL = "/user/district/create"
-export const districtApi = {
+export const userdistrictApi = {
 	getUserDistricts: () => {
 	return api.get(`${baseURL}/`);
 	},

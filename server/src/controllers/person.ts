@@ -51,6 +51,58 @@ export const personController = {
             ],
                 where: {admincode: Like(`${user.username}%`)}
             });
+            
+            if (result) {
+                if(user.role==3) {
+                    let state = await getRepository(Ward).find({code: user.username});
+                    return res.json({
+                        status: 200,
+                        state: state[0].state ,
+                        result: result,
+                    })
+                }
+                else {
+                    let state = await getRepository(Village).find({code: user.username});
+                    return res.json({
+                        status: 200,
+                        state: state[0].state ,
+                        result: result,
+                    })
+                }
+                
+            }
+            else {
+                return res.json({
+                    status: 400,
+                    messenger: "Khong tim thay person"
+                })
+            }
+
+            // const result = await getRepository(Person).createQueryBuilder("person")
+            // .innerJoinAndSelect("person.admin","user");
+            // console.log(result);
+        }
+        catch (e) {
+            console.log(e);
+            return res.json({
+                status: 400,
+                messenger: "Có lỗi get person"
+            })
+        }
+    },
+
+    //[POST] /person/getByRequest
+    getByRequest: async (req: Request, res: Response) => {
+        try {
+            let code = req.body.code;
+            const result = await getRepository(Person).find({
+                relations:["defaultAddress", "otherAddress", "hometown",
+                "defaultAddress.province","defaultAddress.district", "defaultAddress.village", "defaultAddress.ward", 
+                "otherAddress.province","otherAddress.district", "otherAddress.village", "otherAddress.ward",
+                "hometown.province","hometown.district", "hometown.village", "hometown.ward",
+            ],
+                where: {admincode: Like(`${code}%`)}
+            });
             console.log(result);
 
 

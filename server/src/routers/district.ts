@@ -6,7 +6,7 @@ import { roleRequire } from "../middlewares/role";
 const express = require("express");
 const router = express.Router();
 
-router.get("/", districtController.getAllDistricts);
+router.get("/", districtController.getDistrictUser);
 router.get("/getByRole", districtController.getDistrictsByRole);
 router.post("/getByProvince", districtController.getByProvince);
 

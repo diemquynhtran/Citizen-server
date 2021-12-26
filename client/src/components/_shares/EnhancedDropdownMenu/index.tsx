@@ -22,6 +22,7 @@ interface Props {
   isStandard?: boolean;
   inputValue?: string;
   onInputChange?: any;
+  onBlur?: any;
 }
 
 const AutocompleteDropdown: React.FC<Props> = ({
@@ -34,6 +35,7 @@ const AutocompleteDropdown: React.FC<Props> = ({
   isStandard,
   inputValue,
   onInputChange,
+  onBlur,
 }) => {
   const classes = useStyles();
   return (
@@ -51,6 +53,7 @@ const AutocompleteDropdown: React.FC<Props> = ({
       )}
 	  value={value}
       onChange={onChange}
+	  onBlur={onBlur}
     />
   );
 };

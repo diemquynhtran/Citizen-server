@@ -16,7 +16,7 @@ import { villageApi } from "services/api/village";
 const head = [
 	{id: 1, label:"Mã"},
 	{id: 2, label:"Tên"},
-	{id: 3, label:"Đã hoàn thành?"},
+	{id: 3, label:"Tình trạng Điều tra"},
 ]
 
 const A3AdminPage = () => {
@@ -36,7 +36,7 @@ const A3AdminPage = () => {
 		wardApi.getByRole().then((res: any) => {
 			if (res.status === 200) {
 				setWard(res.data);
-				setData(res.data.map((data: any) => ({code: data.code, name: data.name, status:data.status,})));
+				setData(res.data.map((data: any) => ({code: data.code, name: data.name, status:data.state ? "Đã Hoàn thành" : "Chưa Hoàn thành",})));
 			}
 		})
 	}, []);
@@ -49,14 +49,14 @@ const A3AdminPage = () => {
 					setWardID(value.code);
 					setWardName(value.name);
 					setVillage(res.data.result);
-					setData(res.data.result.map((data: any) => ({code: data.code, name: data.name, status:data.status,})));
+					setData(res.data.result.map((data: any) => ({code: data.code, name: data.name, status:data.state ? "Đã Hoàn thành" : "Chưa Hoàn thành",})));
 				}
 			});
 		} else {
 			wardApi.getByRole().then((res: any) => {
 				if (res.status === 200) {
 					setWard(res.data);
-					setData(res.data.map((data: any) => ({code: data.code, name: data.name, status:data.status,})));
+					setData(res.data.map((data: any) => ({code: data.code, name: data.name, status:data.state ? "Đã Hoàn thành" : "Chưa Hoàn thành",})));
 				}
 			});
 		}

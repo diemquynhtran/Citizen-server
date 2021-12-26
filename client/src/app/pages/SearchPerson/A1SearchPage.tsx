@@ -103,6 +103,7 @@ const A1SearchPage = () => {
 		
 		personApi.getByRole().then((res: any) => {
 			if(res.status === 200) {	
+				console.log(res)
 				setData(res.data.result.map((data: any) => ({
 					cmnd: data.cmnd,
 					name: data.name,
@@ -214,6 +215,7 @@ const A1SearchPage = () => {
 					
 					personApi.getByReq(value.code).then((res: any) => {
 						if(res.status === 200) {	
+							console.log(res)
 							setData(res.data.result.map((data: any) => ({
 								cmnd: data.cmnd,
 								name: data.name,
@@ -226,7 +228,7 @@ const A1SearchPage = () => {
 								defaultAddress: defaultAddress(data),
 								otherAddress: otherAddress(data),
 							})));
-						
+							
 							setRenderData(data);
 						}
 					})
@@ -411,8 +413,8 @@ const A1SearchPage = () => {
 	return (
 		<Box mx="auto">
 			<Grid container spacing={3}>
-				<Grid container xs={12}>
-					<Grid item xs={3}>
+				<Grid container xs={12} style={{marginTop: 10}}>
+					<Grid item xs={3} >
 						<Box p={2}>
 							<EnhancedDropdownMenu
 							options={province}

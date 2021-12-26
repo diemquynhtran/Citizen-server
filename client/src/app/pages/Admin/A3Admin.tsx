@@ -47,9 +47,9 @@ const A3AdminPage = () => {
   useEffect(() => {
     wardApi.getByRole().then((res: any) => {
       if (res.status === 200) {
-        setWard(res.data);
+        setWard(res.data.result);
         setData(
-          res.data.map((data: any) => ({
+          res.data.result.map((data: any) => ({
             code: data.code,
             name: data.name,
             status: data.state ? "Đã Hoàn thành" : "Chưa Hoàn thành",

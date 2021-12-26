@@ -24,13 +24,13 @@ export const analyticsController = {
          let person1 = await getRepository(Person).find({
              where:[
                  {admincode: Like(`${code}%`),
-                 gender: Gender.FEMALE}
+                 gender: Gender.MALE}
                ]
          })
          let person2 = await getRepository(Person).find({
              where:[
                  {admincode: Like(`${code}%`),
-                 gender: Gender.MALE}
+                 gender: Gender.FEMALE}
                ]
          })
  

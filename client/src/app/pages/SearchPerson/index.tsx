@@ -5,26 +5,26 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { Redirect, Route, Switch } from "react-router-dom";
 import { RootState } from "redux/store";
-import A1SearchPerson from "./A1SearchPerson";
-import A2SearchPerson from "./A2SearchPerson";
-import A3SearchPerson from "./A3SearchPerson";
-import B1SearchPerson from "./B1SearchPerson";
+import A1SearchPage from "./A1SearchPage";
+import A2SearchPage from "./A2SearchPage";
+import A3SearchPage from "./A3SearchPage";
+import B1SearchPage from "./B1SearchPage";
 const routers = [
   {
     path: "/searchperson/A1",
-    component: A1SearchPerson,
+    component: A1SearchPage,
   },
   {
     path: "/searchperson/A2",
-    component: A2SearchPerson,
+    component: A2SearchPage,
   },
   {
     path: "/searchperson/A3",
-    component: A3SearchPerson,
+    component: A3SearchPage,
   },
   {
     path: "/searchperson/B1",
-    component: B1SearchPerson,
+    component: B1SearchPage,
   },
 ];
 const SearchPerson: React.FC = () => {

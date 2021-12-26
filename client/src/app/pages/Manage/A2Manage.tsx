@@ -8,16 +8,14 @@ import { toastService } from "helpers/toast";
 
 import PropTypes from "prop-types";
 
-
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
 import { Button, Form } from "react-bootstrap";
 import { makeStyles } from "@material-ui/core/styles";
 import AddIcon from "@material-ui/icons/Add";
 import Icon from "@material-ui/core/Icon";
-
-import Select from "react-select";
-
+import SettingsIcon from "@material-ui/icons/Settings";
+import DeleteIcon from "@material-ui/icons/Delete";
 
 import EnhancedDropdownMenu from "components/_shares/EnhancedDropdownMenu";
 import EnhancedStatisticalTable from "components/_shares/EnhancedTable";
@@ -45,7 +43,7 @@ const head = [
 ];
 const A2ManagePage = () => {
   useRole(Role.A2);
-  const {userInfo } = useSelector((state: RootState) => state.user);
+  const { userInfo } = useSelector((state: RootState) => state.user);
   const [province, setProvince] = React.useState([]);
   const [district, setDistrict] = React.useState([]);
   const [ward, setWard] = React.useState([]);
@@ -64,7 +62,10 @@ const A2ManagePage = () => {
 
   const [data, setData] = React.useState([]);
   const [tableName, setTableName] = React.useState("Quản lý tài khoản");
-  
+  const [edit, setEdit] = useState(false);
+  const [accdelete, setAccDelete] = useState(false);
+  const handleCloseEdit = () => setEdit(false);
+  const handleCloseDelete = () => setAccDelete(false);
 
   const [date, setDate] = React.useState([]);
 
@@ -77,8 +78,14 @@ const A2ManagePage = () => {
             code: data.code,
             name: data.name,
             account: data.code,
-            start: data.admin == null ? "" : moment(data.admin.startTime).format("DD/MM/YY"),
-            end: data.admin == null ? "" : moment(data.admin.endTime).format("DD/MM/YY"),
+            start:
+              data.admin == null
+                ? ""
+                : moment(data.admin.startTime).format("DD/MM/YY"),
+            end:
+              data.admin == null
+                ? ""
+                : moment(data.admin.endTime).format("DD/MM/YY"),
             status:
               data.admin == null
                 ? "Inactive"
@@ -111,6 +118,16 @@ const A2ManagePage = () => {
     startTime: "",
   });
 
+  const [infodel, setInfodel] = useState({
+    code: "",
+  });
+
+  const [infoput, setInfoput] = useState({
+    code: "",
+    name: "",
+  });
+
+
   const classesButton = useStyles();
   const [keyShow, setKeyShow] = useState(false);
   const [accShow, setAccShow] = useState(false);
@@ -135,13 +152,13 @@ const A2ManagePage = () => {
                 name: data.name,
                 account: data.code,
                 start:
-                data.admin == null
-                  ? ""
-                  : moment(data.admin.startTime).format("DD/MM/YY"),
-              end:
-                data.admin == null
-                  ? ""
-                  : moment(data.admin.endTime).format("DD/MM/YY"),
+                  data.admin == null
+                    ? ""
+                    : moment(data.admin.startTime).format("DD/MM/YY"),
+                end:
+                  data.admin == null
+                    ? ""
+                    : moment(data.admin.endTime).format("DD/MM/YY"),
                 status:
                   data.admin == null
                     ? "Inactive"
@@ -170,13 +187,13 @@ const A2ManagePage = () => {
                 name: data.name,
                 account: data.code,
                 start:
-                data.admin == null
-                  ? ""
-                  : moment(data.admin.startTime).format("DD/MM/YY"),
-              end:
-                data.admin == null
-                  ? ""
-                  : moment(data.admin.endTime).format("DD/MM/YY"),
+                  data.admin == null
+                    ? ""
+                    : moment(data.admin.startTime).format("DD/MM/YY"),
+                end:
+                  data.admin == null
+                    ? ""
+                    : moment(data.admin.endTime).format("DD/MM/YY"),
                 status:
                   data.admin == null
                     ? "Inactive"
@@ -185,11 +202,81 @@ const A2ManagePage = () => {
                     : "Inactive",
               }))
             );
-          } 
+          }
         });
       }
     });
   };
+  const onSubmitEdit = (event: any) => {
+    event.preventDefault();
+    districtApi.putDistrict(infoput).then((res: any) => {
+      if (res.status === 200) {
+        handleCloseEdit();
+        districtApi.getDistricts().then((res: any) => {
+          if (res.status === 200) {
+            setProvince(res.data);
+            setData(
+              res.data.map((data: any) => ({
+                code: data.code,
+                name: data.name,
+                account: data.code,
+                start:
+                  data.admin == null
+                    ? ""
+                    : moment(data.admin.startTime).format("DD/MM/YY"),
+                end:
+                  data.admin == null
+                    ? ""
+                    : moment(data.admin.endTime).format("DD/MM/YY"),
+                status:
+                  data.admin == null
+                    ? "Inactive"
+                    : data.admin.permission
+                    ? "Active"
+                    : "Inactive",
+              }))
+            );
+          }
+        });
+      }
+    });
+  };
+
+  const onSubmitDel = (event: any) => {
+    event.preventDefault();
+    districtApi.delDistrict(infodel).then((res: any) => {
+      if (res.status === 200) {
+        handleCloseDelete();
+        districtApi.getDistricts().then((res: any) => {
+          if (res.status === 200) {
+            setProvince(res.data);
+            setData(
+              res.data.map((data: any) => ({
+                code: data.code,
+                name: data.name,
+                account: data.code,
+                start:
+                  data.admin == null
+                    ? ""
+                    : moment(data.admin.startTime).format("DD/MM/YY"),
+                end:
+                  data.admin == null
+                    ? ""
+                    : moment(data.admin.endTime).format("DD/MM/YY"),
+                status:
+                  data.admin == null
+                    ? "Inactive"
+                    : data.admin.permission
+                    ? "Active"
+                    : "Inactive",
+              }))
+            );
+          }
+        });
+      }
+    });
+  };
+
   let codeNew: any = data.length + 1;
   codeNew = Number(codeNew) < 10 ? `0${codeNew}` : codeNew;
   codeNew = userInfo?.username + codeNew;
@@ -213,6 +300,24 @@ const A2ManagePage = () => {
           <AddIcon />
           Cấp tài khoản
         </Button>
+
+        <Button
+          variant="primary"
+          onClick={() => setEdit(true)}
+          style={{ margin: 10 }}
+        >
+          <SettingsIcon />
+          Chỉnh sửa
+        </Button>
+        <Button
+          variant="primary"
+          onClick={() => setAccDelete(true)}
+          style={{ margin: 10 }}
+        >
+          <DeleteIcon />
+          Xóa
+        </Button>
+
         <Modal
           show={keyShow}
           onHide={() => setKeyShow(false)}
@@ -231,7 +336,7 @@ const A2ManagePage = () => {
                 <Form.Control
                   type="name"
                   placeholder="Nhập tên quận/huyện"
-                  onChange={(e:any) =>
+                  onChange={(e: any) =>
                     setInfodistrict({ ...infodistrict, name: e.target.value })
                   }
                 />
@@ -268,11 +373,11 @@ const A2ManagePage = () => {
           <div className="login-form">
             <Form style={{ margin: 10, padding: 10 }}>
               <Form.Group className="mb-3" controlId="formBasicPassword">
-                <Form.Label>Tỉnh/Thành phố</Form.Label>
+                <Form.Label>quận/huyện</Form.Label>
                 <Form.Control
                   type="name"
                   placeholder="Nhập tên quận/huyện"
-                  onChange={(e:any) =>
+                  onChange={(e: any) =>
                     setInfoacc({ ...infoacc, name: e.target.value })
                   }
                 />
@@ -283,7 +388,7 @@ const A2ManagePage = () => {
                 <Form.Control
                   type="name"
                   placeholder="Nhập mã"
-                  onChange={(e:any) => {
+                  onChange={(e: any) => {
                     setInfoacc({ ...infoacc, code: e.target.value });
                   }}
                 />
@@ -294,7 +399,7 @@ const A2ManagePage = () => {
                 <Form.Control
                   type="password"
                   placeholder="Nhập mật khẩu"
-                  onChange={(e:any) => {
+                  onChange={(e: any) => {
                     setInfoacc({ ...infoacc, password: e.target.value });
                   }}
                 />
@@ -304,7 +409,7 @@ const A2ManagePage = () => {
                 <Form.Label>Ngày cấp</Form.Label>
                 <Form.Control
                   type="date"
-                  onChange={(e:any) =>
+                  onChange={(e: any) =>
                     setInfoacc({ ...infoacc, startTime: e.target.value })
                   }
                 />
@@ -313,7 +418,7 @@ const A2ManagePage = () => {
                 <Form.Label>Ngày hết hạn</Form.Label>
                 <Form.Control
                   type="date"
-                  onChange={(e:any) =>
+                  onChange={(e: any) =>
                     setInfoacc({ ...infoacc, endTime: e.target.value })
                   }
                 />
@@ -329,6 +434,89 @@ const A2ManagePage = () => {
             </Modal.Footer>
           </div>
         </Modal>
+
+        <Modal
+          show={edit}
+          onHide={() => setEdit(false)}
+          animation={false}
+          size="sm"
+          aria-labelledby="contained-modal-title-vcenter"
+          centered
+        >
+          <Modal.Header>
+            <Modal.Title>Chỉnh sửa</Modal.Title>
+          </Modal.Header>
+          <div className="login-form">
+            <Form style={{ margin: 10, padding: 10 }}>
+              <Form.Group className="mb-3" controlId="formBasicEmail">
+                <Form.Label>Mã quận/huyện cần sửa</Form.Label>
+                <Form.Control
+                  type="name"
+                  placeholder="Nhập mã quận/huyện"
+                  onChange={(e: any) =>
+                    setInfoput({ ...infoput, code: e.target.value })
+                  }
+                />
+              </Form.Group>
+
+              <Form.Group className="mb-3" controlId="formBasicEmail">
+                <Form.Label>Nhập tên quận/huyện mới</Form.Label>
+                <Form.Control
+                  type="name"
+                  placeholder="Nhập tên mới"
+                  onChange={(e: any) =>
+                    setInfoput({ ...infoput, name: e.target.value })
+                  }
+                />
+              </Form.Group>
+            </Form>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={handleCloseEdit}>
+                Hủy
+              </Button>
+              <Button variant="primary" onClick={onSubmitEdit}>
+                Hoàn thành
+              </Button>
+            </Modal.Footer>
+          </div>
+        </Modal>
+
+        <Modal
+          show={accdelete}
+          onHide={() => setAccDelete(false)}
+          animation={false}
+          size="sm"
+          aria-labelledby="contained-modal-title-vcenter"
+          centered
+        >
+          <Modal.Header>
+            <Modal.Title>Xóa quận/huyện</Modal.Title>
+          </Modal.Header>
+          <div className="login-form">
+            <Form style={{ margin: 10, padding: 10 }}>
+              <Form.Group className="mb-3" controlId="formBasicEmail">
+                <Form.Label>Mã quận/huyện cần xóa</Form.Label>
+                <Form.Control
+                  type="name"
+                  placeholder="Nhập mã quận/huyện"
+                  onChange={(e: any) =>
+                    setInfodel({ ...infodel, code: e.target.value })
+                  }
+                />
+              </Form.Group>
+            </Form>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={handleCloseDelete}>
+                Hủy
+              </Button>
+              <Button variant="primary" onClick={onSubmitDel}>
+                Hoàn thành
+              </Button>
+            </Modal.Footer>
+          </div>
+        </Modal>
+
+
       </div>
       <Grid container>
         <Grid item>

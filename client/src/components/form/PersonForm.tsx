@@ -94,7 +94,11 @@ const defaultTempValue = {
 	province: "",
 };
 
-const PersonForm = () => {
+interface Props {
+	onClick?: any;
+}
+
+const PersonForm: React.FC<Props> = ({ onClick }) => {
 	const classes = useStyles();
 	
 	const [formValue, setFormValue] = React.useState(defaultFormValue);
@@ -723,11 +727,11 @@ const PersonForm = () => {
 
 	const handleSubmit = (event: any) => {
 		event.preventDefault();
-		
 		personApi.createPerson(formValue).then((res: any) => {
 			if (res.status === 200) {
 				if (res.data.status === 200) {
 					toastService.success("Nhập liệu thành công");
+					onClick();
 				} else {
 					toastService.error("Vui lòng kiểm tra lại file nhập liệu");
 				}
@@ -749,7 +753,9 @@ const PersonForm = () => {
 								<TextField
 								id="standard-basic"
 								label="Họ và tên"
-								onChange={onChangeNameField} />
+								required={true}
+								onChange={onChangeNameField}
+								/>
 							</Box>
 						</Grid>
 						<Grid item xs={6}>
@@ -757,6 +763,7 @@ const PersonForm = () => {
 								<TextField
 								id="standard-basic"
 								label="Số CMND/CCCD"
+								required={true}
 								onChange={onChangeUIDField}/>
 							</Box>
 						</Grid>
@@ -769,6 +776,7 @@ const PersonForm = () => {
 								id="date"
 								label="Ngày sinh"
 								type="date"
+								required={true}
 								InputLabelProps={{
 								  shrink: true,
 								}}
@@ -802,6 +810,7 @@ const PersonForm = () => {
 								<TextField
 								id="standard-basic"
 								label="Tôn giáo"
+								required={true}
 								onChange={onChangeReligionField}/>
 							</Box>
 						</Grid>
@@ -810,6 +819,7 @@ const PersonForm = () => {
 								<TextField
 								id="standard-basic"
 								label="Nghề nghiệp"
+								required={true}
 								onChange={onChangeJobField}/>
 							</Box>
 						</Grid>
@@ -869,6 +879,7 @@ const PersonForm = () => {
 								onChange={onChangeVillageHome}
 								key={villageHomeKey}
 								isStandard={true}
+								onBlur={onChangeVillageHome}
 								/>
 							</Box>
 						</Grid>
@@ -927,7 +938,7 @@ const PersonForm = () => {
 								label="Thôn/Làng/Bản"
 								onChange={onChangeVillageDefault}
 								key={villageDefaultKey}
-								isStandard={true}
+								isStandard={true} onBlur={onChangeVillageDefault}
 								/>
 							</Box>
 						</Grid>
@@ -938,7 +949,8 @@ const PersonForm = () => {
 							<TextField
 							id="standard-basic"
 							label="Số nhà, Đường, Phố"
-							onChange={onChangeDefaultDetail}/>
+							onChange={onChangeDefaultDetail}
+							onBlur={onChangeDefaultDetail}/>
 						</Box>
 					</Grid>
 					
@@ -995,7 +1007,7 @@ const PersonForm = () => {
 								label="Thôn/Làng/Bản"
 								onChange={onChangeVillageTemp}
 								key={villageTempKey}
-								isStandard={true}
+								isStandard={true} onBlur={onChangeVillageTemp}
 								/>
 							</Box>
 						</Grid>
@@ -1006,7 +1018,8 @@ const PersonForm = () => {
 							<TextField
 							id="standard-basic"
 							label="Số nhà, Đường, Phố"
-							onChange={onChangeTempDetail} />
+							onChange={onChangeTempDetail}
+							onBlur={onChangeTempDetail}/>
 						</Box>
 					</Grid>
 					

@@ -15,10 +15,10 @@ import { villageApi } from "services/api/village";
 const head = [
 	{id: 1, label:"Mã"},
 	{id: 2, label:"Tên"},
-	{id: 3, label:"Tình trạng Điều tra"},
+	{id: 3, label:"Đã hoàn thành?"},
 ]
 
-const B1AdminPage = () => {
+const B1SearchPage = () => {
 	useRole(Role.B1);
 	
 	const [village, setVillage] = React.useState([]);
@@ -30,7 +30,7 @@ const B1AdminPage = () => {
 		villageApi.getByRole().then((res: any) => {
 			if (res.status === 200) {
 				setVillage(res.data);
-				setData(res.data.map((data: any) => ({code: data.code, name: data.name, status:data.state ? "Đã Hoàn thành" : "Chưa Hoàn thành",})));
+				setData(res.data.map((data: any) => ({code: data.code, name: data.name, status:data.state ? "Đã Hoàn thành" : "Chưa hoàn thành",})));
 			}
 		})
 	}, []);
@@ -44,6 +44,7 @@ const B1AdminPage = () => {
 						tableName={tableName}
 						rows={data}
 						head={head}
+						hasButtons={false}
 						/>
 					</Box>
 				</Grid>
@@ -52,4 +53,4 @@ const B1AdminPage = () => {
 	);
 };
 
-export default B1AdminPage;
+export default B1SearchPage;

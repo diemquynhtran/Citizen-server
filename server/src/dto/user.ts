@@ -22,5 +22,5 @@ export class UserTitleDto {
   @Expose()
   gender: Gender;
   @Expose()
-  username: string
+  username: string;
 }

@@ -5,7 +5,7 @@ import { roleRequire } from "../middlewares/role";
 const express = require("express");
 const router = express.Router();
 
-router.get("/",roleRequire(Role.A1, Role.A2, Role.A3), villageController.getAllvillages);
+router.get("/", villageController.getAllvillages);
 router.get("/getByB1", villageController.getvillagesByRole);
 router.post("/create",roleRequire(Role.B1),roleRequire(Role.B1), villageController.create);
 router.post("/getByWard", villageController.getByWard);

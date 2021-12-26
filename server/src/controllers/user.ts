@@ -168,7 +168,7 @@ export const userController = {
       let i=0;
       for (i=0;i<checkVillage.length;i++) {
         //checkVillage[i].state = true;
-        checkVillage[i].state = true;
+        checkVillage[i].state = false;
         let a = await getRepository(Village).save(checkVillage[i]);
         console.log(a);
         

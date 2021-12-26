@@ -10,12 +10,14 @@ import { User } from "../entities/user";
 
 export const districtController = {
   //[GET] /district
-  getAllDistricts: async (req: Request, res: Response) => {
+  getDistrictUser: async (req: Request, res: Response) => {
     const body = req.body;
+    const user = res.locals.user;
     const districtRepo = getRepository(District);
     const districts = await districtRepo.find({
-      where: {},
-      relations: ["province"],
+      where: {code: Like(`${user.username}%`)},
+      relations: ["admin"],
+      
     });
     console.log(districts);
     
@@ -35,11 +37,12 @@ export const districtController = {
     const districts = await districtRepo.find({
       code: Like(`${user.username}%`)
     });
-    let result = plainToClass(DistrictTitle, districts, {
-      excludeExtraneousValues: true,
-    });
-    res.status(200);
-    return res.send(result);
+    
+    return res.json({
+      status: 200,
+      messenger: "Thành công",
+      result: districts
+    })
   },
 
   //[POST] /district/create
@@ -147,6 +150,7 @@ export const districtController = {
       })
     }
   },
+
   getByProvince: async (req: Request, res: Response) => {
     const reqbody = req.body;
     if(!reqbody || !reqbody.code) {

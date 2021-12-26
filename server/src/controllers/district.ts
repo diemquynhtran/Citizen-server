@@ -19,13 +19,9 @@ export const districtController = {
       relations: ["admin"],
       
     });
-    console.log(districts);
-    
-    return res.json({
-      status: 200,
-      messenger: "Thành công",
-      result: districts
-    })
+    //console.log(districts);
+    res.status(200);
+    return res.send(districts);
   },
 
   //[GET] /district/getByRole

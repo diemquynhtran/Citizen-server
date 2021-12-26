@@ -107,7 +107,8 @@ const A1SearchPage = () => {
 		}});
 		
 		personApi.getByRole().then((res: any) => {
-			if(res.status === 200) {	
+			if(res.status === 200) {
+				console.log(res);
 				setData(res.data.result.map((data: any) => ({
 					cmnd: data.cmnd,
 					name: data.name,
@@ -180,7 +181,7 @@ const A1SearchPage = () => {
 					setVillageKey(villageKey + 1);
 					setVillage([]);
 					
-					personApi.getByReq(provinceID).then((res: any) => {
+					personApi.getByRole().then((res: any) => {
 						if(res.status === 200) {	
 							setData(res.data.result.map((data: any) => ({
 								cmnd: data.cmnd,
@@ -286,7 +287,7 @@ const A1SearchPage = () => {
 					setVillage(res.data.result);
 					
 					personApi.getByReq(value.code).then((res: any) => {
-						if(res.status === 200) {	
+						if(res.status === 200) {
 							setData(res.data.result.map((data: any) => ({
 								cmnd: data.cmnd,
 								name: data.name,
@@ -342,7 +343,7 @@ const A1SearchPage = () => {
 	const onChangeVillage = (event: unknown, value: any) => {
 		if (value != null) {
 			personApi.getByReq(value.code).then((res: any) => {
-				if(res.status === 200) {	
+				if(res.status === 200) {
 					setData(res.data.result.map((data: any) => ({
 						cmnd: data.cmnd,
 						name: data.name,

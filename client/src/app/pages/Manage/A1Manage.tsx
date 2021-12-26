@@ -67,23 +67,6 @@ const A1ManagePage = () => {
     provinceApi.getProvinces().then((res: any) => {
       if (res.status === 200) {
         setProvince(res.data);
-        for (let i = 0; i < res.data.length; i++) {
-          ops.push({
-            value: res.data[i].code,
-            label: res.data[i].name,
-          });
-        }
-        // setInferiors([
-        //   { value: "Lạng Sơn", label: "Lạng Sơn", id: "10" },
-        //   { value: "Hà Nội", label: "Hà Nội", id: "01" },
-        //   { value: "Thanh Hóa", label: "Thanh Hóa", id: "28" },
-        //   {
-        //     value: "Thành phố Hồ Chí Minh",
-        //     label: "Thành phố Hồ Chí Minh",
-        //     id: "02",
-        //   },
-        //   { value: "Hải Phòng", label: "Hải Phòng", id: "03" },
-        // ]);
         setData(
           res.data.map((data: any) => ({
             code: data.code,

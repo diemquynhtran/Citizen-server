@@ -23,6 +23,7 @@ import { userprovinceApi } from "services/api/userProvince";
 import { districtApi } from "services/api/district";
 import { userdistrictApi } from "services/api/userDistrict";
 import { villageApi } from "services/api/village";
+import { uservillageApi } from "services/api/userVillage";
 import { wardApi } from "services/api/ward";
 import { useState } from "react";
 import { Modal } from "react-bootstrap";
@@ -39,7 +40,7 @@ const head = [
 ];
 const A3ManagePage = () => {
   useRole(Role.A3);
-  const { userInfo } = useSelector((state: RootState) => state.user);
+  const {userInfo } = useSelector((state: RootState) => state.user);
   const [province, setProvince] = React.useState([]);
   const [district, setDistrict] = React.useState([]);
   const [ward, setWard] = React.useState([]);
@@ -60,9 +61,9 @@ const A3ManagePage = () => {
   const [tableName, setTableName] = React.useState("Quản lý tài khoản");
 
   useEffect(() => {
-    districtApi.getDistricts().then((res: any) => {
+    villageApi.getVillages().then((res: any) => {
       if (res.status === 200) {
-        setDistrict(res.data);
+        setProvince(res.data);
         setData(
           res.data.map((data: any) => ({
             code: data.code,
@@ -97,18 +98,10 @@ const A3ManagePage = () => {
           setWard([]);
 
           setData(
-            res.data.map((data: any) => ({
+            res.data.result.map((data: any) => ({
               code: data.code,
               name: data.name,
-              account: data.code,
-              start: data.admin == null ? "" : data.admin.startTime,
-              end: data.admin == null ? "" : data.admin.endTime,
-              status:
-                data.admin == null
-                  ? "Inactive"
-                  : data.admin.permission
-                  ? "Active"
-                  : "Inactive",
+              status: data.status,
             }))
           );
         }
@@ -122,15 +115,7 @@ const A3ManagePage = () => {
             res.data.map((data: any) => ({
               code: data.code,
               name: data.name,
-              account: data.code,
-              start: data.admin == null ? "" : data.admin.startTime,
-              end: data.admin == null ? "" : data.admin.endTime,
-              status:
-                data.admin == null
-                  ? "Inactive"
-                  : data.admin.permission
-                  ? "Active"
-                  : "Inactive",
+              status: data.status,
             }))
           );
 
@@ -156,18 +141,10 @@ const A3ManagePage = () => {
           setWard(res.data.result);
 
           setData(
-            res.data.map((data: any) => ({
+            res.data.result.map((data: any) => ({
               code: data.code,
               name: data.name,
-              account: data.code,
-              start: data.admin == null ? "" : data.admin.startTime,
-              end: data.admin == null ? "" : data.admin.endTime,
-              status:
-                data.admin == null
-                  ? "Inactive"
-                  : data.admin.permission
-                  ? "Active"
-                  : "Inactive",
+              status: data.status,
             }))
           );
         }
@@ -178,18 +155,10 @@ const A3ManagePage = () => {
           setTableName(provinceName);
           setDistrict(res.data.result);
           setData(
-            res.data.map((data: any) => ({
+            res.data.result.map((data: any) => ({
               code: data.code,
               name: data.name,
-              account: data.code,
-              start: data.admin == null ? "" : data.admin.startTime,
-              end: data.admin == null ? "" : data.admin.endTime,
-              status:
-                data.admin == null
-                  ? "Inactive"
-                  : data.admin.permission
-                  ? "Active"
-                  : "Inactive",
+              status: data.status,
             }))
           );
 
@@ -209,18 +178,10 @@ const A3ManagePage = () => {
           setWardName(value.name);
           setVillage(res.data.result);
           setData(
-            res.data.map((data: any) => ({
+            res.data.result.map((data: any) => ({
               code: data.code,
               name: data.name,
-              account: data.code,
-              start: data.admin == null ? "" : data.admin.startTime,
-              end: data.admin == null ? "" : data.admin.endTime,
-              status:
-                data.admin == null
-                  ? "Inactive"
-                  : data.admin.permission
-                  ? "Active"
-                  : "Inactive",
+              status: data.status,
             }))
           );
         }
@@ -231,18 +192,10 @@ const A3ManagePage = () => {
           setTableName(districtName);
           setWard(res.data.result);
           setData(
-            res.data.map((data: any) => ({
+            res.data.result.map((data: any) => ({
               code: data.code,
               name: data.name,
-              account: data.code,
-              start: data.admin == null ? "" : data.admin.startTime,
-              end: data.admin == null ? "" : data.admin.endTime,
-              status:
-                data.admin == null
-                  ? "Inactive"
-                  : data.admin.permission
-                  ? "Active"
-                  : "Inactive",
+              status: data.status,
             }))
           );
         }
@@ -278,15 +231,14 @@ const A3ManagePage = () => {
     const newValue = e.currentTarget.value;
   };
 
-
   const onSubmitKey = (event: any) => {
     handleCloseKey();
     event.preventDefault();
-    districtApi.postDistrict(infodistrict).then((res: any) => {
+    villageApi.postVillage(infodistrict).then((res: any) => {
       if (res.status === 200) {
-        districtApi.getDistricts().then((res: any) => {
+        villageApi.getVillages().then((res: any) => {
           if (res.status === 200) {
-            setDistrict(res.data);
+            setProvince(res.data);
             setData(
               res.data.map((data: any) => ({
                 code: data.code,
@@ -310,12 +262,12 @@ const A3ManagePage = () => {
 
   const onSubmitAcc = (event: any) => {
     event.preventDefault();
-    userdistrictApi.postUserDistrict(infoacc).then((res: any) => {
+    uservillageApi.postUserVillage(infoacc).then((res: any) => {
       if (res.status === 200) {
         handleCloseAcc();
-        districtApi.getDistricts().then((res: any) => {
+        villageApi.getVillages().then((res: any) => {
           if (res.status === 200) {
-            setDistrict(res.data);
+            setProvince(res.data);
             setData(
               res.data.map((data: any) => ({
                 code: data.code,
@@ -331,15 +283,14 @@ const A3ManagePage = () => {
                     : "Inactive",
               }))
             );
-          }
+          } 
         });
       }
     });
   };
   let codeNew: any = data.length + 1;
   codeNew = Number(codeNew) < 10 ? `0${codeNew}` : codeNew;
-  codeNew = userInfo?.username + codeNew
-  console.log(codeNew)
+  codeNew = userInfo?.username + codeNew;
 
   return (
     <Box mt={5} ml={5} style={{ marginTop: 0 }}>
@@ -374,10 +325,10 @@ const A3ManagePage = () => {
           <div className="login-form">
             <Form style={{ margin: 10, padding: 10 }}>
               <Form.Group className="mb-3" controlId="formBasicEmail">
-                <Form.Label>Khai báo Quận/Huyện/Thị xã</Form.Label>
+                <Form.Label>Khai báo phường/xã/thị trấn</Form.Label>
                 <Form.Control
                   type="name"
-                  placeholder="Nhập tên quận/huyện/thị xã"
+                  placeholder="Nhập tên phường/xã/thị trấn"
                   onChange={(e) =>
                     setInfodistrict({ ...infodistrict, name: e.target.value })
                   }
@@ -415,10 +366,10 @@ const A3ManagePage = () => {
           <div className="login-form">
             <Form style={{ margin: 10, padding: 10 }}>
               <Form.Group className="mb-3" controlId="formBasicPassword">
-                <Form.Label>Quận/Huyện/Thị xã</Form.Label>
+                <Form.Label>Tỉnh/Thành phố</Form.Label>
                 <Form.Control
                   type="name"
-                  placeholder="Nhập tên quận/huyện/thị xã"
+                  placeholder="Nhập tên phường/xã/thị trấn"
                   onChange={(e) =>
                     setInfoacc({ ...infoacc, name: e.target.value })
                   }
@@ -426,7 +377,7 @@ const A3ManagePage = () => {
               </Form.Group>
 
               <Form.Group className="mb-3" controlId="formBasicPassword">
-                <Form.Label>Mã quận/huyện/thị xã</Form.Label>
+                <Form.Label>Mã phường/xã/thị trấn</Form.Label>
                 <Form.Control
                   type="name"
                   placeholder="Nhập mã"
@@ -478,28 +429,6 @@ const A3ManagePage = () => {
         </Modal>
       </div>
       <Grid container>
-        <Box mr={3} mt={1}>
-          <Grid item>
-            <Box mb={2}>
-              <EnhancedDropdownMenu
-                options={district}
-                getOptionLabel={(element: any) => element.name}
-                label="Quận/Huyện"
-                onChange={onChangeDistrict}
-                key={districtKey}
-              />
-            </Box>
-            <Box mb={2}>
-              <EnhancedDropdownMenu
-                options={ward}
-                getOptionLabel={(element: any) => element.name}
-                label="Phường/Xã"
-                onChange={onChangeWard}
-                key={wardKey}
-              />
-            </Box>
-          </Grid>
-        </Box>
         <Grid item>
           <EnhancedStatisticalTable
             rows={data}

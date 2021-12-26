@@ -25,7 +25,6 @@ const head = [
 ];
 
 const A3AdminPage = () => {
-<<<<<<< HEAD
   useRole(Role.A3);
 
   const [ward, setWard] = React.useState([]);

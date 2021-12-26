@@ -23,7 +23,6 @@ const head = [
 ];
 
 const B1AdminPage = () => {
-<<<<<<< HEAD
   useRole(Role.B1);
 
   const [village, setVillage] = React.useState([]);

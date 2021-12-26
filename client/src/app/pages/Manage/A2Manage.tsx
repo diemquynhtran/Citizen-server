@@ -8,26 +8,32 @@ import { toastService } from "helpers/toast";
 
 import PropTypes from "prop-types";
 
+
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
 import { Button, Form } from "react-bootstrap";
 import { makeStyles } from "@material-ui/core/styles";
 import AddIcon from "@material-ui/icons/Add";
 import Icon from "@material-ui/core/Icon";
+
 import Select from "react-select";
+
 
 import EnhancedDropdownMenu from "components/_shares/EnhancedDropdownMenu";
 import EnhancedStatisticalTable from "components/_shares/EnhancedTable";
 import { provinceApi } from "services/api/province";
 import { userprovinceApi } from "services/api/userProvince";
 import { districtApi } from "services/api/district";
+
 import { userdistrictApi } from "services/api/userDistrict";
+
 import { villageApi } from "services/api/village";
 import { wardApi } from "services/api/ward";
 import { useState } from "react";
 import { Modal } from "react-bootstrap";
 import { InputGroup } from "react-bootstrap";
 import { userInfo } from "os";
+import moment from "moment";
 
 const head = [
   { id: 1, label: "Mã quận/huyện" },
@@ -58,6 +64,9 @@ const A2ManagePage = () => {
 
   const [data, setData] = React.useState([]);
   const [tableName, setTableName] = React.useState("Quản lý tài khoản");
+  
+
+  const [date, setDate] = React.useState([]);
 
   useEffect(() => {
     districtApi.getDistricts().then((res: any) => {
@@ -68,8 +77,8 @@ const A2ManagePage = () => {
             code: data.code,
             name: data.name,
             account: data.code,
-            start: data.admin == null ? "" : data.admin.startTime,
-            end: data.admin == null ? "" : data.admin.endTime,
+            start: data.admin == null ? "" : moment(data.admin.startTime).format("DD/MM/YY"),
+            end: data.admin == null ? "" : moment(data.admin.endTime).format("DD/MM/YY"),
             status:
               data.admin == null
                 ? "Inactive"
@@ -82,126 +91,6 @@ const A2ManagePage = () => {
     });
   }, []);
 
-  const onChangeProvince = (event: unknown, value: any) => {
-    if (value != null) {
-      setTableName(value.name);
-      districtApi.getByProvince(value.code).then((res: any) => {
-        if (res.status === 200) {
-          setProvinceID(value.code);
-          setProvinceName(value.name);
-
-          setDistrictKey(districtKey + 1);
-          setDistrict(res.data.result);
-
-          setWardKey(wardKey + 1);
-          setWard([]);
-
-          setData(
-            res.data.result.map((data: any) => ({
-              code: data.code,
-              name: data.name,
-              status: data.status,
-            }))
-          );
-        }
-      });
-    } else {
-      setTableName("Toàn quốc");
-      provinceApi.getProvinces().then((res: any) => {
-        if (res.status === 200) {
-          setProvince(res.data);
-          setData(
-            res.data.map((data: any) => ({
-              code: data.code,
-              name: data.name,
-              status: data.status,
-            }))
-          );
-
-          setDistrictKey(districtKey + 1);
-          setDistrict([]);
-
-          setWardKey(wardKey + 1);
-          setWard([]);
-        }
-      });
-    }
-  };
-
-  const onChangeDistrict = (event: unknown, value: any) => {
-    if (value != null) {
-      setTableName(value.name);
-      wardApi.getByDistrict(value.code).then((res: any) => {
-        if (res.status === 200) {
-          setDistrictID(value.code);
-          setDistrictName(value.name);
-
-          setWardKey(wardKey + 1);
-          setWard(res.data.result);
-
-          setData(
-            res.data.result.map((data: any) => ({
-              code: data.code,
-              name: data.name,
-              status: data.status,
-            }))
-          );
-        }
-      });
-    } else {
-      districtApi.getByProvince(provinceID).then((res: any) => {
-        if (res.status === 200) {
-          setTableName(provinceName);
-          setDistrict(res.data.result);
-          setData(
-            res.data.result.map((data: any) => ({
-              code: data.code,
-              name: data.name,
-              status: data.status,
-            }))
-          );
-
-          setWardKey(wardKey + 1);
-          setWard([]);
-        }
-      });
-    }
-  };
-
-  const onChangeWard = (event: unknown, value: any) => {
-    if (value != null) {
-      setTableName(value.name);
-      villageApi.getByWard(value.code).then((res: any) => {
-        if (res.status === 200) {
-          setWardID(value.code);
-          setWardName(value.name);
-          setVillage(res.data.result);
-          setData(
-            res.data.result.map((data: any) => ({
-              code: data.code,
-              name: data.name,
-              status: data.status,
-            }))
-          );
-        }
-      });
-    } else {
-      wardApi.getByDistrict(districtID).then((res: any) => {
-        if (res.status === 200) {
-          setTableName(districtName);
-          setWard(res.data.result);
-          setData(
-            res.data.result.map((data: any) => ({
-              code: data.code,
-              name: data.name,
-              status: data.status,
-            }))
-          );
-        }
-      });
-    }
-  };
-
   const useStyles = makeStyles((theme) => ({
     button: {
       margin: 10,
@@ -209,6 +98,7 @@ const A2ManagePage = () => {
       left: "95%",
     },
   }));
+
   const [infodistrict, setInfodistrict] = useState({
     name: "",
   });
@@ -226,6 +116,7 @@ const A2ManagePage = () => {
   const [accShow, setAccShow] = useState(false);
   const handleCloseKey = () => setKeyShow(false);
   const handleCloseAcc = () => setAccShow(false);
+
   const onchangeInput = (e: React.FormEvent<HTMLInputElement>) => {
     const newValue = e.currentTarget.value;
   };
@@ -243,8 +134,14 @@ const A2ManagePage = () => {
                 code: data.code,
                 name: data.name,
                 account: data.code,
-                start: data.admin == null ? "" : data.admin.startTime,
-                end: data.admin == null ? "" : data.admin.endTime,
+                start:
+                data.admin == null
+                  ? ""
+                  : moment(data.admin.startTime).format("DD/MM/YY"),
+              end:
+                data.admin == null
+                  ? ""
+                  : moment(data.admin.endTime).format("DD/MM/YY"),
                 status:
                   data.admin == null
                     ? "Inactive"
@@ -272,8 +169,14 @@ const A2ManagePage = () => {
                 code: data.code,
                 name: data.name,
                 account: data.code,
-                start: data.admin == null ? "" : data.admin.startTime,
-                end: data.admin == null ? "" : data.admin.endTime,
+                start:
+                data.admin == null
+                  ? ""
+                  : moment(data.admin.startTime).format("DD/MM/YY"),
+              end:
+                data.admin == null
+                  ? ""
+                  : moment(data.admin.endTime).format("DD/MM/YY"),
                 status:
                   data.admin == null
                     ? "Inactive"
@@ -328,7 +231,7 @@ const A2ManagePage = () => {
                 <Form.Control
                   type="name"
                   placeholder="Nhập tên quận/huyện"
-                  onChange={(e) =>
+                  onChange={(e:any) =>
                     setInfodistrict({ ...infodistrict, name: e.target.value })
                   }
                 />
@@ -369,7 +272,7 @@ const A2ManagePage = () => {
                 <Form.Control
                   type="name"
                   placeholder="Nhập tên quận/huyện"
-                  onChange={(e) =>
+                  onChange={(e:any) =>
                     setInfoacc({ ...infoacc, name: e.target.value })
                   }
                 />
@@ -380,7 +283,7 @@ const A2ManagePage = () => {
                 <Form.Control
                   type="name"
                   placeholder="Nhập mã"
-                  onChange={(e) => {
+                  onChange={(e:any) => {
                     setInfoacc({ ...infoacc, code: e.target.value });
                   }}
                 />
@@ -391,7 +294,7 @@ const A2ManagePage = () => {
                 <Form.Control
                   type="password"
                   placeholder="Nhập mật khẩu"
-                  onChange={(e) => {
+                  onChange={(e:any) => {
                     setInfoacc({ ...infoacc, password: e.target.value });
                   }}
                 />
@@ -401,7 +304,7 @@ const A2ManagePage = () => {
                 <Form.Label>Ngày cấp</Form.Label>
                 <Form.Control
                   type="date"
-                  onChange={(e) =>
+                  onChange={(e:any) =>
                     setInfoacc({ ...infoacc, startTime: e.target.value })
                   }
                 />
@@ -410,7 +313,7 @@ const A2ManagePage = () => {
                 <Form.Label>Ngày hết hạn</Form.Label>
                 <Form.Control
                   type="date"
-                  onChange={(e) =>
+                  onChange={(e:any) =>
                     setInfoacc({ ...infoacc, endTime: e.target.value })
                   }
                 />

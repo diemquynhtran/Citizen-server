@@ -10,7 +10,7 @@ export const defaultRouter = (role?: Role) => {
     case Role.A2:
       return "/admin/A2";
     case Role.A3:
-      return "/admin/B1";
+      return "/admin/A3";
     case Role.B1:
       return "/admin/B1";
     case Role.B2:

@@ -11,9 +11,10 @@ interface Props {
 	label: string,
 	onChange?: any,
 	data: any,
+	onBlur?: any,
 }
 
-const BasicDropdown: React.FC<Props> = ({ label, onChange, data }) => {
+const BasicDropdown: React.FC<Props> = ({ label, onChange, data, onBlur }) => {
 	const ITEM_HEIGHT = 48;
 	const ITEM_PADDING_TOP = 8;
 	const MenuProps = {
@@ -33,6 +34,7 @@ const BasicDropdown: React.FC<Props> = ({ label, onChange, data }) => {
 			labelId="a"
 			onChange={onChange}
 			MenuProps={MenuProps}
+			onBlur={onBlur}
 			>
 				{ data.map((option: any) => (<MenuItem value={option.value}>{option.label}</MenuItem>)) }
 			</Select>

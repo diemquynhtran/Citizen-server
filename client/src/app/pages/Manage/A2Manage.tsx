@@ -284,7 +284,7 @@ const A2ManagePage = () => {
   const onSubmitKey = (event: any) => {
     handleCloseKey();
     event.preventDefault();
-    userdistrictApi.postUserDistrict(infodistrict).then((res: any) => {
+    districtApi.postDistrict(infodistrict).then((res: any) => {
       if (res.status === 200) {
         districtApi.getDistricts().then((res: any) => {
           if (res.status === 200) {
@@ -340,6 +340,8 @@ const A2ManagePage = () => {
   };
   let codeNew: any = data.length + 1;
   codeNew = Number(codeNew) < 10 ? `0${codeNew}` : codeNew;
+  codeNew = userInfo?.username + codeNew
+  console.log(codeNew)
 
   return (
     <Box mt={5} ml={5} style={{ marginTop: 0 }}>

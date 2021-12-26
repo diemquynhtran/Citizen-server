@@ -453,36 +453,6 @@ const A1ManagePage = () => {
         </Modal>
       </div>
       <Grid container>
-        <Box mr={3} mt={1}>
-          <Grid item>
-            <Box mb={2}>
-              <EnhancedDropdownMenu
-                options={province}
-                getOptionLabel={(element: any) => element.name}
-                label="Tỉnh/Thành phố"
-                onChange={onChangeProvince}
-              />
-            </Box>
-            <Box mb={2}>
-              <EnhancedDropdownMenu
-                options={district}
-                getOptionLabel={(element: any) => element.name}
-                label="Quận/Huyện"
-                onChange={onChangeDistrict}
-                key={districtKey}
-              />
-            </Box>
-            <Box mb={2}>
-              <EnhancedDropdownMenu
-                options={ward}
-                getOptionLabel={(element: any) => element.name}
-                label="Phường/Xã"
-                onChange={onChangeWard}
-                key={wardKey}
-              />
-            </Box>
-          </Grid>
-        </Box>
         <Grid item>
           <EnhancedStatisticalTable
             rows={data}

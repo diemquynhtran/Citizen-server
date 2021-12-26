@@ -21,12 +21,11 @@ export const districtController = {
     });
     console.log(districts);
     
-
-    let result = plainToClass(DistrictTitle, districts, {
-      excludeExtraneousValues: true,
-    });
-    res.status(200);
-    return res.send(result);
+    return res.json({
+      status: 200,
+      messenger: "Thành công",
+      result: districts
+    })
   },
 
   //[GET] /district/getByRole

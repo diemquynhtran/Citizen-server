@@ -12,6 +12,7 @@ router.post("/create", roleRequire(Role.B1, Role.B2), permissionUser,personContr
 router.put("/update", roleRequire(Role.B1, Role.B2), permissionUser,personController.update);
 router.delete("/delete", roleRequire(Role.B1, Role.B2),  permissionUser,personController.delete);
 router.get("/getByRole", personController.getByRole);
+router.post("/getByRequest", personController.getByRequest);
 
 // router.get(":id/analytics/gender", analyticsController.gender);
 // router.get(":id/analytics/age", analyticsController.age);

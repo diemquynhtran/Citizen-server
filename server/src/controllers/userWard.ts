@@ -15,7 +15,7 @@ export const userwardController = {
     create: async (req: Request, res: Response) => {
         try {
             let timeNow = moment();
-            let {code, name, password, timeEnd, timeStart} = req.body;
+            let {code, name, password, endTime, startTime} = req.body;
             if (!code || !name || !password) {
                 res.status(400);
                 return res.send("Yêu cầu không hợp lệ");
@@ -31,15 +31,15 @@ export const userwardController = {
                 });
             }
             let newUser = new User();
-            const reqTimeStart = moment(timeStart);            
-            const reqTimeEnd = moment(timeEnd);
-            if (reqTimeEnd < moment()) {
+            const reqstartTime = moment(startTime);            
+            const reqendTime = moment(endTime);
+            if (reqendTime < moment()) {
                 return res.send({
                     code: 401,
                     messenger: "Thời gian không hợp lệ"
                 });
             }
-            if (reqTimeStart <= timeNow) {
+            if (reqstartTime <= timeNow) {
                 newUser.permission = true;
             }
             else newUser.permission = false;
@@ -48,8 +48,8 @@ export const userwardController = {
             newUser.username = code;
             newUser.password = password;
             newUser.displayName = name;
-            newUser.startTime = reqTimeStart.toDate();
-            newUser.endTime = reqTimeEnd.toDate();
+            newUser.startTime = reqstartTime.toDate();
+            newUser.endTime = reqendTime.toDate();
             newUser.role = Role.B1;
             const result = await userRepo.save(newUser);            
             

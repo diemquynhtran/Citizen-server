@@ -81,6 +81,48 @@ export const personController = {
         }
     },
 
+    //[POST] /person/getByRequest
+    getByRequest: async (req: Request, res: Response) => {
+        try {
+            let code = req.body.code;
+            const result = await getRepository(Person).find({
+                relations:["defaultAddress", "otherAddress", "hometown",
+                "defaultAddress.province","defaultAddress.district", "defaultAddress.village", "defaultAddress.ward", 
+                "otherAddress.province","otherAddress.district", "otherAddress.village", "otherAddress.ward",
+                "hometown.province","hometown.district", "hometown.village", "hometown.ward",
+            ],
+                where: {admincode: Like(`${code}%`)}
+            });
+            console.log(result);
+
+
+            if (result) {
+                return res.json({
+                    status: 200,
+                    messenger: " ",
+                    result: result
+                })
+            }
+            else {
+                return res.json({
+                    status: 400,
+                    messenger: "Khong tim thay person"
+                })
+            }
+
+            // const result = await getRepository(Person).createQueryBuilder("person")
+            // .innerJoinAndSelect("person.admin","user");
+            // console.log(result);
+        }
+        catch (e) {
+            console.log(e);
+            return res.json({
+                status: 400,
+                messenger: "Có lỗi get person"
+            })
+        }
+    },
+
     //[POST] /person/create
     create: async (req: Request, res: Response) => {
         try {

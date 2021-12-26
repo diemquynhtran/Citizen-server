@@ -19,7 +19,7 @@ export class Village {
   @PrimaryColumn()
   code: string;
   @Expose()
-  @Column({ nullable: false, unique: true })
+  @Column({ nullable: false})
   name: string;
   @Column({default: false})
   state: Boolean;

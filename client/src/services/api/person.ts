@@ -11,5 +11,7 @@ export const personApi = {
 	
 	getByReq: (code: any) => {
 		return api.post(`${baseURL}//getByRequest`, code);
+
 	},
+
 };

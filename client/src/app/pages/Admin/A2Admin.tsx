@@ -28,11 +28,9 @@ const head = [
 const A2AdminPage = () => {
   useRole(Role.A2);
 
-
   const [district, setDistrict] = React.useState([]);
   const [ward, setWard] = React.useState([]);
   const [village, setVillage] = React.useState([]);
-
 
   const [districtID, setDistrictID] = React.useState("");
   const [provinceID, setProvinceID] = React.useState("");
@@ -165,9 +163,10 @@ const A2AdminPage = () => {
 
   return (
     <Box mx="auto" mt={3}>
-      <Grid container spacing={3}>
+      <Grid container spacing={3} style={{ marginLeft: 40 }}>
         <Grid container xs={12}>
-          <Grid item xs={6}>
+          <Grid item xs={2}></Grid>
+          <Grid item xs={3}>
             <Box p={2}>
               <EnhancedDropdownMenu
                 options={district}
@@ -178,8 +177,13 @@ const A2AdminPage = () => {
             </Box>
           </Grid>
 
-          <Grid item xs={6}>
-            <Box p={2}>
+          <Grid item xs={4}>
+            <Box
+              p={2}
+              style={{
+                marginLeft: 130,
+              }}
+            >
               <EnhancedDropdownMenu
                 options={ward}
                 getOptionLabel={(element: any) => element.name}
@@ -191,8 +195,14 @@ const A2AdminPage = () => {
           </Grid>
         </Grid>
 
-        <Grid item xs={12}>
-          <Box p={1} mx="auto">
+        <Grid item xs={10}>
+          <Box
+            p={1}
+            mx="auto"
+            style={{
+              marginLeft: 130,
+            }}
+          >
             <EnhancedStatisticalTable
               tableName={tableName}
               rows={data}
@@ -217,7 +227,7 @@ const A2AdminPage = () => {
         </Grid>
       </Grid>
     </Box>
-  );}			
+  );
+};
 
-
-export default A2AdminPage
+export default A2AdminPage;

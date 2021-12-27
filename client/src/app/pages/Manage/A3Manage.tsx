@@ -278,7 +278,7 @@ const A3ManagePage = () => {
 
   return (
     <Box mt={5} ml={5} style={{ marginTop: 0 }}>
-      <div>
+      <div style={{ marginBottom: 50, marginLeft: 10, marginTop: 20 }}>
         <Button
           variant="primary"
           onClick={() => setKeyShow(true)}
@@ -512,7 +512,12 @@ const A3ManagePage = () => {
         </Modal>
       </div>
       <Grid container>
-        <Grid item>
+        <Grid
+          item
+          style={{
+            marginLeft: 200,
+          }}
+        >
           <EnhancedStatisticalTable
             rows={data}
             head={head}

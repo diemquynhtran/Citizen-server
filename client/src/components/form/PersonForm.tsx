@@ -771,7 +771,6 @@ const PersonForm: React.FC<Props> = ({ onClick }) => {
 								<TextField
 								id="standard-basic"
 								label="Số CMND/CCCD"
-								required={true}
 								onChange={onChangeUIDField}/>
 							</Box>
 						</Grid>

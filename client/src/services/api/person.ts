@@ -1,12 +1,8 @@
 import api from ".";
 const baseURL = "/person";
 export const personApi = {
-
-	
-
-	
 	getByReq: (code: any) => {
-		return api.post(`${baseURL}//getByRequest`, code);
+		return api.post(`${baseURL}//getByRequest`, {code: code});
 
 	},
 

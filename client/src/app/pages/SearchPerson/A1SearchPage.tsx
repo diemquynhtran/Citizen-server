@@ -18,9 +18,9 @@ import { villageApi } from "services/api/village";
 import { personApi } from "services/api/person";
 
 const searchBy = [
-  { id: 1, label: "Tên" },
-  { id: 2, label: "CMND" },
-];
+	{value: 1, label: "Tên"},
+	{value: 2, label: "CMND"},
+]
 
 const head = [
   { id: 1, label: "Số CMND/CCCD" },
@@ -82,523 +82,426 @@ const otherAddress = (data: any) => {
   );
 };
 
+var searchByName = true;
+
 const A1SearchPage = () => {
-  useRole(Role.A1);
+	useRole(Role.A1);
 
-  var searchByName = true;
-
-  const [province, setProvince] = React.useState([]);
-  const [district, setDistrict] = React.useState([]);
-  const [ward, setWard] = React.useState([]);
-  const [village, setVillage] = React.useState([]);
-
-  const [provinceID, setProvinceID] = React.useState("");
-  const [districtID, setDistrictID] = React.useState("");
-  const [wardID, setWardID] = React.useState("");
-
-  const [data, setData] = React.useState([]);
-  const [searchdata, setSearchData] = React.useState([]);
-  const [renderData, setRenderData] = React.useState([]);
-  const [tableName, setTableName] = React.useState("Toàn quốc");
-
-  const [provinceName, setProvinceName] = React.useState("");
-  const [districtName, setDistrictName] = React.useState("");
-  const [wardName, setWardName] = React.useState("");
-
-  const [districtKey, setDistrictKey] = React.useState(0);
-  const [wardKey, setWardKey] = React.useState(0);
-  const [villageKey, setVillageKey] = React.useState(0);
-
-  const [searchFieldName, setSearchFieldName] = React.useState("Tên");
-
-  const [searchField, setSearchField] = React.useState("");
-
-  useEffect(() => {
-    provinceApi.getProvinces().then((res: any) => {
-      if (res.status === 200) {
-        setProvince(res.data);
-      }
-    });
-    personApi.getByRole().then((res: any) => {
-      if (res.status === 200) {
-        setData(
-          res.data.result.map((data: any) => ({
-            cmnd: data.cmnd,
-            name: data.name,
-            birthday:
-              data.birthDay.substring(8, 10) +
-              "/" +
-              data.birthDay.substring(5, 7) +
-              "/" +
-              data.birthDay.substring(0, 4),
-            gender: data.gender === 0 ? "Nam" : "Nữ",
-            religion: data.religion,
-            scholarship: data.level.concat("/12"),
-            job: data.job,
-            hometownAddress: hometownAddress(data),
-            defaultAddress: defaultAddress(data),
-            otherAddress: otherAddress(data),
-          }))
-        );
-
-        setRenderData(data);
-      }
-    });
-  }, []);
-
-  const onChangeProvince = (event: unknown, value: any) => {
-    if (value != null) {
-      setTableName(value.name);
-      districtApi.getByProvince(value.code).then((res: any) => {
-        if (res.status === 200) {
-          setProvinceID(value.code);
-          setProvinceName(value.name);
-
-          setDistrictKey(districtKey + 1);
-          setDistrict(res.data.result);
-
-          setWardKey(wardKey + 1);
-          setWard([]);
-
-          setVillageKey(villageKey + 1);
-          setVillage([]);
-
-          personApi.getByReq(value.code).then((res: any) => {
-            if (res.status === 200) {
-              setData(
-                res.data.result.map((data: any) => ({
-                  cmnd: data.cmnd,
-                  name: data.name,
-                  birthday:
-                    data.birthDay.substring(8, 10) +
-                    "/" +
-                    data.birthDay.substring(5, 7) +
-                    "/" +
-                    data.birthDay.substring(0, 4),
-                  gender: data.gender === 0 ? "Nam" : "Nữ",
-                  religion: data.religion,
-                  scholarship: data.level.concat("/12"),
-                  job: data.job,
-                  hometownAddress: hometownAddress(data),
-                  defaultAddress: defaultAddress(data),
-                  otherAddress: otherAddress(data),
-                }))
-              );
-
-              setRenderData(data);
-            }
-          });
-
-          setRenderData(data);
-        }
-      });
-    } else {
-      setTableName("Toàn quốc");
-      provinceApi.getProvinces().then((res: any) => {
-        if (res.status === 200) {
-          setProvince(res.data);
-
-          setDistrictKey(districtKey + 1);
-          setDistrict([]);
-
-          setWardKey(wardKey + 1);
-          setWard([]);
-
-          setVillageKey(villageKey + 1);
-          setVillage([]);
-
-          personApi.getByRole().then((res: any) => {
-            if (res.status === 200) {
-              setData(
-                res.data.result.map((data: any) => ({
-                  cmnd: data.cmnd,
-                  name: data.name,
-                  birthday:
-                    data.birthDay.substring(8, 10) +
-                    "/" +
-                    data.birthDay.substring(5, 7) +
-                    "/" +
-                    data.birthDay.substring(0, 4),
-                  gender: data.gender === 0 ? "Nam" : "Nữ",
-                  religion: data.religion,
-                  scholarship: data.level.concat("/12"),
-                  job: data.job,
-                  hometownAddress: hometownAddress(data),
-                  defaultAddress: defaultAddress(data),
-                  otherAddress: otherAddress(data),
-                }))
-              );
-
-              setRenderData(data);
-            }
-          });
-        }
-      });
-    }
-  };
-
-  const onChangeDistrict = (event: unknown, value: any) => {
-    if (value != null) {
-      setTableName(value.name);
-      wardApi.getByDistrict(value.code).then((res: any) => {
-        if (res.status === 200) {
-          setDistrictID(value.code);
-          setDistrictName(value.name);
-
-          setWardKey(wardKey + 1);
-          setWard(res.data.result);
-
-          setVillageKey(villageKey + 1);
-          setVillage([]);
-
-          personApi.getByReq(value.code).then((res: any) => {
-            if (res.status === 200) {
-              console.log(res);
-              setData(
-                res.data.result.map((data: any) => ({
-                  cmnd: data.cmnd,
-                  name: data.name,
-                  birthday:
-                    data.birthDay.substring(8, 10) +
-                    "/" +
-                    data.birthDay.substring(5, 7) +
-                    "/" +
-                    data.birthDay.substring(0, 4),
-                  gender: data.gender === 0 ? "Nam" : "Nữ",
-                  religion: data.religion,
-                  scholarship: data.level.concat("/12"),
-                  job: data.job,
-                  hometownAddress: hometownAddress(data),
-                  defaultAddress: defaultAddress(data),
-                  otherAddress: otherAddress(data),
-                }))
-              );
-
-              setRenderData(data);
-            }
-          });
-
-          setRenderData(data);
-        }
-      });
-    } else {
-      districtApi.getByProvince(provinceID).then((res: any) => {
-        if (res.status === 200) {
-          setTableName(provinceName);
-          setDistrict(res.data.result);
-
-          setWardKey(wardKey + 1);
-          setWard([]);
-
-          setVillageKey(villageKey + 1);
-          setVillage([]);
-
-          personApi.getByReq(provinceID).then((res: any) => {
-            if (res.status === 200) {
-              setData(
-                res.data.result.map((data: any) => ({
-                  cmnd: data.cmnd,
-                  name: data.name,
-                  birthday:
-                    data.birthDay.substring(8, 10) +
-                    "/" +
-                    data.birthDay.substring(5, 7) +
-                    "/" +
-                    data.birthDay.substring(0, 4),
-                  gender: data.gender === 0 ? "Nam" : "Nữ",
-                  religion: data.religion,
-                  scholarship: data.level.concat("/12"),
-                  job: data.job,
-                  hometownAddress: hometownAddress(data),
-                  defaultAddress: defaultAddress(data),
-                  otherAddress: otherAddress(data),
-                }))
-              );
-
-              setRenderData(data);
-            }
-          });
-        }
-      });
-    }
-  };
-
-  const onChangeWard = (event: unknown, value: any) => {
-    if (value != null) {
-      setTableName(value.name);
-      villageApi.getByWard(value.code).then((res: any) => {
-        if (res.status === 200) {
-          setWardID(value.code);
-          setWardName(value.name);
-
-          setVillageKey(villageKey + 1);
-          setVillage(res.data.result);
-
-          personApi.getByReq(value.code).then((res: any) => {
-            if (res.status === 200) {
-              setData(
-                res.data.result.map((data: any) => ({
-                  cmnd: data.cmnd,
-                  name: data.name,
-                  birthday:
-                    data.birthDay.substring(8, 10) +
-                    "/" +
-                    data.birthDay.substring(5, 7) +
-                    "/" +
-                    data.birthDay.substring(0, 4),
-                  gender: data.gender === 0 ? "Nam" : "Nữ",
-                  religion: data.religion,
-                  scholarship: data.level.concat("/12"),
-                  job: data.job,
-                  hometownAddress: hometownAddress(data),
-                  defaultAddress: defaultAddress(data),
-                  otherAddress: otherAddress(data),
-                }))
-              );
-
-              setRenderData(data);
-            }
-          });
-
-          setRenderData(data);
-        }
-      });
-    } else {
-      wardApi.getByDistrict(districtID).then((res: any) => {
-        if (res.status === 200) {
-          setTableName(districtName);
-          setWard(res.data.result);
-
-          setVillageKey(villageKey + 1);
-          setVillage([]);
-
-          personApi.getByReq(districtID).then((res: any) => {
-            if (res.status === 200) {
-              setData(
-                res.data.result.map((data: any) => ({
-                  cmnd: data.cmnd,
-                  name: data.name,
-                  birthday:
-                    data.birthDay.substring(8, 10) +
-                    "/" +
-                    data.birthDay.substring(5, 7) +
-                    "/" +
-                    data.birthDay.substring(0, 4),
-                  gender: data.gender === 0 ? "Nam" : "Nữ",
-                  religion: data.religion,
-                  scholarship: data.level.concat("/12"),
-                  job: data.job,
-                  hometownAddress: hometownAddress(data),
-                  defaultAddress: defaultAddress(data),
-                  otherAddress: otherAddress(data),
-                }))
-              );
-
-              setRenderData(data);
-            }
-          });
-        }
-      });
-    }
-  };
-
-  const onChangeVillage = (event: unknown, value: any) => {
-    if (value != null) {
-      personApi.getByReq(value.code).then((res: any) => {
-        if (res.status === 200) {
-          setData(
-            res.data.result.map((data: any) => ({
-              cmnd: data.cmnd,
-              name: data.name,
-              birthday:
-                data.birthDay.substring(8, 10) +
-                "/" +
-                data.birthDay.substring(5, 7) +
-                "/" +
-                data.birthDay.substring(0, 4),
-              gender: data.gender === 0 ? "Nam" : "Nữ",
-              religion: data.religion,
-              scholarship: data.level.concat("/12"),
-              job: data.job,
-              hometownAddress: hometownAddress(data),
-              defaultAddress: defaultAddress(data),
-              otherAddress: otherAddress(data),
-            }))
-          );
-
-          setRenderData(data);
-        }
-      });
-
-      setRenderData(data);
-    } else {
-      personApi.getByReq(wardID).then((res: any) => {
-        if (res.status === 200) {
-          setData(
-            res.data.result.map((data: any) => ({
-              cmnd: data.cmnd,
-              name: data.name,
-              birthday:
-                data.birthDay.substring(8, 10) +
-                "/" +
-                data.birthDay.substring(5, 7) +
-                "/" +
-                data.birthDay.substring(0, 4),
-              gender: data.gender === 0 ? "Nam" : "Nữ",
-              religion: data.religion,
-              scholarship: data.level.concat("/12"),
-              job: data.job,
-              hometownAddress: hometownAddress(data),
-              defaultAddress: defaultAddress(data),
-              otherAddress: otherAddress(data),
-            }))
-          );
-
-          setRenderData(data);
-        }
-      });
-    }
-  };
-
-  const onChangeSearchField = (e: any) => {
-    setSearchField(e.target.value);
-
-    if (e.target.value == null) {
-      setRenderData(data);
-    }
-  };
-
-  const onChangeSearchBy = (event: unknown, value: any) => {
-    if (value.props.value === 1) {
-      setSearchFieldName("Tên");
-      searchByName = true;
-    } else {
-      setSearchFieldName("Số CCCD/CMND");
-      searchByName = false;
-    }
-  };
-
-  const search = () => {
-    if (searchByName && typeof data != void []) {
-      var result = data.find((data: any) => data.name.includes(searchField));
-
-      result == null ? setRenderData([]) : setRenderData(result);
-    } else if (typeof data != void []) {
-      var result = data.find((data: any) => data.cmnd.includes(searchField));
-
-      result == null ? setRenderData([]) : setRenderData(result);
-    }
-  };
-
-  return (
-    <Box mx="auto">
-      <Grid container spacing={3}>
-        <Grid container xs={12} style={{ margin: 20 }}>
-          <Grid item xs={3}>
-            <Box p={2}>
-              <EnhancedDropdownMenu
-                options={province}
-                getOptionLabel={(element: any) => element.name}
-                label="Tỉnh/Thành phố"
-                onChange={onChangeProvince}
-              />
-            </Box>
-          </Grid>
-
-          <Grid item xs={3}>
-            <Box p={2}>
-              <EnhancedDropdownMenu
-                options={district}
-                getOptionLabel={(element: any) => element.name}
-                label="Quận/Huyện"
-                onChange={onChangeDistrict}
-                key={districtKey}
-              />
-            </Box>
-          </Grid>
-
-          <Grid item xs={3}>
-            <Box p={2}>
-              <EnhancedDropdownMenu
-                options={ward}
-                getOptionLabel={(element: any) => element.name}
-                label="Phường/Xã"
-                onChange={onChangeWard}
-                key={wardKey}
-              />
-            </Box>
-          </Grid>
-
-          <Grid item xs={3}>
-            <Box p={2}>
-              <EnhancedDropdownMenu
-                options={village}
-                getOptionLabel={(element: any) => element.name}
-                label="Thôn/Làng/Bản"
-                onChange={onChangeVillage}
-                key={villageKey}
-              />
-            </Box>
-          </Grid>
-        </Grid>
-
-        <Grid container xs={12}>
-          <Grid item xs={3} style={{ marginLeft: 20 }}>
-            <Box p={4}>
-              <TextField
-                id="date"
-                label={searchFieldName}
-                onChange={onChangeSearchField}
-                onBlur={onChangeSearchField}
-              />
-            </Box>
-          </Grid>
-
-          <Grid item xs={4} style={{ marginRight: 0 }}>
-            <Box p={4}>
-              <BasicDropdownMenu
-                label="Theo"
-                data={searchBy}
-                onChange={onChangeSearchBy}
-                onBlur={onChangeSearchBy}
-              />
-            </Box>
-          </Grid>
-
-          <Grid item xs={4}>
-            <Box p={2}>
-              <Button
-                style={{ display: "fixed", left: 400, top: 5 }}
-                variant="contained"
-                color="primary"
-                onClick={search}
-              >
-                Tìm
-              </Button>
-            </Box>
-          </Grid>
-        </Grid>
-
-        <Grid container xs={12}>
-          <Box
-            p={2}
-            style={{
-              display: "block",
-              marginLeft: "auto",
-              marginRight: "auto",
-            }}
-          >
-            <EnhancedStatisticalTable
-              tableName={tableName}
-              rows={renderData}
-              head={head}
-              hasButtons={false}
-            />
-          </Box>
-        </Grid>
-      </Grid>
-    </Box>
-  );
+	const [province, setProvince] = React.useState([]);
+	const [district, setDistrict] = React.useState([]);
+	const [ward, setWard] = React.useState([]);
+	const [village, setVillage] = React.useState([]);
+	
+	const [isSearching, setIsSearching] = React.useState(false);
+	
+	const [provinceID, setProvinceID] = React.useState("");
+	const [districtID, setDistrictID] = React.useState("");
+	const [wardID, setWardID] = React.useState("");
+	
+	const [data, setData] = React.useState([]);
+	const [searchData, setSearchData] = React.useState([]);
+	const [tableName, setTableName] = React.useState("Toàn quốc");
+	
+	const [provinceName, setProvinceName] = React.useState("");
+	const [districtName, setDistrictName] = React.useState("");
+	const [wardName, setWardName] = React.useState("");
+	
+	const [districtKey, setDistrictKey] = React.useState(0);
+	const [wardKey, setWardKey] = React.useState(0);
+	const [villageKey, setVillageKey] = React.useState(0);
+	
+	const [searchFieldName, setSearchFieldName] = React.useState("Tên");
+	
+	const [searchField, setSearchField] = React.useState("");
+	
+	useEffect(() => {
+		provinceApi.getProvinces().then((res: any) => {
+			if (res.status === 200) {
+				setProvince(res.data);
+		}});
+		
+		personApi.getByRole().then((res: any) => {
+			if(res.status === 200) {
+				setData(res.data.result.map((data: any) => ({
+					cmnd: data.cmnd,
+					name: data.name,
+					birthday: data.birthDay.substring(8, 10) + "/" + data.birthDay.substring(5, 7) + "/" + data.birthDay.substring(0, 4),
+					gender: data.gender === 0 ? "Nam" : "Nữ",
+					religion: data.religion,
+					scholarship: data.level.concat("/12"),
+					job: data.job,
+					hometownAddress: hometownAddress(data),
+					defaultAddress: defaultAddress(data),
+					otherAddress: otherAddress(data),
+				})));
+			}}
+		);
+	}, []);
+	
+	const onChangeProvince = (event: unknown, value: any) => {
+		setIsSearching(false);
+		if (value != null) {
+			setTableName(value.name);
+			districtApi.getByProvince(value.code).then((res: any) => {
+				if (res.status === 200) {
+					setProvinceID(value.code);
+					setProvinceName(value.name);
+					
+					setDistrictKey(districtKey + 1);
+					setDistrict(res.data.result);
+					
+					setWardKey(wardKey + 1);
+					setWard([]);
+					
+					setVillageKey(villageKey + 1);
+					setVillage([]);
+					
+					personApi.getByReq(value.code).then((res: any) => {
+						if(res.status === 200) {	
+							setData(res.data.result.map((data: any) => ({
+								cmnd: data.cmnd,
+								name: data.name,
+								birthday: data.birthDay.substring(8, 10) + "/" + data.birthDay.substring(5, 7) + "/" + data.birthDay.substring(0, 4),
+								gender: data.gender === 0 ? "Nam" : "Nữ",
+								religion: data.religion,
+								scholarship: data.level.concat("/12"),
+								job: data.job,
+								hometownAddress: hometownAddress(data),
+								defaultAddress: defaultAddress(data),
+								otherAddress: otherAddress(data),
+							})));
+						}
+					})
+				}
+			});
+		} else {
+			setTableName("Toàn quốc");
+			provinceApi.getProvinces().then((res: any) => {
+				if (res.status === 200) {
+					setProvince(res.data);
+					
+					setDistrictKey(districtKey + 1);
+					setDistrict([]);
+					
+					setWardKey(wardKey + 1);
+					setWard([]);
+					
+					setVillageKey(villageKey + 1);
+					setVillage([]);
+					
+					personApi.getByRole().then((res: any) => {
+						if(res.status === 200) {	
+							setData(res.data.result.map((data: any) => ({
+								cmnd: data.cmnd,
+								name: data.name,
+								birthday: data.birthDay.substring(8, 10) + "/" + data.birthDay.substring(5, 7) + "/" + data.birthDay.substring(0, 4),
+								gender: data.gender === 0 ? "Nam" : "Nữ",
+								religion: data.religion,
+								scholarship: data.level.concat("/12"),
+								job: data.job,
+								hometownAddress: hometownAddress(data),
+								defaultAddress: defaultAddress(data),
+								otherAddress: otherAddress(data),
+							})));
+						}
+					})
+				}
+			})
+		}
+	};
+	
+	const onChangeDistrict = (event: unknown, value: any) => {
+		setIsSearching(false);
+		if (value != null) {
+			setTableName(value.name);
+			wardApi.getByDistrict(value.code).then((res: any) => {
+				if (res.status === 200) {
+					setDistrictID(value.code);
+					setDistrictName(value.name);
+					
+					setWardKey(wardKey + 1);
+					setWard(res.data.result);
+					
+					setVillageKey(villageKey + 1);
+					setVillage([]);
+					
+					personApi.getByReq(value.code).then((res: any) => {
+						if(res.status === 200) {	
+							setData(res.data.result.map((data: any) => ({
+								cmnd: data.cmnd,
+								name: data.name,
+								birthday: data.birthDay.substring(8, 10) + "/" + data.birthDay.substring(5, 7) + "/" + data.birthDay.substring(0, 4),
+								gender: data.gender === 0 ? "Nam" : "Nữ",
+								religion: data.religion,
+								scholarship: data.level.concat("/12"),
+								job: data.job,
+								hometownAddress: hometownAddress(data),
+								defaultAddress: defaultAddress(data),
+								otherAddress: otherAddress(data),
+							})));
+						}
+					})
+				}
+			});
+		} else {
+			districtApi.getByProvince(provinceID).then((res: any) => {
+				if (res.status === 200) {
+					setTableName(provinceName);
+					setDistrict(res.data.result);
+					
+					setWardKey(wardKey + 1);
+					setWard([]);
+					
+					setVillageKey(villageKey + 1);
+					setVillage([]);
+					
+					personApi.getByReq(provinceID).then((res: any) => {
+						if(res.status === 200) {	
+							setData(res.data.result.map((data: any) => ({
+								cmnd: data.cmnd,
+								name: data.name,
+								birthday: data.birthDay.substring(8, 10) + "/" + data.birthDay.substring(5, 7) + "/" + data.birthDay.substring(0, 4),
+								gender: data.gender === 0 ? "Nam" : "Nữ",
+								religion: data.religion,
+								scholarship: data.level.concat("/12"),
+								job: data.job,
+								hometownAddress: hometownAddress(data),
+								defaultAddress: defaultAddress(data),
+								otherAddress: otherAddress(data),
+							})));
+						}
+					})
+				}
+			});
+		}
+	};
+	
+	const onChangeWard = (event: unknown, value: any) => {
+		setIsSearching(false);
+		if (value != null) {
+			setTableName(value.name);
+			villageApi.getByWard(value.code).then((res: any) => {
+				if (res.status === 200) {
+					setWardID(value.code);
+					setWardName(value.name);
+					
+					setVillageKey(villageKey + 1);
+					setVillage(res.data.result);
+					
+					personApi.getByReq(value.code).then((res: any) => {
+						if(res.status === 200) {
+							setData(res.data.result.map((data: any) => ({
+								cmnd: data.cmnd,
+								name: data.name,
+								birthday: data.birthDay.substring(8, 10) + "/" + data.birthDay.substring(5, 7) + "/" + data.birthDay.substring(0, 4),
+								gender: data.gender === 0 ? "Nam" : "Nữ",
+								religion: data.religion,
+								scholarship: data.level.concat("/12"),
+								job: data.job,
+								hometownAddress: hometownAddress(data),
+								defaultAddress: defaultAddress(data),
+								otherAddress: otherAddress(data),
+							})));
+						}
+					})
+				}
+			});
+		} else {
+			wardApi.getByDistrict(districtID).then((res: any) => {
+				if (res.status === 200) {
+					setTableName(districtName);
+					setWard(res.data.result);
+					
+					setVillageKey(villageKey + 1);
+					setVillage([]);
+					
+					personApi.getByReq(districtID).then((res: any) => {
+						if(res.status === 200) {	
+							setData(res.data.result.map((data: any) => ({
+								cmnd: data.cmnd,
+								name: data.name,
+								birthday: data.birthDay.substring(8, 10) + "/" + data.birthDay.substring(5, 7) + "/" + data.birthDay.substring(0, 4),
+								gender: data.gender === 0 ? "Nam" : "Nữ",
+								religion: data.religion,
+								scholarship: data.level.concat("/12"),
+								job: data.job,
+								hometownAddress: hometownAddress(data),
+								defaultAddress: defaultAddress(data),
+								otherAddress: otherAddress(data),
+							})));
+						}
+					})
+				}
+			});
+		}
+	};
+		
+	const onChangeVillage = (event: unknown, value: any) => {
+		setIsSearching(false);
+		if (value != null) {
+			personApi.getByReq(value.code).then((res: any) => {
+				if(res.status === 200) {
+					setData(res.data.result.map((data: any) => ({
+						cmnd: data.cmnd,
+						name: data.name,
+						birthday: data.birthDay.substring(8, 10) + "/" + data.birthDay.substring(5, 7) + "/" + data.birthDay.substring(0, 4),
+						gender: data.gender === 0 ? "Nam" : "Nữ",
+						religion: data.religion,
+						scholarship: data.level.concat("/12"),
+						job: data.job,
+						hometownAddress: hometownAddress(data),
+						defaultAddress: defaultAddress(data),
+						otherAddress: otherAddress(data),
+					})));
+				}
+			})
+		} else {
+			personApi.getByReq(wardID).then((res: any) => {
+				if(res.status === 200) {	
+					setData(res.data.result.map((data: any) => ({
+						cmnd: data.cmnd,
+						name: data.name,
+						birthday: data.birthDay.substring(8, 10) + "/" + data.birthDay.substring(5, 7) + "/" + data.birthDay.substring(0, 4),
+						gender: data.gender === 0 ? "Nam" : "Nữ",
+						religion: data.religion,
+						scholarship: data.level.concat("/12"),
+						job: data.job,
+						hometownAddress: hometownAddress(data),
+						defaultAddress: defaultAddress(data),
+						otherAddress: otherAddress(data),
+					})));
+				}
+			})
+		}
+	};
+	
+	const onChangeSearchField = (e: any) => {
+		setSearchField(e.target.value);
+		
+		if (e.target.value == null) {
+			setIsSearching(false);
+		}
+	};
+	
+	const onChangeSearchBy = (event: unknown, value: any) => {
+		if (value.props.value === 1) {
+			setSearchFieldName("Tên");
+			searchByName = true;
+		} else if (value.props.value === 2) {
+			setSearchFieldName("Số CCCD/CMND");
+			searchByName = false;
+		}
+	};
+	
+	const search = () => {
+		setIsSearching(true);
+		if (searchByName && typeof data != void[]) {
+			var result = data.filter((data: any) => data.name.includes(searchField));
+			
+			result == null ? setSearchData([]) : setSearchData(result);
+		} else if (!searchByName && typeof data != void[]) {
+			var result = data.filter((data: any) => data.cmnd.includes(searchField));
+			
+			result == null ? setSearchData([]) : setSearchData(result);
+		}
+	};
+	
+	return (
+		<Box mx="auto">
+			<Grid container spacing={3}>
+				<Grid container xs={12}>
+					<Grid item xs={3}>
+						<Box p={2}>
+							<EnhancedDropdownMenu
+							options={province}
+							getOptionLabel={(element: any) => element.name}
+							label="Tỉnh/Thành phố"
+							onChange={onChangeProvince}
+							/>
+						</Box>
+					</Grid>
+					
+					<Grid item xs={3}>
+						<Box p={2}>
+							<EnhancedDropdownMenu
+							options={district}
+							getOptionLabel={(element: any) => element.name}
+							label="Quận/Huyện"
+							onChange={onChangeDistrict}
+							key={districtKey}
+							/>
+						</Box>
+					</Grid>
+					
+					<Grid item xs={3}>
+						<Box p={2}>
+							<EnhancedDropdownMenu
+							options={ward}
+							getOptionLabel={(element: any) => element.name}
+							label="Phường/Xã"
+							onChange={onChangeWard}
+							key={wardKey}
+							/>
+						</Box>
+					</Grid>
+					
+					<Grid item xs={3}>
+						<Box p={2}>
+							<EnhancedDropdownMenu
+							options={village}
+							getOptionLabel={(element: any) => element.name}
+							label="Thôn/Làng/Bản"
+							onChange={onChangeVillage}
+							key={villageKey}
+							/>
+						</Box>
+					</Grid>
+				</Grid>
+				
+				<Grid container xs={12}>
+					<Grid item xs={6}>
+						<Box p={2}>
+							<TextField
+							id="date"
+							label={searchFieldName}
+							onChange={onChangeSearchField}
+							onBlur={onChangeSearchField}
+							/>
+						</Box>
+					</Grid>
+					
+					<Grid item xs={4}>
+						<Box p={2}>
+							<BasicDropdownMenu
+							label="Theo"
+							data={searchBy}
+							onChange={onChangeSearchBy}
+							onBlur={onChangeSearchBy}/>
+						</Box>
+					</Grid>
+					
+					<Grid item xs={2}>
+						<Box p={2}>
+							<Button variant="contained" color="primary" onClick={search}>
+								Tìm
+							</Button>
+						</Box>
+					</Grid>
+				</Grid>
+				
+				<Grid container xs={12}>
+					<Box p={2}>
+						<EnhancedStatisticalTable 
+						tableName={tableName}
+						rows={isSearching ? searchData : data}
+						head={head}
+						hasButtons={false}
+						/>
+					</Box>
+				</Grid>
+			</Grid>
+		</Box>
+	);
 };
 
 export default A1SearchPage;

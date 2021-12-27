@@ -85,6 +85,7 @@ const AdminSideBar: React.FC<Props> = ({ onMobileClose, openMobile }) => {
                               button
                               selected={selectedIndex === 1}
                               onClick={(event) => handleListItemClick(event, 1)}
+                              onBlur={(event) => handleListItemClick(event, 1)}
                             >
                               <ListItemIcon>
                                 <EqualizerIcon />
@@ -102,6 +103,7 @@ const AdminSideBar: React.FC<Props> = ({ onMobileClose, openMobile }) => {
                               button
                               selected={selectedIndex === 2}
                               onClick={(event) => handleListItemClick(event, 2)}
+                              onBlur={(event) => handleListItemClick(event, 2)}
                             >
                               <ListItemIcon>
                                 <LibraryBooksIcon />
@@ -119,6 +121,7 @@ const AdminSideBar: React.FC<Props> = ({ onMobileClose, openMobile }) => {
                               button
                               selected={selectedIndex === 3}
                               onClick={(event) => handleListItemClick(event, 3)}
+                              onBlur={(event) => handleListItemClick(event, 3)}
                             >
                               <ListItemIcon>
                                 <PeopleIcon />
@@ -176,6 +179,7 @@ const AdminSideBar: React.FC<Props> = ({ onMobileClose, openMobile }) => {
                               button
                               selected={selectedIndex === 1}
                               onClick={(event) => handleListItemClick(event, 1)}
+                              onBlur={(event) => handleListItemClick(event, 1)}
                             >
                               <ListItemIcon>
                                 <EqualizerIcon />
@@ -193,6 +197,7 @@ const AdminSideBar: React.FC<Props> = ({ onMobileClose, openMobile }) => {
                               button
                               selected={selectedIndex === 2}
                               onClick={(event) => handleListItemClick(event, 2)}
+                              onBlur={(event) => handleListItemClick(event, 2)}
                             >
                               <ListItemIcon>
                                 <LibraryBooksIcon />
@@ -210,6 +215,7 @@ const AdminSideBar: React.FC<Props> = ({ onMobileClose, openMobile }) => {
                               button
                               selected={selectedIndex === 3}
                               onClick={(event) => handleListItemClick(event, 3)}
+                              onBlur={(event) => handleListItemClick(event, 3)}
                             >
                               <ListItemIcon>
                                 <PeopleIcon />

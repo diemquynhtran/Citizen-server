@@ -1,6 +1,9 @@
 import api from ".";
 const baseURL = "/village";
 const postbaseURL = "/village/create"
+const putbaseURL = "/village/update";
+const delbaseURL = "/village/delete";
+
 export const villageApi = {
 	getVillages: () => {
 	return api.get(`${baseURL}/`);
@@ -16,6 +19,13 @@ export const villageApi = {
 
 	postVillage: (infovillage:any) => {
 		return api.post(`${postbaseURL}/`,infovillage);
+	  },
+	putVillage: (infoput:any) => {
+		return api.put(`${putbaseURL}/`,infoput);
+	  },
+	
+	delVillage: (infodel:any) => {
+		return api.delete(`${delbaseURL}/`,infodel);
 	  },
 
 };

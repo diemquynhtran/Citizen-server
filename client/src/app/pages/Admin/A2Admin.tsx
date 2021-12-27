@@ -54,9 +54,9 @@ const A2AdminPage = () => {
   useEffect(() => {
     districtApi.getByRole().then((res: any) => {
       if (res.status === 200) {
-        setDistrict(res.data);
+        setDistrict(res.data.result);
         setData(
-          res.data.map((data: any) => ({
+          res.data.result.map((data: any) => ({
             code: data.code,
             name: data.name,
             status: data.state ? "Đã Hoàn thành" : "Chưa Hoàn thành",

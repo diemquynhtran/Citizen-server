@@ -1,4 +1,4 @@
-import { defaultRouter } from "helpers/defaultRouter";
+import { searchPersonRouter } from "helpers/searchPersonRouter";
 import { useAuthorize } from "hocs/useAuthorize";
 import AdminLayout from "layouts/AdminLayout";
 import React from "react";
@@ -30,7 +30,7 @@ const routers = [
 const SearchPerson: React.FC = () => {
   useAuthorize();
   const { userInfo } = useSelector((state: RootState) => state.user);
-  const route = defaultRouter(userInfo?.role);
+  const route = searchPersonRouter(userInfo?.role);
   return (
     <div id="admin-page">
       <AdminLayout>
@@ -38,7 +38,7 @@ const SearchPerson: React.FC = () => {
           {routers.map(({ component, path }, i) => (
             <Route key={i} path={path} component={component} />
           ))}
-          <Redirect from="/searchperson" to={route} />
+          <Redirect from="/searchperson/" to={route} />
         </Switch>
       </AdminLayout>
     </div>

@@ -6,6 +6,8 @@ import { Button, Form } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { UserFunction } from "redux/UserReducer/action";
 import { authApi } from "services/api/auth";
+import Paper from '@material-ui/core/Paper';
+import Box from '@material-ui/core/Box';
 import "./style.scss";
 
 const LoginPage: React.FC = () => {
@@ -31,40 +33,46 @@ const LoginPage: React.FC = () => {
     });
   };
   return (
-    <div id="login-page">
-      <div className="login-form">
-        <Form onSubmit={login}>
+    <div id="login-page" >
+      <div className="login-form" style={{ backgroundImage: "url(/loginWallpaper.jpg)" }}>
+        <Paper>
+		<Form onSubmit={login}>
+		  <div>
+			<div><img src="./gso_logo.png" width="80px" height="80px" style={{display: "block", marginLeft: "auto", marginRight: "auto"}}/></div>
+
+			<div><i style={{fontSize: 20}}><strong>CitizenV:</strong> Hệ thống nhập liệu dân số quốc gia  </i></div>
+      <br />
+		  </div>
           <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label>Tên đăng nhập</Form.Label>
             <Form.Control
               type="username"
-              placeholder="Enter email"
+              placeholder="Tên đăng nhập"
+			  required
               onChange={(e) =>
                 setInfoLogin({ ...infoLogin, username: e.target.value })
               }
             />
-            <Form.Text className="text-muted">
-              We'll never share your email with anyone else.
-            </Form.Text>
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formBasicPassword">
             <Form.Label>Mật khẩu</Form.Label>
             <Form.Control
               type="password"
-              placeholder="Password"
+              placeholder="Mật khẩu"
+			  required
               onChange={(e) =>
                 setInfoLogin({ ...infoLogin, password: e.target.value })
               }
             /> 
+            <br />
           </Form.Group>
-          <Form.Group className="mb-3" controlId="formBasicCheckbox">
-            <Form.Check type="checkbox" label="Check me out" />
-          </Form.Group>
-          <Button variant="primary" type="submit">
-            Submit
+          <Button variant="primary" type="submit" style={{display: "block", marginLeft: "auto", marginRight: "auto"}}>
+            Đăng nhập
           </Button>
+          <br />
         </Form>
+		</Paper>
       </div>
     </div>
   );

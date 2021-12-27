@@ -3,8 +3,6 @@ import React, { useEffect, useState } from "react";
 import { useRole } from "hocs/useRole";
 import { Role } from "settings/role";
 
-import PropTypes from "prop-types";
-
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
 

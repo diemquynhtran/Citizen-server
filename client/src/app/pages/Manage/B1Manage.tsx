@@ -14,9 +14,8 @@ import { Button, Form } from "react-bootstrap";
 import { makeStyles } from "@material-ui/core/styles";
 import AddIcon from "@material-ui/icons/Add";
 import Icon from "@material-ui/core/Icon";
-import Select from "react-select";
-import { userwardApi } from "services/api/userWard";
-import EnhancedDropdownMenu from "components/_shares/EnhancedDropdownMenu";
+import SettingsIcon from "@material-ui/icons/Settings";
+import DeleteIcon from "@material-ui/icons/Delete";
 import EnhancedStatisticalTable from "components/_shares/EnhancedTable";
 import { provinceApi } from "services/api/province";
 import { userprovinceApi } from "services/api/userProvince";
@@ -75,8 +74,6 @@ const B1ManagePage = () => {
     });
   }, []);
 
- 
-
   const useStyles = makeStyles((theme) => ({
     button: {
       margin: 10,
@@ -94,6 +91,19 @@ const B1ManagePage = () => {
     endTime: "",
     password: "",
     startTime: "",
+  });
+
+  const [edit, setEdit] = useState(false);
+  const [accdelete, setAccDelete] = useState(false);
+  const handleCloseEdit = () => setEdit(false);
+  const handleCloseDelete = () => setAccDelete(false);
+  const [infodel, setInfodel] = useState({
+    code: "",
+  });
+
+  const [infoput, setInfoput] = useState({
+    code: "",
+    name: "",
   });
 
   const classesButton = useStyles();
@@ -174,6 +184,76 @@ const B1ManagePage = () => {
       }
     });
   };
+
+  const onSubmitEdit = (event: any) => {
+    event.preventDefault();
+    villageApi.putVillage(infoput).then((res: any) => {
+      if (res.status === 200) {
+        handleCloseEdit();
+        villageApi.getVillages().then((res: any) => {
+          if (res.status === 200) {
+            setProvince(res.data);
+            setData(
+              res.data.map((data: any) => ({
+                code: data.code,
+                name: data.name,
+                account: data.code,
+                start:
+                  data.admin == null
+                    ? ""
+                    : moment(data.admin.startTime).format("DD/MM/YY"),
+                end:
+                  data.admin == null
+                    ? ""
+                    : moment(data.admin.endTime).format("DD/MM/YY"),
+                status:
+                  data.admin == null
+                    ? "Inactive"
+                    : data.admin.permission
+                    ? "Active"
+                    : "Inactive",
+              }))
+            );
+          }
+        });
+      }
+    });
+  };
+
+  const onSubmitDel = (event: any) => {
+    event.preventDefault();
+    villageApi.delVillage(infodel).then((res: any) => {
+      if (res.status === 200) {
+        handleCloseDelete();
+        villageApi.getVillages().then((res: any) => {
+          if (res.status === 200) {
+            setProvince(res.data);
+            setData(
+              res.data.map((data: any) => ({
+                code: data.code,
+                name: data.name,
+                account: data.code,
+                start:
+                  data.admin == null
+                    ? ""
+                    : moment(data.admin.startTime).format("DD/MM/YY"),
+                end:
+                  data.admin == null
+                    ? ""
+                    : moment(data.admin.endTime).format("DD/MM/YY"),
+                status:
+                  data.admin == null
+                    ? "Inactive"
+                    : data.admin.permission
+                    ? "Active"
+                    : "Inactive",
+              }))
+            );
+          }
+        });
+      }
+    });
+  };
   let codeNew: any = data.length + 1;
   codeNew = Number(codeNew) < 10 ? `0${codeNew}` : codeNew;
   codeNew = userInfo?.username + codeNew;
@@ -189,6 +269,7 @@ const B1ManagePage = () => {
           <AddIcon />
           Cấp mã
         </Button>
+
         <Button
           variant="primary"
           onClick={() => setAccShow(true)}
@@ -197,6 +278,24 @@ const B1ManagePage = () => {
           <AddIcon />
           Cấp tài khoản
         </Button>
+
+        <Button
+          variant="primary"
+          onClick={() => setEdit(true)}
+          style={{ margin: 10 }}
+        >
+          <SettingsIcon />
+          Chỉnh sửa
+        </Button>
+        <Button
+          variant="primary"
+          onClick={() => setAccDelete(true)}
+          style={{ margin: 10 }}
+        >
+          <DeleteIcon />
+          Xóa
+        </Button>
+
         <Modal
           show={keyShow}
           onHide={() => setKeyShow(false)}
@@ -215,7 +314,7 @@ const B1ManagePage = () => {
                 <Form.Control
                   type="name"
                   placeholder="Nhập tên làng/tổ dân phố"
-                  onChange={(e:any) =>
+                  onChange={(e: any) =>
                     setInfodistrict({ ...infodistrict, name: e.target.value })
                   }
                 />
@@ -252,11 +351,11 @@ const B1ManagePage = () => {
           <div className="login-form">
             <Form style={{ margin: 10, padding: 10 }}>
               <Form.Group className="mb-3" controlId="formBasicPassword">
-                <Form.Label>Tỉnh/Thành phố</Form.Label>
+                <Form.Label>Làng/Tổ dân phố</Form.Label>
                 <Form.Control
                   type="name"
                   placeholder="Nhập tên làng/tổ dân phố"
-                  onChange={(e:any) =>
+                  onChange={(e: any) =>
                     setInfoacc({ ...infoacc, name: e.target.value })
                   }
                 />
@@ -267,7 +366,7 @@ const B1ManagePage = () => {
                 <Form.Control
                   type="name"
                   placeholder="Nhập mã"
-                  onChange={(e:any) => {
+                  onChange={(e: any) => {
                     setInfoacc({ ...infoacc, code: e.target.value });
                   }}
                 />
@@ -278,7 +377,7 @@ const B1ManagePage = () => {
                 <Form.Control
                   type="password"
                   placeholder="Nhập mật khẩu"
-                  onChange={(e:any) => {
+                  onChange={(e: any) => {
                     setInfoacc({ ...infoacc, password: e.target.value });
                   }}
                 />
@@ -288,7 +387,7 @@ const B1ManagePage = () => {
                 <Form.Label>Ngày cấp</Form.Label>
                 <Form.Control
                   type="date"
-                  onChange={(e:any) =>
+                  onChange={(e: any) =>
                     setInfoacc({ ...infoacc, startTime: e.target.value })
                   }
                 />
@@ -297,7 +396,7 @@ const B1ManagePage = () => {
                 <Form.Label>Ngày hết hạn</Form.Label>
                 <Form.Control
                   type="date"
-                  onChange={(e:any) =>
+                  onChange={(e: any) =>
                     setInfoacc({ ...infoacc, endTime: e.target.value })
                   }
                 />
@@ -308,6 +407,87 @@ const B1ManagePage = () => {
                 Hủy
               </Button>
               <Button variant="primary" onClick={onSubmitAcc}>
+                Hoàn thành
+              </Button>
+            </Modal.Footer>
+          </div>
+        </Modal>
+
+        <Modal
+          show={edit}
+          onHide={() => setEdit(false)}
+          animation={false}
+          size="sm"
+          aria-labelledby="contained-modal-title-vcenter"
+          centered
+        >
+          <Modal.Header>
+            <Modal.Title>Chỉnh sửa</Modal.Title>
+          </Modal.Header>
+          <div className="login-form">
+            <Form style={{ margin: 10, padding: 10 }}>
+              <Form.Group className="mb-3" controlId="formBasicEmail">
+                <Form.Label>Mã làng/tổ dân phố cần sửa</Form.Label>
+                <Form.Control
+                  type="name"
+                  placeholder="Nhập mã làng/tổ dân phố"
+                  onChange={(e: any) =>
+                    setInfoput({ ...infoput, code: e.target.value })
+                  }
+                />
+              </Form.Group>
+
+              <Form.Group className="mb-3" controlId="formBasicEmail">
+                <Form.Label>Nhập tên làng/tổ dân phố mới</Form.Label>
+                <Form.Control
+                  type="name"
+                  placeholder="Nhập tên mới"
+                  onChange={(e: any) =>
+                    setInfoput({ ...infoput, name: e.target.value })
+                  }
+                />
+              </Form.Group>
+            </Form>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={handleCloseEdit}>
+                Hủy
+              </Button>
+              <Button variant="primary" onClick={onSubmitEdit}>
+                Hoàn thành
+              </Button>
+            </Modal.Footer>
+          </div>
+        </Modal>
+
+        <Modal
+          show={accdelete}
+          onHide={() => setAccDelete(false)}
+          animation={false}
+          size="sm"
+          aria-labelledby="contained-modal-title-vcenter"
+          centered
+        >
+          <Modal.Header>
+            <Modal.Title>Xóa làng/tổ dân phố</Modal.Title>
+          </Modal.Header>
+          <div className="login-form">
+            <Form style={{ margin: 10, padding: 10 }}>
+              <Form.Group className="mb-3" controlId="formBasicEmail">
+                <Form.Label>Mã làng/tổ dân phố cần xóa</Form.Label>
+                <Form.Control
+                  type="name"
+                  placeholder="Nhập mã làng/tổ dân phố"
+                  onChange={(e: any) =>
+                    setInfodel({ ...infodel, code: e.target.value })
+                  }
+                />
+              </Form.Group>
+            </Form>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={handleCloseDelete}>
+                Hủy
+              </Button>
+              <Button variant="primary" onClick={onSubmitDel}>
                 Hoàn thành
               </Button>
             </Modal.Footer>

@@ -210,9 +210,9 @@ const A1AdminPage = () => {
 
   return (
     <Box mx="auto" mt={3}>
-      <Grid container spacing={3}>
+      <Grid container spacing={3} style={{ marginLeft: 20 }}>
         <Grid container xs={12}>
-          <Grid item xs={4}>
+          <Grid item xs={3}>
             <Box p={2}>
               <EnhancedDropdownMenu
                 options={province}
@@ -223,7 +223,7 @@ const A1AdminPage = () => {
             </Box>
           </Grid>
 
-          <Grid item xs={4}>
+          <Grid item xs={3}>
             <Box p={2}>
               <EnhancedDropdownMenu
                 options={district}
@@ -235,7 +235,7 @@ const A1AdminPage = () => {
             </Box>
           </Grid>
 
-          <Grid item xs={4}>
+          <Grid item xs={3}>
             <Box p={2}>
               <EnhancedDropdownMenu
                 options={ward}
@@ -248,8 +248,14 @@ const A1AdminPage = () => {
           </Grid>
         </Grid>
 
-        <Grid item xs={12}>
-          <Box p={1} mx="auto">
+        <Grid item xs={10}>
+          <Box
+            p={1}
+            mx="auto"
+            style={{
+              marginLeft: 130,
+            }}
+          >
             <EnhancedStatisticalTable
               tableName={tableName}
               rows={data}

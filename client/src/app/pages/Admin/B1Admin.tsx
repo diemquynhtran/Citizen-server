@@ -74,8 +74,14 @@ const B1AdminPage = () => {
   return (
     <Box mx="auto" mt={3}>
       <Grid container spacing={3}>
-        <Grid item xs={12}>
-          <Box p={1} mx="auto">
+        <Grid item xs={10}>
+          <Box
+            p={1}
+            mx="auto"
+            style={{
+              marginLeft: 130,
+            }}
+          >
             <EnhancedStatisticalTable
               tableName={tableName}
               rows={data}
@@ -101,7 +107,6 @@ const B1AdminPage = () => {
       </Grid>
     </Box>
   );
-
 };
 
 export default B1AdminPage;

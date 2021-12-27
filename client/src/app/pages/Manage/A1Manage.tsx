@@ -4,7 +4,6 @@ import { useRole } from "hocs/useRole";
 import { Role } from "settings/role";
 import { useSelector } from "react-redux";
 import { RootState } from "redux/store";
-import { toastService } from "helpers/toast";
 
 import PropTypes from "prop-types";
 
@@ -16,8 +15,6 @@ import AddIcon from "@material-ui/icons/Add";
 import Icon from "@material-ui/core/Icon";
 import SettingsIcon from "@material-ui/icons/Settings";
 import DeleteIcon from "@material-ui/icons/Delete";
-
-import EnhancedDropdownMenu from "components/_shares/EnhancedDropdownMenu";
 import EnhancedStatisticalTable from "components/_shares/EnhancedTable";
 import { provinceApi } from "services/api/province";
 import { userprovinceApi } from "services/api/userProvince";
@@ -173,8 +170,8 @@ const A1ManagePage = () => {
       if (res.status === 200) {
         handleCloseAcc();
         provinceApi.getProvinces().then((res: any) => {
-          if (res.status === 200) {           
-            console.log("success")
+          if (res.status === 200) {
+            console.log("success");
             setProvince(res.data);
             setData(
               res.data.map((data: any) => ({
@@ -277,8 +274,8 @@ const A1ManagePage = () => {
   codeNew = Number(codeNew) < 10 ? `0${codeNew}` : codeNew;
 
   return (
-    <Box mt={5} ml={5} style={{ marginTop: 0 }}>
-      <div>
+    <Box mt={5} ml={5} style={{ marginTop: 10 }}>
+      <div style={{ marginBottom: 50, marginLeft: 10, marginTop: 20 }}>
         <Button
           variant="primary"
           onClick={() => setKeyShow(true)}
@@ -510,12 +507,15 @@ const A1ManagePage = () => {
             </Modal.Footer>
           </div>
         </Modal>
-
-
       </div>
-      <Grid container>
-        <Grid item>
-          <EnhancedStatisticalTable
+      <Grid>
+        <Grid
+          item
+          style={{
+            marginLeft: 200,
+          }}
+        >
+          <EnhancedStatisticalTable           
             rows={data}
             head={head}
             tableName={tableName}

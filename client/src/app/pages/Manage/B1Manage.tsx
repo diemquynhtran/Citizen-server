@@ -259,8 +259,8 @@ const B1ManagePage = () => {
   codeNew = userInfo?.username + codeNew;
 
   return (
-    <Box mt={5} ml={5} style={{ marginTop: 0 }}>
-      <div>
+    <Box mt={5} ml={5} style={{ marginTop: 10 }}>
+      <div style={{ marginBottom: 50, marginLeft: 10, marginTop: 20 }}>
         <Button
           variant="primary"
           onClick={() => setKeyShow(true)}
@@ -495,7 +495,12 @@ const B1ManagePage = () => {
         </Modal>
       </div>
       <Grid container>
-        <Grid item>
+        <Grid
+          item
+          style={{
+            marginLeft: 200,
+          }}
+        >
           <EnhancedStatisticalTable
             rows={data}
             head={head}

@@ -100,10 +100,8 @@ const A1SearchPage = () => {
 			if (res.status === 200) {
 				setProvince(res.data);
 		}});
-		
 		personApi.getByRole().then((res: any) => {
-			if(res.status === 200) {	
-				console.log(res)
+			if(res.status === 200) {
 				setData(res.data.result.map((data: any) => ({
 					cmnd: data.cmnd,
 					name: data.name,
@@ -176,7 +174,7 @@ const A1SearchPage = () => {
 					setVillageKey(villageKey + 1);
 					setVillage([]);
 					
-					personApi.getByReq(provinceID).then((res: any) => {
+					personApi.getByRole().then((res: any) => {
 						if(res.status === 200) {	
 							setData(res.data.result.map((data: any) => ({
 								cmnd: data.cmnd,
@@ -283,7 +281,7 @@ const A1SearchPage = () => {
 					setVillage(res.data.result);
 					
 					personApi.getByReq(value.code).then((res: any) => {
-						if(res.status === 200) {	
+						if(res.status === 200) {
 							setData(res.data.result.map((data: any) => ({
 								cmnd: data.cmnd,
 								name: data.name,
@@ -339,7 +337,7 @@ const A1SearchPage = () => {
 	const onChangeVillage = (event: unknown, value: any) => {
 		if (value != null) {
 			personApi.getByReq(value.code).then((res: any) => {
-				if(res.status === 200) {	
+				if(res.status === 200) {
 					setData(res.data.result.map((data: any) => ({
 						cmnd: data.cmnd,
 						name: data.name,
@@ -413,7 +411,7 @@ const A1SearchPage = () => {
 	return (
 		<Box mx="auto">
 			<Grid container spacing={3}>
-				<Grid container xs={12} style={{marginTop: 10}}>
+				<Grid container xs={12} style={{margin: 20}}>
 					<Grid item xs={3} >
 						<Box p={2}>
 							<EnhancedDropdownMenu
@@ -463,8 +461,8 @@ const A1SearchPage = () => {
 				</Grid>
 				
 				<Grid container xs={12}>
-					<Grid item xs={6}>
-						<Box p={2}>
+					<Grid item xs={3} style={{marginLeft: 20}}>
+						<Box p={4}>
 							<TextField
 							id="date"
 							label={searchFieldName}
@@ -474,8 +472,8 @@ const A1SearchPage = () => {
 						</Box>
 					</Grid>
 					
-					<Grid item xs={4}>
-						<Box p={2}>
+					<Grid item xs={4} style={{marginRight: 0}}>
+						<Box p={4}>
 							<BasicDropdownMenu
 							label="Theo"
 							data={searchBy}
@@ -484,9 +482,13 @@ const A1SearchPage = () => {
 						</Box>
 					</Grid>
 					
-					<Grid item xs={2}>
+					<Grid item xs={4}>
 						<Box p={2}>
-							<Button variant="contained" color="primary" onClick={search}>
+							<Button 
+							style={{display: "fixed", left: 400, top: 5, borderRadius: "10px"}}
+							variant="contained" 
+							color="primary" 
+							onClick={search}>
 								Tìm
 							</Button>
 						</Box>

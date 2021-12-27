@@ -204,6 +204,7 @@ const B1SearchPage = () => {
 		<Box mx="auto">
 			<Grid container spacing={3}>
 				<Grid container xs={12}>
+					<Grid item xs={12}>
 						<Box p={2}>
 							<EnhancedDropdownMenu
 							options={village}
@@ -213,6 +214,7 @@ const B1SearchPage = () => {
 							key={villageKey}
 							/>
 						</Box>
+					</Grid>
 				</Grid>
 				
 				<Grid container xs={12}>

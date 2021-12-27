@@ -17,7 +17,7 @@ const Routes = () => {
       <Route path={"/403"} exact component={NotPermisionPage} />
 	    <Route path={"/addperson"} exact component={AddPerson} />
 	    <Route path={"/searchperson"}  component={SearchPerson} />
-      <Redirect from="/" to="/admin" /> 
+    <Redirect from="/" to="/admin" /> 
     </Switch>
   );
 };

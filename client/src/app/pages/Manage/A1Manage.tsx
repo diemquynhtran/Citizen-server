@@ -27,8 +27,6 @@ import { wardApi } from "services/api/ward";
 import { useState } from "react";
 import { Modal } from "react-bootstrap";
 import { InputGroup } from "react-bootstrap";
-import A1AddKeyPage from "../AddKey/A1AddKey";
-import A1AddAccPage from "../AddAccount/A1AddAcc";
 import { userInfo } from "os";
 import moment from "moment";
 

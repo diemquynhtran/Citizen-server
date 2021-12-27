@@ -23,8 +23,8 @@ import { villageApi } from "services/api/village";
 import { personApi } from "services/api/person";
 
 const searchBy = [
-	{id: 1, label: "Tên"},
-	{id: 2, label: "CMND"},
+	{value: 1, label: "Tên"},
+	{value: 2, label: "CMND"},
 ]
 
 const head = [
@@ -69,23 +69,24 @@ const otherAddress = (data: any) => {
 	return detail + ", " + village + ", " + ward + ", " + district + ", " + province;
 }
 
+var searchByName = true;
+
 const A2SearchPage = () => {
 	useRole(Role.A2);
-	
-	var searchByName = true;
 	
 	const [province, setProvince] = React.useState([]);
 	const [district, setDistrict] = React.useState([]);
 	const [ward, setWard] = React.useState([]);
 	const [village, setVillage] = React.useState([]);
 	
+	const [isSearching, setIsSearching] = React.useState(false);
+	
 	const [provinceID, setProvinceID] = React.useState("");
 	const [districtID, setDistrictID] = React.useState("");
 	const [wardID, setWardID] = React.useState("");
 	
 	const [data, setData] = React.useState([]);
-	const [searchdata, setSearchData] = React.useState([]);
-	const [renderData, setRenderData] = React.useState([]);
+	const [searchData, setSearchData] = React.useState([]);
 	const [tableName, setTableName] = React.useState("Toàn quốc");
 	
 	const [provinceName, setProvinceName] = React.useState("");
@@ -103,7 +104,7 @@ const A2SearchPage = () => {
 	useEffect(() => {
 		districtApi.getByRole().then((res: any) => {
 			if (res.status === 200) {
-				setProvince(res.data);
+				setProvince(res.data.result);
 		}});
 		
 		personApi.getByRole().then((res: any) => {
@@ -120,13 +121,12 @@ const A2SearchPage = () => {
 					defaultAddress: defaultAddress(data),
 					otherAddress: otherAddress(data),
 				})));
-				
-				setRenderData(data);
 			}}
 		);
 	}, []);
 	
 	const onChangeDistrict = (event: unknown, value: any) => {
+		setIsSearching(false);
 		if (value != null) {
 			setTableName(value.name);
 			wardApi.getByDistrict(value.code).then((res: any) => {
@@ -154,12 +154,8 @@ const A2SearchPage = () => {
 								defaultAddress: defaultAddress(data),
 								otherAddress: otherAddress(data),
 							})));
-						
-							setRenderData(data);
 						}
 					})
-					
-					setRenderData(data);
 				}
 			});
 		} else {
@@ -188,8 +184,6 @@ const A2SearchPage = () => {
 								defaultAddress: defaultAddress(data),
 								otherAddress: otherAddress(data),
 							})));
-						
-							setRenderData(data);
 						}
 					})
 				}
@@ -198,6 +192,7 @@ const A2SearchPage = () => {
 	};
 	
 	const onChangeWard = (event: unknown, value: any) => {
+		setIsSearching(false);
 		if (value != null) {
 			setTableName(value.name);
 			villageApi.getByWard(value.code).then((res: any) => {
@@ -222,12 +217,8 @@ const A2SearchPage = () => {
 								defaultAddress: defaultAddress(data),
 								otherAddress: otherAddress(data),
 							})));
-						
-							setRenderData(data);
 						}
 					})
-					
-					setRenderData(data);
 				}
 			});
 		} else {
@@ -253,8 +244,6 @@ const A2SearchPage = () => {
 								defaultAddress: defaultAddress(data),
 								otherAddress: otherAddress(data),
 							})));
-						
-							setRenderData(data);
 						}
 					})
 				}
@@ -278,12 +267,8 @@ const A2SearchPage = () => {
 						defaultAddress: defaultAddress(data),
 						otherAddress: otherAddress(data),
 					})));
-				
-					setRenderData(data);
 				}
 			})
-			
-			setRenderData(data);
 		} else {
 			personApi.getByReq(wardID).then((res: any) => {
 				if(res.status === 200) {	
@@ -299,8 +284,6 @@ const A2SearchPage = () => {
 						defaultAddress: defaultAddress(data),
 						otherAddress: otherAddress(data),
 					})));
-				
-					setRenderData(data);
 				}
 			})
 		}
@@ -310,7 +293,7 @@ const A2SearchPage = () => {
 		setSearchField(e.target.value);
 		
 		if (e.target.value == null) {
-			setRenderData(data);
+			setIsSearching(false);
 		}
 	};
 	
@@ -325,14 +308,15 @@ const A2SearchPage = () => {
 	};
 	
 	const search = () => {
+		setIsSearching(true);
 		if (searchByName && typeof data != void[]) {
-			var result = data.find((data: any) => data.name.includes(searchField));
+			var result = data.filter((data: any) => data.name.includes(searchField));
 			
-			result == null ? setRenderData([]) : setRenderData(result);
-		} else if (typeof data != void[]) {
-			var result = data.find((data: any) => data.cmnd.includes(searchField));
+			result == null ? setSearchData([]) : setSearchData(result);
+		} else if (!searchByName && typeof data != void[]) {
+			var result = data.filter((data: any) => data.cmnd.includes(searchField));
 			
-			result == null ? setRenderData([]) : setRenderData(result);
+			result == null ? setSearchData([]) : setSearchData(result);
 		}
 	};
 	
@@ -412,7 +396,7 @@ const A2SearchPage = () => {
 					<Box p={2}>
 						<EnhancedStatisticalTable 
 						tableName={tableName}
-						rows={renderData}
+						rows={isSearching ? searchData : data}
 						head={head}
 						hasButtons={false}
 						/>

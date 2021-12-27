@@ -142,12 +142,8 @@ const B1SearchPage = () => {
 						defaultAddress: defaultAddress(data),
 						otherAddress: otherAddress(data),
 					})));
-				
-					setRenderData(data);
 				}
 			})
-			
-			setRenderData(data);
 		} else {
 			personApi.getByReq(wardID).then((res: any) => {
 				if(res.status === 200) {	
@@ -163,8 +159,6 @@ const B1SearchPage = () => {
 						defaultAddress: defaultAddress(data),
 						otherAddress: otherAddress(data),
 					})));
-				
-					setRenderData(data);
 				}
 			})
 		}

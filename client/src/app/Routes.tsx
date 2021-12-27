@@ -15,9 +15,9 @@ const Routes = () => {
       <Route path={"/manage"} component={ManagePage} />
       <Route path={"/login"} exact component={Login} />
       <Route path={"/403"} exact component={NotPermisionPage} />
-	  <Route path={"/addperson"} exact component={AddPerson} />
-	  <Route path={"/searchperson"} component={SearchPerson} />
-      <Redirect from="/" to="/admin" />
+	    <Route path={"/addperson"} exact component={AddPerson} />
+	    <Route path={"/searchperson"}  component={SearchPerson} />
+    <Redirect from="/" to="/admin" /> 
     </Switch>
   );
 };

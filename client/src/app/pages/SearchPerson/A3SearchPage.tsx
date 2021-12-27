@@ -6,9 +6,6 @@ import { Role } from "settings/role";
 import PropTypes from 'prop-types';
 
 import TextField from '@material-ui/core/TextField';
-import Autocomplete from '@material-ui/lab/Autocomplete';
-import MenuItem from '@material-ui/core/MenuItem';
-import InputLabel from '@material-ui/core/InputLabel';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
@@ -93,7 +90,7 @@ const A3SearchPage = () => {
 	const [districtName, setDistrictName] = React.useState("");
 	const [wardName, setWardName] = React.useState("");
 	
-	const [districtKey, setDistrictKey] = React.useState(0);
+
 	const [wardKey, setWardKey] = React.useState(0);
 	const [villageKey, setVillageKey] = React.useState(0);
 	

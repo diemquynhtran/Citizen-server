@@ -4,7 +4,6 @@ import { useRole } from "hocs/useRole";
 import { Role } from "settings/role";
 import { useSelector } from "react-redux";
 import { RootState } from "redux/store";
-import { toastService } from "helpers/toast";
 
 import PropTypes from "prop-types";
 
@@ -14,9 +13,8 @@ import { Button, Form } from "react-bootstrap";
 import { makeStyles } from "@material-ui/core/styles";
 import AddIcon from "@material-ui/icons/Add";
 import Icon from "@material-ui/core/Icon";
-import Select from "react-select";
-
-import EnhancedDropdownMenu from "components/_shares/EnhancedDropdownMenu";
+import SettingsIcon from "@material-ui/icons/Settings";
+import DeleteIcon from "@material-ui/icons/Delete";
 import EnhancedStatisticalTable from "components/_shares/EnhancedTable";
 import { provinceApi } from "services/api/province";
 import { userprovinceApi } from "services/api/userProvince";
@@ -26,8 +24,6 @@ import { wardApi } from "services/api/ward";
 import { useState } from "react";
 import { Modal } from "react-bootstrap";
 import { InputGroup } from "react-bootstrap";
-import A1AddKeyPage from "../AddKey/A1AddKey";
-import A1AddAccPage from "../AddAccount/A1AddAcc";
 import { userInfo } from "os";
 import moment from "moment";
 
@@ -93,126 +89,6 @@ const A1ManagePage = () => {
     });
   }, []);
 
-  const onChangeProvince = (event: unknown, value: any) => {
-    if (value != null) {
-      setTableName(value.name);
-      districtApi.getByProvince(value.code).then((res: any) => {
-        if (res.status === 200) {
-          setProvinceID(value.code);
-          setProvinceName(value.name);
-
-          setDistrictKey(districtKey + 1);
-          setDistrict(res.data.result);
-
-          setWardKey(wardKey + 1);
-          setWard([]);
-
-          setData(
-            res.data.result.map((data: any) => ({
-              code: data.code,
-              name: data.name,
-              status: data.status,
-            }))
-          );
-        }
-      });
-    } else {
-      setTableName("Toàn quốc");
-      provinceApi.getProvinces().then((res: any) => {
-        if (res.status === 200) {
-          setProvince(res.data);
-          setData(
-            res.data.map((data: any) => ({
-              code: data.code,
-              name: data.name,
-              status: data.status,
-            }))
-          );
-
-          setDistrictKey(districtKey + 1);
-          setDistrict([]);
-
-          setWardKey(wardKey + 1);
-          setWard([]);
-        }
-      });
-    }
-  };
-
-  const onChangeDistrict = (event: unknown, value: any) => {
-    if (value != null) {
-      setTableName(value.name);
-      wardApi.getByDistrict(value.code).then((res: any) => {
-        if (res.status === 200) {
-          setDistrictID(value.code);
-          setDistrictName(value.name);
-
-          setWardKey(wardKey + 1);
-          setWard(res.data.result);
-
-          setData(
-            res.data.result.map((data: any) => ({
-              code: data.code,
-              name: data.name,
-              status: data.status,
-            }))
-          );
-        }
-      });
-    } else {
-      districtApi.getByProvince(provinceID).then((res: any) => {
-        if (res.status === 200) {
-          setTableName(provinceName);
-          setDistrict(res.data.result);
-          setData(
-            res.data.result.map((data: any) => ({
-              code: data.code,
-              name: data.name,
-              status: data.status,
-            }))
-          );
-
-          setWardKey(wardKey + 1);
-          setWard([]);
-        }
-      });
-    }
-  };
-
-  const onChangeWard = (event: unknown, value: any) => {
-    if (value != null) {
-      setTableName(value.name);
-      villageApi.getByWard(value.code).then((res: any) => {
-        if (res.status === 200) {
-          setWardID(value.code);
-          setWardName(value.name);
-          setVillage(res.data.result);
-          setData(
-            res.data.result.map((data: any) => ({
-              code: data.code,
-              name: data.name,
-              status: data.status,
-            }))
-          );
-        }
-      });
-    } else {
-      wardApi.getByDistrict(districtID).then((res: any) => {
-        if (res.status === 200) {
-          setTableName(districtName);
-          setWard(res.data.result);
-          setData(
-            res.data.result.map((data: any) => ({
-              code: data.code,
-              name: data.name,
-              status: data.status,
-            }))
-          );
-        }
-      });
-    }
-  };
-
   const useStyles = makeStyles((theme) => ({
     button: {
       margin: 10,
@@ -232,11 +108,23 @@ const A1ManagePage = () => {
     startTime: "",
   });
 
+  const [infoput, setInfoput] = useState({
+    code: "",
+    name: "",
+  });
+
+  const [infodel, setInfodel] = useState({
+    code: "",
+  });
   const classesButton = useStyles();
   const [keyShow, setKeyShow] = useState(false);
   const [accShow, setAccShow] = useState(false);
   const handleCloseKey = () => setKeyShow(false);
   const handleCloseAcc = () => setAccShow(false);
+  const [edit, setEdit] = useState(false);
+  const [accdelete, setAccDelete] = useState(false);
+  const handleCloseEdit = () => setEdit(false);
+  const handleCloseDelete = () => setAccDelete(false);
   const onchangeInput = (e: React.FormEvent<HTMLInputElement>) => {
     const newValue = e.currentTarget.value;
   };
@@ -283,6 +171,7 @@ const A1ManagePage = () => {
         handleCloseAcc();
         provinceApi.getProvinces().then((res: any) => {
           if (res.status === 200) {
+            console.log("success");
             setProvince(res.data);
             setData(
               res.data.map((data: any) => ({
@@ -310,12 +199,83 @@ const A1ManagePage = () => {
       }
     });
   };
+
+  const onSubmitEdit = (event: any) => {
+    event.preventDefault();
+    provinceApi.putProvince(infoput).then((res: any) => {
+      if (res.status === 200) {
+        handleCloseEdit();
+        provinceApi.getProvinces().then((res: any) => {
+          if (res.status === 200) {
+            setProvince(res.data);
+            setData(
+              res.data.map((data: any) => ({
+                code: data.code,
+                name: data.name,
+                account: data.code,
+                start:
+                  data.admin == null
+                    ? ""
+                    : moment(data.admin.startTime).format("DD/MM/YY"),
+                end:
+                  data.admin == null
+                    ? ""
+                    : moment(data.admin.endTime).format("DD/MM/YY"),
+                status:
+                  data.admin == null
+                    ? "Inactive"
+                    : data.admin.permission
+                    ? "Active"
+                    : "Inactive",
+              }))
+            );
+          }
+        });
+      }
+    });
+  };
+
+  const onSubmitDel = (event: any) => {
+    event.preventDefault();
+    provinceApi.delProvince(infodel).then((res: any) => {
+      if (res.status === 200) {
+        handleCloseDelete();
+        provinceApi.getProvinces().then((res: any) => {
+          if (res.status === 200) {
+            setProvince(res.data);
+            setData(
+              res.data.map((data: any) => ({
+                code: data.code,
+                name: data.name,
+                account: data.code,
+                start:
+                  data.admin == null
+                    ? ""
+                    : moment(data.admin.startTime).format("DD/MM/YY"),
+                end:
+                  data.admin == null
+                    ? ""
+                    : moment(data.admin.endTime).format("DD/MM/YY"),
+                status:
+                  data.admin == null
+                    ? "Inactive"
+                    : data.admin.permission
+                    ? "Active"
+                    : "Inactive",
+              }))
+            );
+          }
+        });
+      }
+    });
+  };
+
   let codeNew: any = data.length + 1;
   codeNew = Number(codeNew) < 10 ? `0${codeNew}` : codeNew;
 
   return (
-    <Box mt={5} ml={5} style={{ marginTop: 0 }}>
-      <div>
+    <Box mt={5} ml={5} style={{ marginTop: 10 }}>
+      <div style={{ marginBottom: 50, marginLeft: 10, marginTop: 20 }}>
         <Button
           variant="primary"
           onClick={() => setKeyShow(true)}
@@ -332,6 +292,24 @@ const A1ManagePage = () => {
           <AddIcon />
           Cấp tài khoản
         </Button>
+
+        <Button
+          variant="primary"
+          onClick={() => setEdit(true)}
+          style={{ margin: 10 }}
+        >
+          <SettingsIcon />
+          Chỉnh sửa
+        </Button>
+        <Button
+          variant="primary"
+          onClick={() => setAccDelete(true)}
+          style={{ margin: 10 }}
+        >
+          <DeleteIcon />
+          Xóa
+        </Button>
+
         <Modal
           show={keyShow}
           onHide={() => setKeyShow(false)}
@@ -350,7 +328,7 @@ const A1ManagePage = () => {
                 <Form.Control
                   type="name"
                   placeholder="Nhập tên tỉnh/thành phố"
-                  onChange={(e:any) =>
+                  onChange={(e: any) =>
                     setInfoprovin({ ...infoprovin, name: e.target.value })
                   }
                 />
@@ -391,7 +369,7 @@ const A1ManagePage = () => {
                 <Form.Control
                   type="name"
                   placeholder="Nhập tên tỉnh/thành phố"
-                  onChange={(e:any) =>
+                  onChange={(e: any) =>
                     setInfoacc({ ...infoacc, name: e.target.value })
                   }
                 />
@@ -402,7 +380,7 @@ const A1ManagePage = () => {
                 <Form.Control
                   type="name"
                   placeholder="Nhập mã"
-                  onChange={(e:any) => {
+                  onChange={(e: any) => {
                     setInfoacc({ ...infoacc, code: e.target.value });
                   }}
                 />
@@ -413,7 +391,7 @@ const A1ManagePage = () => {
                 <Form.Control
                   type="password"
                   placeholder="Nhập mật khẩu"
-                  onChange={(e:any) => {
+                  onChange={(e: any) => {
                     setInfoacc({ ...infoacc, password: e.target.value });
                   }}
                 />
@@ -423,7 +401,7 @@ const A1ManagePage = () => {
                 <Form.Label>Ngày cấp</Form.Label>
                 <Form.Control
                   type="date"
-                  onChange={(e:any) =>
+                  onChange={(e: any) =>
                     setInfoacc({ ...infoacc, startTime: e.target.value })
                   }
                 />
@@ -432,7 +410,7 @@ const A1ManagePage = () => {
                 <Form.Label>Ngày hết hạn</Form.Label>
                 <Form.Control
                   type="date"
-                  onChange={(e:any) =>
+                  onChange={(e: any) =>
                     setInfoacc({ ...infoacc, endTime: e.target.value })
                   }
                 />
@@ -448,10 +426,96 @@ const A1ManagePage = () => {
             </Modal.Footer>
           </div>
         </Modal>
+
+        <Modal
+          show={edit}
+          onHide={() => setEdit(false)}
+          animation={false}
+          size="sm"
+          aria-labelledby="contained-modal-title-vcenter"
+          centered
+        >
+          <Modal.Header>
+            <Modal.Title>Chỉnh sửa</Modal.Title>
+          </Modal.Header>
+          <div className="login-form">
+            <Form style={{ margin: 10, padding: 10 }}>
+              <Form.Group className="mb-3" controlId="formBasicEmail">
+                <Form.Label>Mã tỉnh/thành phố cần sửa</Form.Label>
+                <Form.Control
+                  type="name"
+                  placeholder="Nhập mã tỉnh/thành phố"
+                  onChange={(e: any) =>
+                    setInfoput({ ...infoput, code: e.target.value })
+                  }
+                />
+              </Form.Group>
+
+              <Form.Group className="mb-3" controlId="formBasicEmail">
+                <Form.Label>Nhập tên tỉnh/thành phố mới</Form.Label>
+                <Form.Control
+                  type="name"
+                  placeholder="Nhập tên mới"
+                  onChange={(e: any) =>
+                    setInfoput({ ...infoput, name: e.target.value })
+                  }
+                />
+              </Form.Group>
+            </Form>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={handleCloseEdit}>
+                Hủy
+              </Button>
+              <Button variant="primary" onClick={onSubmitEdit}>
+                Hoàn thành
+              </Button>
+            </Modal.Footer>
+          </div>
+        </Modal>
+
+        <Modal
+          show={accdelete}
+          onHide={() => setAccDelete(false)}
+          animation={false}
+          size="sm"
+          aria-labelledby="contained-modal-title-vcenter"
+          centered
+        >
+          <Modal.Header>
+            <Modal.Title>Xóa tỉnh/thành phố</Modal.Title>
+          </Modal.Header>
+          <div className="login-form">
+            <Form style={{ margin: 10, padding: 10 }}>
+              <Form.Group className="mb-3" controlId="formBasicEmail">
+                <Form.Label>Mã tỉnh/thành phố cần xóa</Form.Label>
+                <Form.Control
+                  type="name"
+                  placeholder="Nhập mã tỉnh/thành phố"
+                  onChange={(e: any) =>
+                    setInfodel({ ...infodel, code: e.target.value })
+                  }
+                />
+              </Form.Group>
+            </Form>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={handleCloseDelete}>
+                Hủy
+              </Button>
+              <Button variant="primary" onClick={onSubmitDel}>
+                Hoàn thành
+              </Button>
+            </Modal.Footer>
+          </div>
+        </Modal>
       </div>
-      <Grid container>
-        <Grid item>
-          <EnhancedStatisticalTable
+      <Grid>
+        <Grid
+          item
+          style={{
+            marginLeft: 200,
+          }}
+        >
+          <EnhancedStatisticalTable           
             rows={data}
             head={head}
             tableName={tableName}

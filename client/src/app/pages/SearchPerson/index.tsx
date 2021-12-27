@@ -38,7 +38,7 @@ const SearchPerson: React.FC = () => {
           {routers.map(({ component, path }, i) => (
             <Route key={i} path={path} component={component} />
           ))}
-          <Redirect from="/searchperson" to={route} />
+          <Redirect from="/searchperson/" to={route} />
         </Switch>
       </AdminLayout>
     </div>

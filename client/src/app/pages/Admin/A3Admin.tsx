@@ -31,7 +31,7 @@ const A3AdminPage = () => {
   const [village, setVillage] = React.useState([]);
 
   const [wardID, setWardID] = React.useState("");
-  
+
   const [genderAnalytics, setGenderAnalytics] = useState<AnalyticByGender[]>(
     []
   );
@@ -47,9 +47,9 @@ const A3AdminPage = () => {
   useEffect(() => {
     wardApi.getByRole().then((res: any) => {
       if (res.status === 200) {
-        setWard(res.data);
+        setWard(res.data.result);
         setData(
-          res.data.map((data: any) => ({
+          res.data.result.map((data: any) => ({
             code: data.code,
             name: data.name,
             status: data.state ? "Đã Hoàn thành" : "Chưa Hoàn thành",
@@ -115,8 +115,9 @@ const A3AdminPage = () => {
 
   return (
     <Box mx="auto" mt={3}>
-      <Grid container spacing={3}>
-        <Grid item xs={12}>
+      <Grid container spacing={3} style={{ marginLeft: 40 }}>
+        <Grid item xs={2}></Grid>
+        <Grid item xs={4}>
           <Box p={2}>
             <EnhancedDropdownMenu
               options={ward}
@@ -127,8 +128,14 @@ const A3AdminPage = () => {
           </Box>
         </Grid>
 
-        <Grid item xs={12}>
-          <Box p={1} mx="auto">
+        <Grid item xs={4}>
+          <Box
+            p={1}
+            mx="auto"
+            style={{
+              marginLeft: 130,
+            }}
+          >
             <EnhancedStatisticalTable
               tableName={tableName}
               rows={data}
@@ -154,7 +161,6 @@ const A3AdminPage = () => {
       </Grid>
     </Box>
   );
-
 };
 
 export default A3AdminPage;

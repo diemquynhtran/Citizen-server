@@ -8,7 +8,6 @@ import PropTypes from "prop-types";
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
 
-import EnhancedDropdownMenu from "components/_shares/EnhancedDropdownMenu";
 import EnhancedStatisticalTable from "components/_shares/EnhancedTable";
 import { villageApi } from "services/api/village";
 import { AnalyticByAge, AnalyticByGender } from "models/person";
@@ -39,9 +38,9 @@ const B1AdminPage = () => {
   useEffect(() => {
     villageApi.getByRole().then((res: any) => {
       if (res.status === 200) {
-        setVillage(res.data);
+        setVillage(res.data.result);
         setData(
-          res.data.map((data: any) => ({
+          res.data.result.map((data: any) => ({
             code: data.code,
             name: data.name,
             status: data.state ? "Đã Hoàn thành" : "Chưa Hoàn thành",
@@ -75,8 +74,14 @@ const B1AdminPage = () => {
   return (
     <Box mx="auto" mt={3}>
       <Grid container spacing={3}>
-        <Grid item xs={12}>
-          <Box p={1} mx="auto">
+        <Grid item xs={10}>
+          <Box
+            p={1}
+            mx="auto"
+            style={{
+              marginLeft: 130,
+            }}
+          >
             <EnhancedStatisticalTable
               tableName={tableName}
               rows={data}
@@ -102,7 +107,6 @@ const B1AdminPage = () => {
       </Grid>
     </Box>
   );
-
 };
 
 export default B1AdminPage;

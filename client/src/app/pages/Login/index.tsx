@@ -38,8 +38,10 @@ const LoginPage: React.FC = () => {
         <Paper>
 		<Form onSubmit={login}>
 		  <div>
-			<img src="./gso_logo.png" width="60px" height="60px" />
-			<i><strong>CitizenV:</strong> Hệ thống nhập liệu dân số quốc gia  </i>
+			<div><img src="./gso_logo.png" width="80px" height="80px" style={{display: "block", marginLeft: "auto", marginRight: "auto"}}/></div>
+
+			<div><i style={{fontSize: 20}}><strong>CitizenV:</strong> Hệ thống nhập liệu dân số quốc gia  </i></div>
+      <br />
 		  </div>
           <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label>Tên đăng nhập</Form.Label>
@@ -63,10 +65,12 @@ const LoginPage: React.FC = () => {
                 setInfoLogin({ ...infoLogin, password: e.target.value })
               }
             /> 
+            <br />
           </Form.Group>
-          <Button variant="primary" type="submit">
+          <Button variant="primary" type="submit" style={{display: "block", marginLeft: "auto", marginRight: "auto"}}>
             Đăng nhập
           </Button>
+          <br />
         </Form>
 		</Paper>
       </div>

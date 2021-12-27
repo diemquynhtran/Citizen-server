@@ -1,17 +1,17 @@
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
 
 import { useRole } from "hocs/useRole";
 import { Role } from "settings/role";
 
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 
-import TextField from '@material-ui/core/TextField';
-import Autocomplete from '@material-ui/lab/Autocomplete';
-import MenuItem from '@material-ui/core/MenuItem';
-import InputLabel from '@material-ui/core/InputLabel';
-import Box from '@material-ui/core/Box';
-import Button from '@material-ui/core/Button';
-import Grid from '@material-ui/core/Grid';
+import TextField from "@material-ui/core/TextField";
+import Autocomplete from "@material-ui/lab/Autocomplete";
+import MenuItem from "@material-ui/core/MenuItem";
+import InputLabel from "@material-ui/core/InputLabel";
+import Box from "@material-ui/core/Box";
+import Button from "@material-ui/core/Button";
+import Grid from "@material-ui/core/Grid";
 
 import EnhancedDropdownMenu from "components/_shares/EnhancedDropdownMenu";
 import EnhancedStatisticalTable from "components/_shares/EnhancedTable";
@@ -28,46 +28,64 @@ const searchBy = [
 ]
 
 const head = [
-	{id: 1, label:"Số CMND/CCCD"},
-	{id: 2, label:"Tên"},
-	{id: 3, label:"Ngày sinh"},
-	{id: 4, label:"Giới tính"},
-	{id: 5, label:"Tôn giáo"},
-	{id: 6, label:"Học vấn"},
-	{id: 7, label:"Nghề nghiệp"},
-	{id: 8, label:"Quê quán"},
-	{id: 9, label:"Đ/c Thường trú"},
-	{id: 10, label:"Đ/c Tạm trú"},
+  { id: 1, label: "Số CMND/CCCD" },
+  { id: 2, label: "Tên" },
+  { id: 3, label: "Ngày sinh" },
+  { id: 4, label: "Giới tính" },
+  { id: 5, label: "Tôn giáo" },
+  { id: 6, label: "Học vấn" },
+  { id: 7, label: "Nghề nghiệp" },
+  { id: 8, label: "Quê quán" },
+  { id: 9, label: "Đ/c Thường trú" },
+  { id: 10, label: "Đ/c Tạm trú" },
 ];
 
 const hometownAddress = (data: any) => {
-	let village = data.hometown.village == null ? "" : data.hometown.village.name;
-	let ward = data.hometown.ward == null ? "" : data.hometown.ward.name;
-	let district = data.hometown.district == null ? "" : data.hometown.district.name;
-	let province = data.hometown.province == null ? "" : data.hometown.province.name;
-	
-	return village + ", " + ward + ", " + district + ", " + province;
-}
+  let village = data.hometown.village == null ? "" : data.hometown.village.name;
+  let ward = data.hometown.ward == null ? "" : data.hometown.ward.name;
+  let district =
+    data.hometown.district == null ? "" : data.hometown.district.name;
+  let province =
+    data.hometown.province == null ? "" : data.hometown.province.name;
+
+  return village + ", " + ward + ", " + district + ", " + province;
+};
 
 const defaultAddress = (data: any) => {
-	let detail = data.defaultAddress.detail == null ? "" : data.defaultAddress.detail;
-	let village = data.defaultAddress.village == null ? "" : data.defaultAddress.village.name;
-	let ward = data.defaultAddress.ward == null ? "" : data.defaultAddress.ward.name;
-	let district = data.defaultAddress.district == null ? "" : data.defaultAddress.district.name;
-	let province = data.defaultAddress.province == null ? "" : data.defaultAddress.province.name;
-	
-	return detail + ", " + village + ", " + ward + ", " + district + ", " + province;
-}
+  let detail =
+    data.defaultAddress.detail == null ? "" : data.defaultAddress.detail;
+  let village =
+    data.defaultAddress.village == null ? "" : data.defaultAddress.village.name;
+  let ward =
+    data.defaultAddress.ward == null ? "" : data.defaultAddress.ward.name;
+  let district =
+    data.defaultAddress.district == null
+      ? ""
+      : data.defaultAddress.district.name;
+  let province =
+    data.defaultAddress.province == null
+      ? ""
+      : data.defaultAddress.province.name;
+
+  return (
+    detail + ", " + village + ", " + ward + ", " + district + ", " + province
+  );
+};
 
 const otherAddress = (data: any) => {
-	let detail = data.otherAddress.detail == null ? "" : data.otherAddress.detail;
-	let village = data.otherAddress.village == null ? "" : data.otherAddress.village.name;
-	let ward = data.otherAddress.ward == null ? "" : data.otherAddress.ward.name;
-	let district = data.otherAddress.district == null ? "" : data.otherAddress.district.name;
-	let province = data.otherAddress.province == null ? "" : data.otherAddress.province.name;
-	
-	return detail + ", " + village + ", " + ward + ", " + district + ", " + province;
-}
+  let detail = data.otherAddress.detail == null ? "" : data.otherAddress.detail;
+  let village =
+    data.otherAddress.village == null ? "" : data.otherAddress.village.name;
+  let ward = data.otherAddress.ward == null ? "" : data.otherAddress.ward.name;
+  let district =
+    data.otherAddress.district == null ? "" : data.otherAddress.district.name;
+  let province =
+    data.otherAddress.province == null ? "" : data.otherAddress.province.name;
+
+  return (
+    detail + ", " + village + ", " + ward + ", " + district + ", " + province
+  );
+};
 
 var searchByName = true;
 

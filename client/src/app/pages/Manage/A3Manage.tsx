@@ -14,7 +14,8 @@ import { Button, Form } from "react-bootstrap";
 import { makeStyles } from "@material-ui/core/styles";
 import AddIcon from "@material-ui/icons/Add";
 import Icon from "@material-ui/core/Icon";
-import Select from "react-select";
+import SettingsIcon from "@material-ui/icons/Settings";
+import DeleteIcon from "@material-ui/icons/Delete";
 import { userwardApi } from "services/api/userWard";
 import EnhancedDropdownMenu from "components/_shares/EnhancedDropdownMenu";
 import EnhancedStatisticalTable from "components/_shares/EnhancedTable";
@@ -54,13 +55,25 @@ const A3ManagePage = () => {
   const [provinceName, setProvinceName] = React.useState("");
   const [districtName, setDistrictName] = React.useState("");
   const [wardName, setWardName] = React.useState("");
- 
 
   const [districtKey, setDistrictKey] = React.useState(0);
   const [wardKey, setWardKey] = React.useState(0);
 
   const [data, setData] = React.useState([]);
   const [tableName, setTableName] = React.useState("Quản lý tài khoản");
+
+  const [edit, setEdit] = useState(false);
+  const [accdelete, setAccDelete] = useState(false);
+  const handleCloseEdit = () => setEdit(false);
+  const handleCloseDelete = () => setAccDelete(false);
+  const [infodel, setInfodel] = useState({
+    code: "",
+  });
+
+  const [infoput, setInfoput] = useState({
+    code: "",
+    name: "",
+  });
 
   useEffect(() => {
     wardApi.getWards().then((res: any) => {
@@ -90,126 +103,6 @@ const A3ManagePage = () => {
       }
     });
   }, []);
-
-  const onChangeProvince = (event: unknown, value: any) => {
-    if (value != null) {
-      setTableName(value.name);
-      districtApi.getByProvince(value.code).then((res: any) => {
-        if (res.status === 200) {
-          setProvinceID(value.code);
-          setProvinceName(value.name);
-
-          setDistrictKey(districtKey + 1);
-          setDistrict(res.data.result);
-
-          setWardKey(wardKey + 1);
-          setWard([]);
-
-          setData(
-            res.data.result.map((data: any) => ({
-              code: data.code,
-              name: data.name,
-              status: data.status,
-            }))
-          );
-        }
-      });
-    } else {
-      setTableName("Toàn quốc");
-      provinceApi.getProvinces().then((res: any) => {
-        if (res.status === 200) {
-          setProvince(res.data);
-          setData(
-            res.data.map((data: any) => ({
-              code: data.code,
-              name: data.name,
-              status: data.status,
-            }))
-          );
-
-          setDistrictKey(districtKey + 1);
-          setDistrict([]);
-
-          setWardKey(wardKey + 1);
-          setWard([]);
-        }
-      });
-    }
-  };
-
-  const onChangeDistrict = (event: unknown, value: any) => {
-    if (value != null) {
-      setTableName(value.name);
-      wardApi.getByDistrict(value.code).then((res: any) => {
-        if (res.status === 200) {
-          setDistrictID(value.code);
-          setDistrictName(value.name);
-
-          setWardKey(wardKey + 1);
-          setWard(res.data.result);
-
-          setData(
-            res.data.result.map((data: any) => ({
-              code: data.code,
-              name: data.name,
-              status: data.status,
-            }))
-          );
-        }
-      });
-    } else {
-      districtApi.getByProvince(provinceID).then((res: any) => {
-        if (res.status === 200) {
-          setTableName(provinceName);
-          setDistrict(res.data.result);
-          setData(
-            res.data.result.map((data: any) => ({
-              code: data.code,
-              name: data.name,
-              status: data.status,
-            }))
-          );
-
-          setWardKey(wardKey + 1);
-          setWard([]);
-        }
-      });
-    }
-  };
-
-  const onChangeWard = (event: unknown, value: any) => {
-    if (value != null) {
-      setTableName(value.name);
-      villageApi.getByWard(value.code).then((res: any) => {
-        if (res.status === 200) {
-          setWardID(value.code);
-          setWardName(value.name);
-          setVillage(res.data.result);
-          setData(
-            res.data.result.map((data: any) => ({
-              code: data.code,
-              name: data.name,
-              status: data.status,
-            }))
-          );
-        }
-      });
-    } else {
-      wardApi.getByDistrict(districtID).then((res: any) => {
-        if (res.status === 200) {
-          setTableName(districtName);
-          setWard(res.data.result);
-          setData(
-            res.data.result.map((data: any) => ({
-              code: data.code,
-              name: data.name,
-              status: data.status,
-            }))
-          );
-        }
-      });
-    }
-  };
 
   const useStyles = makeStyles((theme) => ({
     button: {
@@ -308,13 +201,84 @@ const A3ManagePage = () => {
       }
     });
   };
+
+  const onSubmitEdit = (event: any) => {
+    event.preventDefault();
+    wardApi.putWard(infoput).then((res: any) => {
+      if (res.status === 200) {
+        handleCloseEdit();
+        wardApi.getWards().then((res: any) => {
+          if (res.status === 200) {
+            setProvince(res.data);
+            setData(
+              res.data.map((data: any) => ({
+                code: data.code,
+                name: data.name,
+                account: data.code,
+                start:
+                  data.admin == null
+                    ? ""
+                    : moment(data.admin.startTime).format("DD/MM/YY"),
+                end:
+                  data.admin == null
+                    ? ""
+                    : moment(data.admin.endTime).format("DD/MM/YY"),
+                status:
+                  data.admin == null
+                    ? "Inactive"
+                    : data.admin.permission
+                    ? "Active"
+                    : "Inactive",
+              }))
+            );
+          }
+        });
+      }
+    });
+  };
+
+  const onSubmitDel = (event: any) => {
+    event.preventDefault();
+    wardApi.delWard(infodel).then((res: any) => {
+      if (res.status === 200) {
+        handleCloseDelete();
+        wardApi.getWards().then((res: any) => {
+          if (res.status === 200) {
+            setProvince(res.data);
+            setData(
+              res.data.map((data: any) => ({
+                code: data.code,
+                name: data.name,
+                account: data.code,
+                start:
+                  data.admin == null
+                    ? ""
+                    : moment(data.admin.startTime).format("DD/MM/YY"),
+                end:
+                  data.admin == null
+                    ? ""
+                    : moment(data.admin.endTime).format("DD/MM/YY"),
+                status:
+                  data.admin == null
+                    ? "Inactive"
+                    : data.admin.permission
+                    ? "Active"
+                    : "Inactive",
+              }))
+            );
+          }
+        });
+      }
+    });
+  };
+
   let codeNew: any = data.length + 1;
   codeNew = Number(codeNew) < 10 ? `0${codeNew}` : codeNew;
   codeNew = userInfo?.username + codeNew;
 
   return (
     <Box mt={5} ml={5} style={{ marginTop: 0 }}>
-      <div>
+      <div style={{ marginBottom: 50, marginLeft: 10, marginTop: 20 }}>
         <Button
           variant="primary"
           onClick={() => setKeyShow(true)}
@@ -331,6 +295,24 @@ const A3ManagePage = () => {
           <AddIcon />
           Cấp tài khoản
         </Button>
+
+        <Button
+          variant="primary"
+          onClick={() => setEdit(true)}
+          style={{ margin: 10 }}
+        >
+          <SettingsIcon />
+          Chỉnh sửa
+        </Button>
+        <Button
+          variant="primary"
+          onClick={() => setAccDelete(true)}
+          style={{ margin: 10 }}
+        >
+          <DeleteIcon />
+          Xóa
+        </Button>
+
         <Modal
           show={keyShow}
           onHide={() => setKeyShow(false)}
@@ -349,7 +331,7 @@ const A3ManagePage = () => {
                 <Form.Control
                   type="name"
                   placeholder="Nhập tên phường/xã/thị trấn"
-                  onChange={(e:any) =>
+                  onChange={(e: any) =>
                     setInfodistrict({ ...infodistrict, name: e.target.value })
                   }
                 />
@@ -386,11 +368,11 @@ const A3ManagePage = () => {
           <div className="login-form">
             <Form style={{ margin: 10, padding: 10 }}>
               <Form.Group className="mb-3" controlId="formBasicPassword">
-                <Form.Label>Tỉnh/Thành phố</Form.Label>
+                <Form.Label>Phường/Xã/Thị Trấn</Form.Label>
                 <Form.Control
                   type="name"
                   placeholder="Nhập tên phường/xã/thị trấn"
-                  onChange={(e:any) =>
+                  onChange={(e: any) =>
                     setInfoacc({ ...infoacc, name: e.target.value })
                   }
                 />
@@ -401,7 +383,7 @@ const A3ManagePage = () => {
                 <Form.Control
                   type="name"
                   placeholder="Nhập mã"
-                  onChange={(e:any) => {
+                  onChange={(e: any) => {
                     setInfoacc({ ...infoacc, code: e.target.value });
                   }}
                 />
@@ -412,7 +394,7 @@ const A3ManagePage = () => {
                 <Form.Control
                   type="password"
                   placeholder="Nhập mật khẩu"
-                  onChange={(e:any) => {
+                  onChange={(e: any) => {
                     setInfoacc({ ...infoacc, password: e.target.value });
                   }}
                 />
@@ -422,7 +404,7 @@ const A3ManagePage = () => {
                 <Form.Label>Ngày cấp</Form.Label>
                 <Form.Control
                   type="date"
-                  onChange={(e:any) =>
+                  onChange={(e: any) =>
                     setInfoacc({ ...infoacc, startTime: e.target.value })
                   }
                 />
@@ -431,7 +413,7 @@ const A3ManagePage = () => {
                 <Form.Label>Ngày hết hạn</Form.Label>
                 <Form.Control
                   type="date"
-                  onChange={(e:any) =>
+                  onChange={(e: any) =>
                     setInfoacc({ ...infoacc, endTime: e.target.value })
                   }
                 />
@@ -447,9 +429,95 @@ const A3ManagePage = () => {
             </Modal.Footer>
           </div>
         </Modal>
+
+        <Modal
+          show={edit}
+          onHide={() => setEdit(false)}
+          animation={false}
+          size="sm"
+          aria-labelledby="contained-modal-title-vcenter"
+          centered
+        >
+          <Modal.Header>
+            <Modal.Title>Chỉnh sửa</Modal.Title>
+          </Modal.Header>
+          <div className="login-form">
+            <Form style={{ margin: 10, padding: 10 }}>
+              <Form.Group className="mb-3" controlId="formBasicEmail">
+                <Form.Label>Mã phường/xã/thị trấn cần sửa</Form.Label>
+                <Form.Control
+                  type="name"
+                  placeholder="Nhập mã phường/xã/thị trấn"
+                  onChange={(e: any) =>
+                    setInfoput({ ...infoput, code: e.target.value })
+                  }
+                />
+              </Form.Group>
+
+              <Form.Group className="mb-3" controlId="formBasicEmail">
+                <Form.Label>Nhập tên phường/xã/thị trấn mới</Form.Label>
+                <Form.Control
+                  type="name"
+                  placeholder="Nhập tên mới"
+                  onChange={(e: any) =>
+                    setInfoput({ ...infoput, name: e.target.value })
+                  }
+                />
+              </Form.Group>
+            </Form>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={handleCloseEdit}>
+                Hủy
+              </Button>
+              <Button variant="primary" onClick={onSubmitEdit}>
+                Hoàn thành
+              </Button>
+            </Modal.Footer>
+          </div>
+        </Modal>
+
+        <Modal
+          show={accdelete}
+          onHide={() => setAccDelete(false)}
+          animation={false}
+          size="sm"
+          aria-labelledby="contained-modal-title-vcenter"
+          centered
+        >
+          <Modal.Header>
+            <Modal.Title>Xóa phường/xã/thị trấn</Modal.Title>
+          </Modal.Header>
+          <div className="login-form">
+            <Form style={{ margin: 10, padding: 10 }}>
+              <Form.Group className="mb-3" controlId="formBasicEmail">
+                <Form.Label>Mã phường/xã/thị trấn cần xóa</Form.Label>
+                <Form.Control
+                  type="name"
+                  placeholder="Nhập mã phường/xã/thị trấn"
+                  onChange={(e: any) =>
+                    setInfodel({ ...infodel, code: e.target.value })
+                  }
+                />
+              </Form.Group>
+            </Form>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={handleCloseDelete}>
+                Hủy
+              </Button>
+              <Button variant="primary" onClick={onSubmitDel}>
+                Hoàn thành
+              </Button>
+            </Modal.Footer>
+          </div>
+        </Modal>
       </div>
       <Grid container>
-        <Grid item>
+        <Grid
+          item
+          style={{
+            marginLeft: 200,
+          }}
+        >
           <EnhancedStatisticalTable
             rows={data}
             head={head}
